@@ -4,7 +4,7 @@ export const PostContainer = styled.View`
   min-height: 62px;
   padding: 0 10px;
   border-bottom-width: 1px;
-  border-color: #ccc;
+  border-color: #eee;
   background-color: #fff;
   flex-direction: row;
   padding-bottom: 10px;

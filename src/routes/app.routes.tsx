@@ -1,10 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import {AntDesign, Ionicons, FontAwesome, Entypo, Feather, FontAwesome5} from '@expo/vector-icons';
 import PostButton from '../components/PostButton';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 // Screens
 
@@ -13,6 +15,15 @@ import PostScreen from '../screens/Post';
 import ProfileScreen from '../screens/Profile';
 import SearchScreen from '../screens/Search';
 import ConfigScreen from '../screens/Config';
+
+const HomeMenu: React.FC  = () => (
+  <Stack.Navigator
+    initialRouteName="Home"
+  >
+    <Stack.Screen name="HomeScreen" component={HomeScreen} />
+    <Stack.Screen name="PostScreen" component={PostScreen} />
+  </Stack.Navigator>
+)
 
 export default function App() {
   return (
@@ -51,7 +62,7 @@ export default function App() {
           inactiveTintColor:'#92929c'
         }}
       >
-        <Tab.Screen options={{title:'Home'}} name="Home" component={HomeScreen} />
+        <Tab.Screen options={{title:'Home'}} name="Home" component={HomeMenu} />
         <Tab.Screen options={{title:'Procurar'}} name="Search" component={SearchScreen} />
         <Tab.Screen options={{title:'Perfil'}} name="Profile" component={ProfileScreen} />
         <Tab.Screen options={{title:'Configurações'}} name="Config" component={ConfigScreen}/>
