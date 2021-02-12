@@ -5,13 +5,13 @@ import Input from '../../components/Shared/Input';
 import Button from '../../components/Shared/Button';
 import Mood from '../../assets/mood.png';
 
-const Login: React.FC = () => {
+const SignIn: React.FC = () => {
   return (
     <>
     <S.Container>
       <S.Logo resizeMode="contain" source={Mood} />
-      <Input />
-      <Input />
+      <Input iconName="mail" placeholder="E-mail"/>
+      <Input iconName="lock" placeholder="Senha" />
       <Button />
     </S.Container>
     <S.Bottom>
@@ -21,4 +21,4 @@ const Login: React.FC = () => {
   )
 }
 
-export default Login;
+export default SignIn;

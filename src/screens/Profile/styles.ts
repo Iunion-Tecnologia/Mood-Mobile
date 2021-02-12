@@ -8,8 +8,8 @@ export const Container = styled.View`
 `;
 
 export const InfoContainer = styled.View`
-  border-width: 1px;
-  border-color: #ddd;
+  border-bottom-width: 1px;
+  border-bottom-color: #ddd;
   padding: 0 10px;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -54,6 +54,7 @@ export const Data = styled.View`
 
 export const DataName = styled.Text`
   font-size: 16px;
+  color: #6C0FD9;
 `;
 
 export const DataNumber = styled.Text`

@@ -11,7 +11,7 @@ import SignUp from '../screens/Signup';
 const AuthRoutes: React.FC  = () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="SignIn"
+      initialRouteName="SignUp"
       screenOptions={{headerShown: false}}
     >
       <Stack.Screen name="SignIn" component={SignIn} />

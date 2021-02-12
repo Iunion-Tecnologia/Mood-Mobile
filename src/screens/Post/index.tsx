@@ -2,6 +2,7 @@ import React, {} from 'react';
 import * as S from './styles';
 import {Ionicons} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
+import Header from '../../components/Header';
 
 const CreatePost: React.FC = () => {
 
@@ -9,12 +10,9 @@ const CreatePost: React.FC = () => {
 
   return(
     <S.Container>
-      <S.Header>
-        <S.BackHeader onPress={() => navigation.goBack()}>
-          <Ionicons name="ios-arrow-back-outline" size={30} color="#fff" />
-        </S.BackHeader>
-        <S.HeaderTitle>Criar Post</S.HeaderTitle>
-      </S.Header>
+
+      <Header />
+
       <S.Input
         multiline
         textAlignVertical="top"

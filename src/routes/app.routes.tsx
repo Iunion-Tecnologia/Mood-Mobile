@@ -17,11 +17,11 @@ import ConfigScreen from '../screens/Config';
 
 const HomeMenu: React.FC  = () => (
   <Stack.Navigator
-    initialRouteName="HomeScreen"
+    initialRouteName="Main"
     screenOptions={{headerShown: false}}
   >
-    <Stack.Screen name="HomeScreen" component={HomeScreen} />
-    <Stack.Screen name="PostScreen" component={PostScreen} />
+    <Stack.Screen name="HomeScreen" component={SearchScreen} />
+    <Stack.Screen name="PostScreen" component={ConfigScreen} />
   </Stack.Navigator>
 )
 
@@ -39,7 +39,7 @@ const AppRoutes: React.FC  = () => (
               case 'Home':
                 return <Feather name='home' size={size} color={color} />
                 break
-              case 'Search':
+              case 'Post':
                 return <Feather name='plus-square' size={26} color={color} />
                 break
               case 'Profile':
@@ -64,8 +64,8 @@ const AppRoutes: React.FC  = () => (
           inactiveTintColor:'#92929c'
         }}
       >
-        <Tab.Screen  options={{ tabBarLabel: () => null}} name="Home" component={HomeMenu} />
-        <Tab.Screen options={{ tabBarLabel: () => null}} name="Search" component={SearchScreen} />
+        <Tab.Screen  options={{ tabBarLabel: () => null}} name="Home" component={HomeScreen} />
+        <Tab.Screen options={{ tabBarLabel: () => null}} name="Post" component={PostScreen} />
         <Tab.Screen options={{ tabBarLabel: () => null}} name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>

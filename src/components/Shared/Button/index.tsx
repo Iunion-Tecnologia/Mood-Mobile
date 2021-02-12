@@ -2,10 +2,10 @@ import React from 'react';
 import {Feather} from '@expo/vector-icons';
 import * as S from './styled';
 
-const Button: React.FC = () => {
+const Button: React.FC = ({children}) => {
   return (
     <S.Container>
-      <S.Text>Entrar</S.Text>
+      <S.Text>{children}</S.Text>
     </S.Container>
   );
 }

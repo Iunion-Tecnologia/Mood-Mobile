@@ -1,0 +1,33 @@
+import styled from 'styled-components/native';
+import { StatusBar } from 'react-native';
+import {RectButton} from 'react-native-gesture-handler';
+
+export const Container = styled.View`
+  flex: 1;
+  margin-top: ${Number(StatusBar.currentHeight)}px;
+  background-color: #FFF;
+
+  justify-content: center;
+`;
+
+export const Logo = styled.Image`
+  width: 200px;
+  margin: 0 auto;
+  margin-bottom: 50px;
+`;
+
+export const Bottom = styled.TouchableOpacity`
+  height: 60px;
+  border-top-width: 1px;
+  border-top-color: #ddd;
+  z-index: 3;
+  background-color: #fff;
+
+  align-items: center;
+  justify-content: center;
+`;
+
+export const BottomText = styled.Text`
+  color: #6C0FD9;
+  font-size: 18px;
+`;

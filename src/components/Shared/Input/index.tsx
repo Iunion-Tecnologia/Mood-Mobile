@@ -11,7 +11,7 @@ interface InputProps extends TextInputProps {
 const Input: React.FC<InputProps> = ({iconName = 'x', placeholder}) => {
   return (
     <S.Container>
-      <Feather name="airplay" size={24} color="#999" />
+      <Feather name={iconName} size={20} color="#999" />
       <S.TextInput placeholder={placeholder}></S.TextInput>
     </S.Container>
   );
