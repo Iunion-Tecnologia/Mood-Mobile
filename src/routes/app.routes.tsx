@@ -2,8 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import {AntDesign, Ionicons, FontAwesome, Entypo, Feather, FontAwesome5} from '@expo/vector-icons';
-import PostButton from '../components/PostButton';
+import {Ionicons, FontAwesome, Feather, Octicons} from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -30,6 +29,7 @@ const AppRoutes: React.FC  = () => (
 
     <NavigationContainer>
       <Tab.Navigator
+
         initialRouteName="Home"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -37,16 +37,16 @@ const AppRoutes: React.FC  = () => (
 
             switch(route.name){
               case 'Home':
-                return <Entypo name='home' size={size} color={color} />
+                return <Feather name='home' size={size} color={color} />
                 break
               case 'Search':
-                return <Feather name='search' size={size} color={color} />
+                return <Feather name='plus-square' size={26} color={color} />
                 break
               case 'Profile':
-                return <FontAwesome5 name='user-alt' size={size} color={color} />
+                return <Feather name='user' size={size} color={color} />
                 break
               case 'Config':
-                return <FontAwesome name='gear' size={size} color={color} />
+                return <Octicons name='gear' size={size} color={color} />
                 break
               default:
                 return <Ionicons name='ios-information-circle' size={size} color={color} />
@@ -56,17 +56,17 @@ const AppRoutes: React.FC  = () => (
         })}
         tabBarOptions={{
           style:{
-            backgroundColor:'#131418',
+            backgroundColor:'#FFF',
             borderTopColor: 'rgba(255,255,255,0.2)',
+            height: 65,
           },
-          activeTintColor:'#FFF',
+          activeTintColor:'#6C0FD9',
           inactiveTintColor:'#92929c'
         }}
       >
-        <Tab.Screen options={{title:'Home'}} name="Home" component={HomeMenu} />
-        <Tab.Screen options={{title:'Procurar'}} name="Search" component={SearchScreen} />
-        <Tab.Screen options={{title:'Perfil'}} name="Profile" component={ProfileScreen} />
-        <Tab.Screen options={{title:'Configurações'}} name="Config" component={ConfigScreen}/>
+        <Tab.Screen  options={{ tabBarLabel: () => null}} name="Home" component={HomeMenu} />
+        <Tab.Screen options={{ tabBarLabel: () => null}} name="Search" component={SearchScreen} />
+        <Tab.Screen options={{ tabBarLabel: () => null}} name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>
 );

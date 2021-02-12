@@ -9,7 +9,7 @@ const Search: React.FC = () => {
     <S.Container>
       <Header></Header>
       <S.SearchBar>
-        <S.SearchInput>
+        <S.SearchInput placeholder="Pesquisar">
 
         </S.SearchInput>
         <S.Button>

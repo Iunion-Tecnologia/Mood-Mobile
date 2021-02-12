@@ -1,16 +1,29 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-  height: 50px;
-  background-color: #6C0FD9;
-
+  height: 60px;
+  background-color: #fff;
   justify-content: center;
 
   elevation: 1;
+  align-items: center;
+  border-bottom-width: 1px;
+  border-bottom-color: #eee;
+
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 20px;
 `;
 
 export const Logo = styled.Image`
-  height: 30px;
-  width: 100px;
+  height: 40px;
+  width: 90px;
   margin-left: 10px;
+
+  padding-right: 3px;
+  margin-right: 20px;
 `;
+
+export const Button = styled.TouchableOpacity``;

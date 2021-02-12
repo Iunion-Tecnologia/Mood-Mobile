@@ -90,11 +90,15 @@ const Home: React.FC = () => {
             avatar={item.avatar}
           />}
         />
-      <S.PostButton onPress={() => navigation.navigate('PostScreen')}>
-        <AntDesign name="form" color="#fff" size={30} />
-      </S.PostButton>
+
     </S.Container>
   );
 }
 
 export default Home;
+
+/*
+      <S.PostButton onPress={() => navigation.navigate('PostScreen')}>
+        <AntDesign name="form" color="#fff" size={30} />
+      </S.PostButton>
+*/

@@ -3,8 +3,7 @@ import { StatusBar } from 'react-native';
 
 export const Container = styled.View`
   flex: 1;
-  margin-top: ${Number(StatusBar.currentHeight)}px;
-  background-color: #eee;
+  background-color: #FFF;
 
   align-items: center;
   justify-content: center;
