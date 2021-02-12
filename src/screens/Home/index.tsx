@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import * as S from './styles';
 import Post from '../../components/Post';
 import {AntDesign} from '@expo/vector-icons';
 import Header from '../../components/Header';
-import {FlatList} from 'react-native';
+import {FlatList, RefreshControl} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const DATA = [
@@ -60,22 +60,38 @@ const DATA = [
 
 const Home: React.FC = () => {
   const navigation = useNavigation();
+  const [time,setTime] = useState(new Date());
+  const [refresh,setRefresh] = useState(false);
+
+  const handleRefresh = () => {
+    setRefresh(true)
+    setTime(new Date());
+    setRefresh(false)
+  }
 
   return (
     <S.Container>
       <Header />
         <FlatList
+          refreshControl={
+          <RefreshControl
+            colors={['#6C0FD9']}
+            tintColor="#6C0FD9"
+            refreshing={refresh}
+            onRefresh={handleRefresh}
+          />
+          }
           data={DATA}
           keyExtractor={(item) => item.id}
-          renderItem={({item}) => <Post 
-            user={item.user} 
-            data={item.data} 
-            nick={item.nick} 
-            avatar={item.avatar} 
+          renderItem={({item}) => <Post
+            user={item.user}
+            data={item.data}
+            nick={item.nick}
+            avatar={item.avatar}
           />}
         />
       <S.PostButton onPress={() => navigation.navigate('PostScreen')}>
-        <AntDesign name="form" color="#fff" size={30} /> 
+        <AntDesign name="form" color="#fff" size={30} />
       </S.PostButton>
     </S.Container>
   );

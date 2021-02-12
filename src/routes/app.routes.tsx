@@ -18,15 +18,16 @@ import ConfigScreen from '../screens/Config';
 
 const HomeMenu: React.FC  = () => (
   <Stack.Navigator
-    initialRouteName="Home"
+    initialRouteName="HomeScreen"
+    screenOptions={{headerShown: false}}
   >
     <Stack.Screen name="HomeScreen" component={HomeScreen} />
     <Stack.Screen name="PostScreen" component={PostScreen} />
   </Stack.Navigator>
 )
 
-export default function App() {
-  return (
+const AppRoutes: React.FC  = () => (
+
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Home"
@@ -68,5 +69,6 @@ export default function App() {
         <Tab.Screen options={{title:'Configurações'}} name="Config" component={ConfigScreen}/>
       </Tab.Navigator>
     </NavigationContainer>
-  );
-}
+);
+
+export default AppRoutes;
