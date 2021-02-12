@@ -1,7 +1,7 @@
 import React from 'react';
 import * as S from './styles';
 import Post from '../../components/Post';
-
+import {AntDesign} from '@expo/vector-icons';
 import Header from '../../components/Header';
 
 import { FlatList } from 'react-native';
@@ -47,6 +47,9 @@ const Home: React.FC = () => {
           ut aliquip ex ea commodo consequat.
           Duis aute irure dolor in reprehenderit in volup."
         />
+      <S.PostButton>
+        <AntDesign name="form" color="#fff" size={30} /> 
+      </S.PostButton>
     </S.Container>
   );
 }

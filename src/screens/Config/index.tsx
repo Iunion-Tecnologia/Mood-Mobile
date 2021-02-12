@@ -1,10 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
-
-// import { Container } from './styles';
+import * as S from './styles';
 
 const Config: React.FC = () => {
-  return <View />;
+  return(
+    <S.Container>
+      <S.Message>EM BREVE</S.Message>
+    </S.Container>
+  )
 }
 
 export default Config;
