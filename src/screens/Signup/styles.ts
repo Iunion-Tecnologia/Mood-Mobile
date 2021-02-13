@@ -16,6 +16,14 @@ export const Logo = styled.Image`
   margin-bottom: 50px;
 `;
 
+export const Title = styled.Text`
+  color: #6C0FD9;
+  font-size: 20px;
+  margin: 0 auto;
+  font-weight: bold;
+  margin-bottom: 25px;
+`;
+
 export const Bottom = styled.TouchableOpacity`
   height: 60px;
   border-top-width: 1px;
@@ -25,9 +33,12 @@ export const Bottom = styled.TouchableOpacity`
 
   align-items: center;
   justify-content: center;
+  flex-direction: row;
 `;
 
 export const BottomText = styled.Text`
   color: #6C0FD9;
-  font-size: 18px;
+  font-size: 16px;
+  margin-left: 5px;
+  font-weight: bold;
 `;

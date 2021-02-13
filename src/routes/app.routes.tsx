@@ -20,8 +20,9 @@ const HomeMenu: React.FC  = () => (
     initialRouteName="Main"
     screenOptions={{headerShown: false}}
   >
-    <Stack.Screen name="HomeScreen" component={SearchScreen} />
-    <Stack.Screen name="PostScreen" component={ConfigScreen} />
+    <Stack.Screen name="Search" component={SearchScreen} />
+    <Stack.Screen name="Config" component={ConfigScreen} />
+    <Stack.Screen name="Main" component={AppRoutes} />
   </Stack.Navigator>
 )
 
@@ -33,7 +34,6 @@ const AppRoutes: React.FC  = () => (
         initialRouteName="Home"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
 
             switch(route.name){
               case 'Home':

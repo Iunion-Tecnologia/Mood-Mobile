@@ -18,7 +18,6 @@ const CreatePost: React.FC = () => {
         textAlignVertical="top"
         maxLength={280}
         placeholder="O que está pensando?"
-
       />
       <S.Button>
         <S.ButtonText>Publicar</S.ButtonText>
