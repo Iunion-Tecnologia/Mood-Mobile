@@ -3,9 +3,18 @@ import React from 'react';
 import * as S from './styles';
 
 import Mood from '../../assets/logo.png';
-import {Feather, Ionicons} from '@expo/vector-icons';
+import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons';
+import {useDispatch} from 'react-redux';
+import {logout} from '../../store/ducks/auth/actions';
 
 const Header: React.FC = () => {
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  }
+
   return(
     <S.Container>
       <S.Button>
@@ -13,8 +22,8 @@ const Header: React.FC = () => {
       </S.Button>
 
       <S.Logo resizeMode="contain" source={Mood} />
-      <S.Button>
-        <Feather name="settings" size={24} color="#6C0FD9" />
+      <S.Button onPress={() => handleLogout()}>
+        <MaterialCommunityIcons name="logout" size={26} color="#E02041" />
       </S.Button>
 
     </S.Container>

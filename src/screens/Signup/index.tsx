@@ -1,15 +1,37 @@
-import React from 'react';
+import React, {useEffect, useCallback} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import * as S from './styles';
-import Input from '../../components/Shared/Input';
-import Button from '../../components/Shared/Button';
 import Mood from '../../assets/mood.png';
-
+import {Feather} from '@expo/vector-icons';
 import {MaterialIcons} from '@expo/vector-icons';
+import {useForm} from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  name: yup.string().required(),
+  email: yup.string().required(),
+  password: yup.string().min(8),
+  nick: yup.string().required(),
+});
 
 const SignUp: React.FC = () => {
 
   const navigation = useNavigation();
+  const {register, handleSubmit, setValue, errors} = useForm({
+    resolver: yupResolver(schema)
+  });
+
+  const handleSignUp = useCallback((data) => {
+    console.log('[SIGNUP]', data)
+  }, []);
+
+  useEffect(() => {
+    register('name');
+    register('email');
+    register('nick');
+    register('password');
+  }, [register]);
 
   return (
     <>
@@ -18,11 +40,26 @@ const SignUp: React.FC = () => {
 
       <S.Title>Crie sua conta</S.Title>
 
-        <Input iconName="user" placeholder="Nome"/>
-        <Input iconName="mail" placeholder="E-mail" />
-        <Input iconName="paperclip" placeholder="Nick" />
-        <Input iconName="lock" placeholder="Senha" />
-      <Button>Cadastrar</Button>
+        <S.InputContainer>
+          <Feather name="user" size={20} color="#999" />
+          <S.InputText onChangeText={text => {setValue('name', text)}} placeholder="Nome" />
+        </S.InputContainer>
+        <S.InputContainer>
+          <Feather name="mail" size={20} color="#999" />
+          <S.InputText onChangeText={text => {setValue('email', text)}} placeholder="E-mail" />
+        </S.InputContainer>
+        <S.InputContainer>
+          <Feather name="lock" size={20} color="#999" />
+          <S.InputText onChangeText={text => {setValue('password', text)}} placeholder="Senha" />
+        </S.InputContainer>
+        <S.InputContainer>
+          <Feather name="paperclip" size={20} color="#999" />
+          <S.InputText onChangeText={text => {setValue('nick', text)}} placeholder="Nick" />
+        </S.InputContainer>
+
+        <S.SubmitContainer onPress={handleSubmit(handleSignUp)}>
+          <S.SubmitText>Cadastrar</S.SubmitText>
+        </S.SubmitContainer>
     </S.Container>
     <S.Bottom onPress={() => navigation.navigate('SignIn')}>
       <MaterialIcons name="arrow-back" size={24} color="#6C0FD9" />

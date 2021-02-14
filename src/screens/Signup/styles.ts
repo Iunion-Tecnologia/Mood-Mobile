@@ -42,3 +42,39 @@ export const BottomText = styled.Text`
   margin-left: 5px;
   font-weight: bold;
 `;
+
+export const SubmitContainer = styled.TouchableOpacity`
+  height: 50px;
+  background-color: #6C0FD9;
+
+  align-items: center;
+  justify-content: center;
+  margin: 30px;
+  border-radius: 5px;
+`;
+
+export const SubmitText = styled.TextInput`
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+`;
+
+export const InputContainer = styled.View`
+  height: 50px;
+  flex-direction: row;
+  align-items: center;
+
+  border-width: 1px;
+  border-color: #ddd;
+  margin: 0 30px;
+  margin-top: 5px;
+  padding: 0 10px;
+  border-radius: 5px;
+`;
+
+export const InputText = styled.TextInput`
+  height: 50px;
+  flex: 1;
+  font-size: 14px;
+  margin-left: 8px;
+`;
