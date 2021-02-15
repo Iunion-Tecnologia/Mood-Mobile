@@ -1,5 +1,5 @@
 import React, {useEffect, useCallback, useState} from 'react';
-import {Alert, ActivityIndicator} from 'react-native';
+import {Alert, ActivityIndicator, Keyboard} from 'react-native';
 import * as S from './styles';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
@@ -13,8 +13,13 @@ const CreatePost: React.FC = () => {
   const {register, handleSubmit, setValue, errors} = useForm();
 
   const handlePost = useCallback(async (data) => {
+    setIsLoading(true);
     try{
-      const response = await api.post('/post/create', data);
+      await api.post('/post/create', data);
+      setIsLoading(false);
+      Alert.alert('Sucesso!', 'Seu post foi criado');
+      Keyboard.dismiss();
+      navigation.navigate('Home');
     }
     catch(error){
       Alert.alert('Ocorreu um erro!', error.response.data.message);

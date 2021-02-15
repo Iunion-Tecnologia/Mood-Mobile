@@ -13,18 +13,6 @@ import HomeScreen from '../screens/Home';
 import PostScreen from '../screens/Post';
 import ProfileScreen from '../screens/Profile';
 import SearchScreen from '../screens/Search';
-import ConfigScreen from '../screens/Config';
-
-const HomeMenu: React.FC  = () => (
-  <Stack.Navigator
-    initialRouteName="Main"
-    screenOptions={{headerShown: false}}
-  >
-    <Stack.Screen name="Search" component={SearchScreen} />
-    <Stack.Screen name="Config" component={ConfigScreen} />
-    <Stack.Screen name="Main" component={AppRoutes} />
-  </Stack.Navigator>
-)
 
 const AppRoutes: React.FC  = () => (
 
@@ -48,6 +36,9 @@ const AppRoutes: React.FC  = () => (
               case 'Config':
                 return <Octicons name='gear' size={size} color={color} />
                 break
+              case 'Search':
+                return <Feather name='search' size={size} color={color} />
+                break
               default:
                 return <Ionicons name='ios-information-circle' size={size} color={color} />
                 break
@@ -64,8 +55,9 @@ const AppRoutes: React.FC  = () => (
           inactiveTintColor:'#92929c'
         }}
       >
-        <Tab.Screen  options={{ tabBarLabel: () => null}} name="Home" component={HomeScreen} />
+        <Tab.Screen options={{ tabBarLabel: () => null}} name="Home" component={HomeScreen} />
         <Tab.Screen options={{ tabBarLabel: () => null}} name="Post" component={PostScreen} />
+        <Tab.Screen options={{ tabBarLabel: () => null}} name="Search" component={SearchScreen} />
         <Tab.Screen options={{ tabBarLabel: () => null}} name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>

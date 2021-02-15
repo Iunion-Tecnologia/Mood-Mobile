@@ -11,7 +11,7 @@ import * as yup from "yup";
 import {login} from '../../store/ducks/auth/actions';
 import {ApplicationState} from '../../store';
 import api from '../../services/api';
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -34,7 +34,7 @@ const SignIn: React.FC = () => {
     try{
       const response = await api.post('/user/signin', data);
       setIsLoading(false);
-      await AsyncStorage.setItem('@mood/token', response.data.token);
+      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
       dispatch(login(response.data));
     }
     catch(error){

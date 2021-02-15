@@ -3,10 +3,11 @@ import React from 'react';
 import * as S from './styles';
 
 import Mood from '../../assets/logo.png';
-import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons';
+import {Octicons, MaterialCommunityIcons} from '@expo/vector-icons';
 import {useDispatch} from 'react-redux';
 import {logout} from '../../store/ducks/auth/actions';
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
+import api from '../../services/api';
 
 const Header: React.FC = () => {
 
@@ -14,13 +15,13 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     dispatch(logout());
-    await AsyncStorage.removeItem('@mood/token');
+    delete api.defaults.headers.common['Authorization'];
   }
 
   return(
     <S.Container>
       <S.Button>
-        <Ionicons name="search" size={27} color="#6C0FD9" />
+        <Octicons name="gear" size={27} color="#6C0FD9" />
       </S.Button>
 
       <S.Logo resizeMode="contain" source={Mood} />

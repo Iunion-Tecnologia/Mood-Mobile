@@ -39,7 +39,7 @@ export const Avatar = styled.Image`
   height: 60px;
   border-radius: 5px;
   margin-top: 10px;
-  background-color: #ccc;
+  background-color: #eee;
 `;
 
 export const LeftSide = styled.View`
