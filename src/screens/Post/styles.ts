@@ -22,7 +22,7 @@ export const Input = styled.TextInput`
   border-color: #ccc;
 `;
 
-export const Button = styled(RectButton)`
+export const Button = styled.TouchableOpacity`
   height: 50px;
   background-color: #6C0FD9;
   margin: 0 10px;

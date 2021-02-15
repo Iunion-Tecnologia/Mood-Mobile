@@ -38,9 +38,9 @@ const SignIn: React.FC = () => {
       dispatch(login(response.data));
     }
     catch(error){
+      setIsLoading(false);
       Alert.alert(error.response.data.message);
-    } 
-    setIsLoading(false);
+    }  
   }, [])
 
   useEffect(() => {

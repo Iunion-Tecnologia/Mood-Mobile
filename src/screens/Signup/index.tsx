@@ -26,14 +26,16 @@ const SignUp: React.FC = () => {
   });
 
   const handleSignUp = useCallback(async (data) => {
+    setIsLoading(true);
     try {
-      const response = await api.post('/user/signup', data);
-
-      console.log(response.data);
-
+      const response = await api.post('/user/signupp', data);
+      Alert.alert('Usuário Cadastrado!', 'Seus dados foram cadastrados, realize seu login.');
+      setIsLoading(false);
+      navigation.navigate('SignIn');
     }
     catch(error){
-      Alert.alert('Ocorreu um erro', error.response.message);
+      Alert.alert('Ocorreu um erro!', error.response.data.message);
+      setIsLoading(false);
     }
   }, []);
 
@@ -68,8 +70,15 @@ const SignUp: React.FC = () => {
           <S.InputText onChangeText={text => {setValue('nick', text)}} placeholder="Nick" />
         </S.InputContainer>
 
-        <S.SubmitContainer onPress={handleSubmit(handleSignUp)}>
-          <S.SubmitText>Cadastrar</S.SubmitText>
+        <S.SubmitContainer disabled={isLoading} onPress={handleSubmit(handleSignUp)}>
+          {
+            isLoading
+            ?
+            <ActivityIndicator size="large" color="#FFF" />
+            :
+            <S.SubmitText>Cadastrar</S.SubmitText>
+          }
+          
         </S.SubmitContainer>
     </S.Container>
     <S.Bottom onPress={() => navigation.navigate('SignIn')}>
