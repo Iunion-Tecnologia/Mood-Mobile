@@ -6,13 +6,15 @@ import Mood from '../../assets/logo.png';
 import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons';
 import {useDispatch} from 'react-redux';
 import {logout} from '../../store/ducks/auth/actions';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Header: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch(logout());
+    await AsyncStorage.removeItem('@mood/token');
   }
 
   return(

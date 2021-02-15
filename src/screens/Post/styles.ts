@@ -16,7 +16,7 @@ export const Input = styled.TextInput`
   padding: 0 8px;
   padding-top: 14px;
 
-  margin-top: 50px;
+  margin-top: 10px;
   border-radius: 5px;
   border-width: ${StyleSheet.hairlineWidth}px;
   border-color: #ccc;

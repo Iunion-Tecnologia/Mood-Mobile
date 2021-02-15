@@ -4,9 +4,7 @@
 
 // eslint-disable-next-line no-shadow
 export enum AuthTypes {
-  LOGIN_REQUEST = '@auth/LOGIN_REQUEST',
-  LOGIN_SUCCESS = '@auth/LOGIN_SUCCESS',
-  LOGIN_FAILURE = '@auth/LOGIN_FAILURE',
+  LOGIN = '@auth/LOGIN_REQUEST',
   LOGOUT = '@auth/LOGOUT',
 }
 
@@ -19,6 +17,11 @@ export interface User {
   avatar: string | null;
   email: string;
   name: string;
+  bio: string;
+  nick: string;
+  following_count: number;
+  followers_count: number;
+  post_count: number;
 }
 
 export interface IRequest {
@@ -33,6 +36,9 @@ export interface IResponse {
     avatar: string | null;
     email: string;
     name: string;
+    bio: string;
+    following: number;
+    follower: number;
   };
 }
 /**
@@ -40,8 +46,6 @@ export interface IResponse {
  */
 
 export interface AuthState {
-  readonly loading: boolean;
-  readonly error: boolean;
   readonly token: string | null;
   readonly user: User | null;
 }

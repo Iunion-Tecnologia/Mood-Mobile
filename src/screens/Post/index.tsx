@@ -1,12 +1,16 @@
 import React, {} from 'react';
 import * as S from './styles';
-import {Ionicons} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
+import {useAsyncStorage} from '@react-native-community/async-storage';
 
 const CreatePost: React.FC = () => {
 
   const navigation = useNavigation();
+
+  const handleSubmit = () => {
+    console.log('[SUBMIT]');
+  }
 
   return(
     <S.Container>

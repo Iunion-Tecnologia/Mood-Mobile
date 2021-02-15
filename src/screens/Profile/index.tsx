@@ -1,8 +1,14 @@
 import React from 'react';
 import Header from '../../components/Header';
+import {useSelector} from 'react-redux';
+import {ApplicationState} from '../../store';
 import * as S from './styles';
 
+
 const Profile: React.FC = () => {
+
+  const auth = useSelector((state: ApplicationState) => state.auth);
+
   return (
     <S.Container>
       <Header />
@@ -11,26 +17,24 @@ const Profile: React.FC = () => {
           <S.ProfileImage source={{uri: 'https://avatars.githubusercontent.com/u/35699301?v=4'}} />
           <S.DataContainer>
             <S.Data>
-              <S.DataNumber>200</S.DataNumber>
+              <S.DataNumber>{auth.user?.post_count}</S.DataNumber>
               <S.DataName>Posts</S.DataName>
             </S.Data>
             <S.Data>
-              <S.DataNumber>200</S.DataNumber>
+              <S.DataNumber>{auth.user?.followers_count}</S.DataNumber>
               <S.DataName>Seguidores</S.DataName>
             </S.Data>
             <S.Data>
-              <S.DataNumber>200</S.DataNumber>
+              <S.DataNumber>{auth.user?.following_count}</S.DataNumber>
               <S.DataName>Seguindo</S.DataName>
             </S.Data>
           </S.DataContainer>
         </S.TopInfo>
         
-        <S.ProfileName>Jonatha Rihan da Silva</S.ProfileName>
-        <S.ProfileNick>@RBioZ</S.ProfileNick>
+        <S.ProfileName>{auth.user?.name}</S.ProfileName>
+        <S.ProfileNick>@{auth.user?.nick}</S.ProfileNick>
 
-        <S.ProfileDescription>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Ut enim ad minim veniam, quis nostrud.</S.ProfileDescription>
+        <S.ProfileDescription>{auth.user?.bio}</S.ProfileDescription>
       </S.InfoContainer>
     </S.Container>
   )

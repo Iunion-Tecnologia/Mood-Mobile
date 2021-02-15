@@ -62,7 +62,7 @@ export const SubmitContainer = styled.TouchableOpacity`
   border-radius: 5px;
 `;
 
-export const SubmitText = styled.TextInput`
+export const SubmitText = styled.Text`
   color: #fff;
   font-weight: bold;
   font-size: 14px;

@@ -1,16 +1,18 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback, useState} from 'react';
 import { useNavigation } from '@react-navigation/native';
+import {ActivityIndicator, Alert} from 'react-native';
 import * as S from './styles';
 import Mood from '../../assets/mood.png';
 import {Feather} from '@expo/vector-icons';
 import {MaterialIcons} from '@expo/vector-icons';
 import {useForm} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import api from '../../services/api';
 import * as yup from "yup";
 
 const schema = yup.object().shape({
   name: yup.string().required(),
-  email: yup.string().required(),
+  email: yup.string().required().email(),
   password: yup.string().min(8),
   nick: yup.string().required(),
 });
@@ -18,12 +20,21 @@ const schema = yup.object().shape({
 const SignUp: React.FC = () => {
 
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(false);
   const {register, handleSubmit, setValue, errors} = useForm({
     resolver: yupResolver(schema)
   });
 
-  const handleSignUp = useCallback((data) => {
-    console.log('[SIGNUP]', data)
+  const handleSignUp = useCallback(async (data) => {
+    try {
+      const response = await api.post('/user/signup', data);
+
+      console.log(response.data);
+
+    }
+    catch(error){
+      Alert.alert('Ocorreu um erro', error.response.message);
+    }
   }, []);
 
   useEffect(() => {

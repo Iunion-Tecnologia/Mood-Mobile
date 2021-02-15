@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import * as S from './styles';
@@ -8,8 +8,10 @@ import {useForm} from 'react-hook-form';
 import {Feather, Entypo} from '@expo/vector-icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import {loginRequest} from '../../store/ducks/auth/actions';
+import {login} from '../../store/ducks/auth/actions';
 import {ApplicationState} from '../../store';
+import api from '../../services/api';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -19,6 +21,7 @@ const schema = yup.object().shape({
 const SignIn: React.FC = () => {
   const navigation = useNavigation();
   const [secure, setSecure] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const auth = useSelector((state: ApplicationState) => state.auth);
   const dispatch = useDispatch();
   const {register, handleSubmit, setValue, errors} = useForm({
@@ -27,7 +30,17 @@ const SignIn: React.FC = () => {
   
 
   const handleSignIn = useCallback(async(data) => {
-    dispatch(loginRequest({email: data.email, password: data.password}));
+    setIsLoading(true);
+    try{
+      const response = await api.post('/user/signin', data);
+      setIsLoading(false);
+      await AsyncStorage.setItem('@mood/token', response.data.token);
+      dispatch(login(response.data));
+    }
+    catch(error){
+      Alert.alert(error.response.data.message);
+    } 
+    setIsLoading(false);
   }, [])
 
   useEffect(() => {
@@ -52,13 +65,13 @@ const SignIn: React.FC = () => {
             <Feather name={secure ? 'eye' : 'eye-off'} size={20} color="#999" />
           </S.PassButton>
         </S.InputContainer>
-        <S.SubmitContainer onPress={handleSubmit(handleSignIn)}>
+        <S.SubmitContainer disabled={isLoading} onPress={handleSubmit(handleSignIn)}>
           {
-            !auth.loading
+            isLoading
             ?
-            <S.SubmitText>Entrar</S.SubmitText>
-            :
             <ActivityIndicator size="large" color="#FFF" />
+            :
+            <S.SubmitText>Entrar</S.SubmitText>
           }
           
         </S.SubmitContainer>
