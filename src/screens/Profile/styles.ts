@@ -66,3 +66,18 @@ export const TopInfo = styled.View`
   flex-direction: row;
   align-items: center;
 `;
+
+export const ButtonBottom = styled.TouchableOpacity`
+  height: 40px;
+
+  align-items: center;
+  justify-content: center;
+  border-width: 1px;
+  border-color: #6C0FD9;
+  border-radius: 5px;
+`;
+
+export const ButtonBottomText = styled.Text`
+  font-weight: bold;
+  color: #6C0FD9;
+`;

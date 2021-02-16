@@ -1,9 +1,18 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Header from '../../components/Header'
-import {FlatList, View} from 'react-native';
+import {FlatList, Alert} from 'react-native';
 import { Feather } from '@expo/vector-icons'
+import {useForm} from 'react-hook-form';
+import api from '../../services/api';
 
 import * as S from './styles';
+
+interface IResult {
+  id: string;
+  name: string;
+  nick: string;
+  avatar: string;
+}
 
 const DATA = [
   {
@@ -12,44 +21,48 @@ const DATA = [
     nick: 'RBioZ',
     avatar: 'https://avatars.githubusercontent.com/u/35699301?v=4'
   },
-  {
-    id: '12346',
-    name: 'Jonatha Rihan da Silva',
-    nick: 'RBioZ',
-    avatar: 'https://avatars.githubusercontent.com/u/35699301?v=4'
-  },
-  {
-    id: '12347',
-    name: 'Jonatha Rihan da Silva',
-    nick: 'RBioZ',
-    avatar: 'https://avatars.githubusercontent.com/u/35699301?v=4'
-  }
 ]
 
 const Search: React.FC = () => {
+
+  const {register, handleSubmit, setValue} = useForm();
+  const [results, setResults] = useState<IResult[]>([]);
+
+  const handleSubmitQuery = useCallback(async(data) => {
+    try {
+      const response = await api.get(`/user/search?query=${data.query}`);
+      setResults(response.data);
+    }
+    catch(error){
+      Alert.alert('Error', error.response.message);
+    }
+  }, [])
+
+  useEffect(() => {
+    register("query")
+  }, [register]);
+
   return(
     <S.Container>
       <Header />
       <S.SearchBar>
-        <S.SearchInput placeholder="Pesquisar">
-
-        </S.SearchInput>
-        <S.Button>
+        <S.SearchInput onChangeText={text => {setValue('query', text)}} placeholder="Pesquisar" />
+        <S.Button onPress={handleSubmit(handleSubmitQuery)}>
           <Feather name="search" color="#6C0FD9" size={30} />
         </S.Button>
       </S.SearchBar>
 
       <FlatList
-        data={DATA}
+        data={results}
         keyExtractor={(item) => item.id}
         renderItem={({item}) => (
           <S.Item>
             <S.ItemLeft>
-              <S.ItemAvatar source={{uri: item.avatar}} />
+              <S.ItemAvatar source={{uri: `https://lunion-mood.herokuapp.com/files/${item.avatar}`}} />
             </S.ItemLeft>
             <S.ItemRight>
-              <S.ItemNick>RBioZ</S.ItemNick> 
-              <S.ItemName>Jonatha Rihan da Silva</S.ItemName>
+            <S.ItemNick>{item.nick}</S.ItemNick> 
+            <S.ItemName>{item.name}</S.ItemName>
             </S.ItemRight>
           </S.Item>
         )

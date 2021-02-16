@@ -27,10 +27,13 @@ const Home: React.FC = () => {
     setRefresh(true);
     setTime(new Date())
     handleLoadPosts();
+    setPage(0);
+    setPosts([]);
     setRefresh(false);
   } ,[time])
 
   const handleLoadPosts = useCallback(async () => {
+    console.log(`TIME: ${time} / PAGE: ${page}`);
     setIsLoading(true);
     try {
       const response = await api.get(`/post/feed?page=${page}&limit=10&date=${time}`); //&date=${String(time)}
@@ -45,6 +48,7 @@ const Home: React.FC = () => {
   }, [time, page])
 
   useEffect(() => {
+    console.log('[USEREFFECT]')
     handleLoadPosts();
   }, [])
 
@@ -74,7 +78,7 @@ const Home: React.FC = () => {
               />
             );
           }}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.01}
           data={posts}
           keyExtractor={(item) => item.p_id}
           renderItem={({item}) => <Post

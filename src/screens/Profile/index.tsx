@@ -35,6 +35,9 @@ const Profile: React.FC = () => {
         <S.ProfileNick>@{auth.user?.nick}</S.ProfileNick>
 
         <S.ProfileDescription>{auth.user?.bio}</S.ProfileDescription>
+        <S.ButtonBottom>
+          <S.ButtonBottomText>Editar Perfil</S.ButtonBottomText>
+        </S.ButtonBottom>
       </S.InfoContainer>
     </S.Container>
   )
