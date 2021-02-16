@@ -14,7 +14,7 @@ const Profile: React.FC = () => {
       <Header />
       <S.InfoContainer>
         <S.TopInfo>
-          <S.ProfileImage source={{uri: 'https://avatars.githubusercontent.com/u/35699301?v=4'}} />
+          <S.ProfileImage source={{uri: `https://lunion-mood.herokuapp.com/files/${auth.user?.avatar}`}} />
           <S.DataContainer>
             <S.Data>
               <S.DataNumber>{auth.user?.post_count}</S.DataNumber>

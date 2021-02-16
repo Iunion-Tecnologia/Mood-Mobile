@@ -13,12 +13,12 @@ const Post: React.FC<PostProps> = ({user,nick,data,avatar}) => {
   return(
     <S.PostContainer>
       <S.LeftSide>
-        <S.Avatar source={{uri: `${avatar}`}}></S.Avatar>
+        <S.Avatar source={{uri: `https://lunion-mood.herokuapp.com/files/${avatar}`}}></S.Avatar>
       </S.LeftSide>
       <S.RightSide>
         <S.PostHeader>
           <S.PostUser>{user}</S.PostUser>
-          <S.PostNick>{nick}</S.PostNick>
+          <S.PostNick>@{nick}</S.PostNick>
         </S.PostHeader>
         <S.Data>
           {data}

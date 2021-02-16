@@ -3,52 +3,46 @@ import * as S from './styles';
 import Post from '../../components/Post';
 import {AntDesign} from '@expo/vector-icons';
 import Header from '../../components/Header';
-import {FlatList, RefreshControl, Alert} from 'react-native';
+import {FlatList, RefreshControl, Alert, ActivityIndicator} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 
-const DATA = [
-  {
-    id: '001',
-    user: 'Jonatha Rihan',
-    nick: '@RBioZ',
-    avatar: 'https://avatars.githubusercontent.com/u/35699301?v=4',
-    data: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.'
-  },
-]
-
 interface IPost {
-  id: string;
-  user: string;
-  data: string;
-  nick: string;
-  avatar: string;
+  p_id: string;
+  u_name: string;
+  p_content: string;
+  u_nick: string;
+  u_avatar: string;
 }
 
 const Home: React.FC = () => {
   const navigation = useNavigation();
-  const [time,setTime] = useState(new Date());
   const [refresh,setRefresh] = useState(false);
   const [page, setPage] = useState(0);
   const [posts, setPosts] = useState<IPost[]>([]);
+  const [time, setTime] = useState<Date>(new Date());
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleRefresh = () => {
-    setRefresh(true)
-    setTime(new Date());
-    setRefresh(false)
-  }
+  const handleRefresh = useCallback(async() => {
+    setRefresh(true);
+    setTime(new Date())
+    handleLoadPosts();
+    setRefresh(false);
+  } ,[time])
 
   const handleLoadPosts = useCallback(async () => {
+    setIsLoading(true);
     try {
-      const response = await api.get(`/post/feed?page=${page}&limit=10&date=${String(time)}`);
-      setPosts([...posts, response.data])
+      const response = await api.get(`/post/feed?page=${page}&limit=10&date=${time}`); //&date=${String(time)}
+      setPosts([...posts,...response.data])
+      setPage(prev => prev+=1);
+      setIsLoading(false);
     }
     catch (error) {
       Alert.alert('Error', 'Ocorreu um erro ao tentar carregar os ultimos posts!');
-      console.log(error);
+      setIsLoading(false);
     }
-    
-  }, [])
+  }, [time, page])
 
   useEffect(() => {
     handleLoadPosts();
@@ -66,13 +60,28 @@ const Home: React.FC = () => {
             onRefresh={handleRefresh}
           />
           }
+          onEndReached={() => {
+            handleLoadPosts();
+          }}
+          ListFooterComponent={() => {
+            if (!isLoading) return null;
+            return (
+              <ActivityIndicator
+                animating={isLoading}
+                style={{ height: 50 }}
+                size="large"
+                color="#6C0FD9"
+              />
+            );
+          }}
+          onEndReachedThreshold={0.1}
           data={posts}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.p_id}
           renderItem={({item}) => <Post
-            user={item.user}
-            data={item.data}
-            nick={item.nick}
-            avatar={item.avatar}
+            user={item.u_name}
+            data={item.p_content}
+            nick={item.u_nick}
+            avatar={item.u_avatar}
           />}
         />
 
