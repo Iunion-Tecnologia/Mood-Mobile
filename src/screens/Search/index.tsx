@@ -4,6 +4,7 @@ import {FlatList, Alert} from 'react-native';
 import { Feather } from '@expo/vector-icons'
 import {useForm} from 'react-hook-form';
 import api from '../../services/api';
+import { useNavigation } from '@react-navigation/native';
 
 import * as S from './styles';
 
@@ -27,6 +28,7 @@ const Search: React.FC = () => {
 
   const {register, handleSubmit, setValue} = useForm();
   const [results, setResults] = useState<IResult[]>([]);
+  const navigation = useNavigation();
 
   const handleSubmitQuery = useCallback(async(data) => {
     try {
@@ -56,7 +58,7 @@ const Search: React.FC = () => {
         data={results}
         keyExtractor={(item) => item.id}
         renderItem={({item}) => (
-          <S.Item>
+          <S.Item onPress={() => navigation.navigate('UserScreen', {id: item.id})}>
             <S.ItemLeft>
               <S.ItemAvatar source={{uri: `https://lunion-mood.herokuapp.com/files/${item.avatar}`}} />
             </S.ItemLeft>

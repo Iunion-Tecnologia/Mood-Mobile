@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 
 interface IPost {
+  u_id: string;
   p_id: string;
   u_name: string;
   p_content: string;
@@ -33,7 +34,6 @@ const Home: React.FC = () => {
   } ,[time])
 
   const handleLoadPosts = useCallback(async () => {
-    console.log(`TIME: ${time} / PAGE: ${page}`);
     setIsLoading(true);
     try {
       const response = await api.get(`/post/feed?page=${page}&limit=10&date=${time}`); //&date=${String(time)}
@@ -48,7 +48,6 @@ const Home: React.FC = () => {
   }, [time, page])
 
   useEffect(() => {
-    console.log('[USEREFFECT]')
     handleLoadPosts();
   }, [])
 
@@ -81,12 +80,26 @@ const Home: React.FC = () => {
           onEndReachedThreshold={0.01}
           data={posts}
           keyExtractor={(item) => item.p_id}
-          renderItem={({item}) => <Post
-            user={item.u_name}
-            data={item.p_content}
-            nick={item.u_nick}
-            avatar={item.u_avatar}
-          />}
+          renderItem={({item}) => (
+            <S.PostContainer>
+            <S.LeftSide>
+              <S.Touchable onPress={() => navigation.navigate('UserScreen', {id: item.u_id})}>
+                <S.Avatar source={{uri: `https://lunion-mood.herokuapp.com/files/${item.u_avatar}`}}></S.Avatar>
+              </S.Touchable>
+            </S.LeftSide>
+            <S.RightSide>
+              <S.PostHeader>
+                <S.Touchable onPress={() => navigation.navigate('UserScreen', {id: item.u_id})}>
+                  <S.PostUser>{item.u_name}</S.PostUser>
+                </S.Touchable>
+                <S.PostNick>@{item.u_nick}</S.PostNick>
+              </S.PostHeader>
+              <S.Data>
+                {item.p_content}
+              </S.Data>
+            </S.RightSide>
+          </S.PostContainer>
+          )}
         />
 
     </S.Container>

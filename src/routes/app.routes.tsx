@@ -13,6 +13,29 @@ import HomeScreen from '../screens/Home';
 import PostScreen from '../screens/Post';
 import ProfileScreen from '../screens/Profile';
 import SearchScreen from '../screens/Search';
+import UserScreen from '../screens/User';
+
+const HomeNavigator = () => (
+  <Stack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}
+  >
+    <Stack.Screen name="HomeScreen" component={HomeScreen} />
+    <Stack.Screen name="UserScreen" component={UserScreen} />
+  </Stack.Navigator>
+)
+
+const SearchNavigator = () => (
+  <Stack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}
+  >
+    <Stack.Screen name="SearchScreen" component={SearchScreen} />
+    <Stack.Screen name="UserScreen" component={UserScreen} />
+  </Stack.Navigator>
+)
 
 const AppRoutes: React.FC  = () => (
 
@@ -55,9 +78,9 @@ const AppRoutes: React.FC  = () => (
           inactiveTintColor:'#92929c'
         }}
       >
-        <Tab.Screen options={{ tabBarLabel: () => null}} name="Home" component={HomeScreen} />
+        <Tab.Screen options={{ tabBarLabel: () => null}} name="Home" component={HomeNavigator} />
         <Tab.Screen options={{ tabBarLabel: () => null}} name="Post" component={PostScreen} />
-        <Tab.Screen options={{ tabBarLabel: () => null}} name="Search" component={SearchScreen} />
+        <Tab.Screen options={{ tabBarLabel: () => null}} name="Search" component={SearchNavigator} />
         <Tab.Screen options={{ tabBarLabel: () => null}} name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>

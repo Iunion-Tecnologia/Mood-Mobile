@@ -50,3 +50,5 @@ export const RightSide = styled.View`
   flex: 1;
   padding-left: 10px;
 `;
+
+export const Touchable = styled.TouchableOpacity``;
