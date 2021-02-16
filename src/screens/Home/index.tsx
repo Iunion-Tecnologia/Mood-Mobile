@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import * as S from './styles';
-import Post from '../../components/Post';
 import {AntDesign} from '@expo/vector-icons';
 import Header from '../../components/Header';
 import {FlatList, RefreshControl, Alert, ActivityIndicator} from 'react-native';

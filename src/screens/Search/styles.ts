@@ -55,6 +55,7 @@ export const ItemRight = styled.View`
 export const ItemAvatar = styled.Image`
   height: 50px;
   width: 50px;
+  background-color: #eee;
 `;
 
 export const ItemNick = styled.Text`

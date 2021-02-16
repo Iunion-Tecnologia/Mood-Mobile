@@ -28,7 +28,7 @@ const SignUp: React.FC = () => {
   const handleSignUp = useCallback(async (data) => {
     setIsLoading(true);
     try {
-      const response = await api.post('/user/signupp', data);
+      const response = await api.post('/user/signup', data);
       Alert.alert('Usuário Cadastrado!', 'Seus dados foram cadastrados, realize seu login.');
       setIsLoading(false);
       navigation.navigate('SignIn');
