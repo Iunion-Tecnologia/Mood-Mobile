@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import * as S from './styles';
-import {AntDesign} from '@expo/vector-icons';
 import Header from '../../components/Header';
 import {FlatList, RefreshControl, Alert, ActivityIndicator} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -26,9 +25,16 @@ const Home: React.FC = () => {
   const handleRefresh = useCallback(async() => {
     setRefresh(true);
     setTime(new Date())
-    handleLoadPosts();
-    setPage(0);
-    setPosts([]);
+    setIsLoading(true);
+    try {
+      const response = await api.get(`/post/feed?page=${0}&limit=10&date=${new Date()}`);
+      setPosts(response.data)
+      setPage(1);
+    }
+    catch (error) {
+      Alert.alert('Error', 'Ocorreu um erro ao tentar carregar os ultimos posts!');
+    }
+    setIsLoading(false);
     setRefresh(false);
   } ,[time])
 
@@ -55,12 +61,12 @@ const Home: React.FC = () => {
       <Header />
         <FlatList
           refreshControl={
-          <RefreshControl
-            colors={['#6C0FD9']}
-            tintColor="#6C0FD9"
-            refreshing={refresh}
-            onRefresh={handleRefresh}
-          />
+            <RefreshControl
+              colors={['#6C0FD9']}
+              tintColor="#6C0FD9"
+              refreshing={refresh}
+              onRefresh={handleRefresh}
+            />
           }
           onEndReached={() => {
             handleLoadPosts();

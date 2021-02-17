@@ -1,9 +1,10 @@
 import React, {useEffect, useCallback, useState} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, RefreshControl, ActivityIndicator} from 'react-native';
 import Header from '../../components/Header';
 import {useSelector} from 'react-redux';
 import {ApplicationState} from '../../store';
 import { RouteProp, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 import * as S from './styles';
 
@@ -23,48 +24,29 @@ interface IPost {
   content: string;
 }
 
-const DATA = [
-  {
-    id: "1",
-    content: "Isto é o primeiro post post do aplicativo!",
-  },
-  {
-    id: "2",
-    content: "Isto é o primeiro post post do aplicativo!",
-  },
-  {
-    id: "3",
-    content: "Isto é o primeiro post post do aplicativo!",
-  },
-  {
-    id: "4",
-    content: "Isto é o primeiro post post do aplicativo!",
-  },
-  {
-    id: "5",
-    content: "Isto é o primeiro post post do aplicativo!",
-  },
-  {
-    id: "6",
-    content: "Isto é o primeiro post post do aplicativo!",
-  },
-  {
-    id: "7",
-    content: "Isto é o primeiro post post do aplicativo!",
-  },
-  {
-    id: "8",
-    content: "Isto é o primeiro post post do aplicativo!",
-  }
-]
-
 const User: React.FC = () => {
+  const navigation = useNavigation();
   const [user, setUser] = useState<IUser>();
   const [status, setStatus] = useState<boolean>(false)
-  const [posts, setPosts] = useState<IPost[]>();
+  const [posts, setPosts] = useState<IPost[]>([]);
+  const [refresh, setRefresh] = useState(false);
+  const [page,setPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const route = useRoute<
   RouteProp<{ params: { id: string } }, 'params'>
 >();
+
+  const handleRefresh = () => {
+    setRefresh(true);
+
+
+
+    setRefresh(false);
+  }
+
+  const handleFollows = () => {
+    setStatus(e => !e);
+  }
 
   const handleLoadProfile = useCallback(async() => {
     try {
@@ -72,21 +54,24 @@ const User: React.FC = () => {
       setUser(response.data.user);
       setStatus(response.data.is_following);
     }
-    catch(error){ 
+    catch(error){
       console.log(error);
     }
 
   }, [route])
 
   const handleLoadPosts = useCallback(async () => {
+    setIsLoading(true);
     try{
-      const response = await api.get(`/post/user/${route.params.id}`);
-      setPosts(response.data);
+      const response = await api.get(`/post/user/${route.params.id}?page=${page}`);
+      setPosts([...posts,...response.data])
+      setPage(e => e+=1);
     }
     catch(error){
       console.log(error);
     }
-  }, [])
+    setIsLoading(false);
+  }, [page])
 
   useEffect(() => {
     handleLoadProfile();
@@ -97,6 +82,29 @@ const User: React.FC = () => {
     <S.Container>
       <Header />
       <FlatList
+        onEndReached={() => {
+          handleLoadPosts();
+        }}
+        onEndReachedThreshold={0.01}
+        refreshControl={
+          <RefreshControl
+            colors={['#6C0FD9']}
+            tintColor="#6C0FD9"
+            refreshing={refresh}
+            onRefresh={handleRefresh}
+          />
+        }
+        ListFooterComponent={() => {
+          if (!isLoading) return null;
+          return (
+            <ActivityIndicator
+              animating={isLoading}
+              style={{ height: 50 }}
+              size="large"
+              color="#6C0FD9"
+            />
+          );
+        }}
         ListHeaderComponent={() => (
           <S.InfoContainer>
           <S.TopInfo>
@@ -106,23 +114,31 @@ const User: React.FC = () => {
                 <S.DataNumber>{user?.post_count}</S.DataNumber>
                 <S.DataName>Posts</S.DataName>
               </S.Data>
-              <S.Data>
+              <S.DataButton onPress={() => navigation.navigate('FollowScreen')}>
                 <S.DataNumber>{user?.followers_count}</S.DataNumber>
                 <S.DataName>Seguidores</S.DataName>
-              </S.Data>
-              <S.Data>
+              </S.DataButton>
+              <S.DataButton onPress={() => navigation.navigate('FollowScreen')}>
                 <S.DataNumber>{user?.following_count}</S.DataNumber>
                 <S.DataName>Seguindo</S.DataName>
-              </S.Data>
+              </S.DataButton>
             </S.DataContainer>
           </S.TopInfo>
-          
+
           <S.ProfileName>{user?.name}</S.ProfileName>
           <S.ProfileNick>@{user?.nick}</S.ProfileNick>
-  
+
           <S.ProfileDescription>{user?.bio}</S.ProfileDescription>
-          <S.ButtonBottom follow>
-            <S.ButtonBottomText>Seguir</S.ButtonBottomText>
+          <S.ButtonBottom onPress={handleFollows} follow={status}>
+            <S.ButtonBottomText follow={status}>
+              {
+                status
+                ?
+                'Parar de seguir'
+                :
+                'Seguir'
+              }
+            </S.ButtonBottomText>
           </S.ButtonBottom>
         </S.InfoContainer>
         )}

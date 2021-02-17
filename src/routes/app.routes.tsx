@@ -14,6 +14,7 @@ import PostScreen from '../screens/Post';
 import ProfileScreen from '../screens/Profile';
 import SearchScreen from '../screens/Search';
 import UserScreen from '../screens/User';
+import FollowsScreen from '../screens/Follows';
 
 const HomeNavigator = () => (
   <Stack.Navigator
@@ -23,6 +24,7 @@ const HomeNavigator = () => (
   >
     <Stack.Screen name="HomeScreen" component={HomeScreen} />
     <Stack.Screen name="UserScreen" component={UserScreen} />
+    <Stack.Screen name="FollowScreen" component={FollowsScreen} />
   </Stack.Navigator>
 )
 
@@ -34,6 +36,7 @@ const SearchNavigator = () => (
   >
     <Stack.Screen name="SearchScreen" component={SearchScreen} />
     <Stack.Screen name="UserScreen" component={UserScreen} />
+    <Stack.Screen name="FollowScreen" component={FollowsScreen} />
   </Stack.Navigator>
 )
 
