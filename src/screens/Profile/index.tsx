@@ -68,7 +68,6 @@ const User: React.FC = () => {
   }, [route])
 
   const handleLoadPosts = useCallback(async () => {
-    console.log(page);
     setIsLoading(true);
     try{
       const response = await api.get(`/post/user/${auth.user?.id}?page=${page}`);
@@ -138,7 +137,7 @@ const User: React.FC = () => {
           <S.ProfileNick>@{user?.nick}</S.ProfileNick>
 
           <S.ProfileDescription>{user?.bio}</S.ProfileDescription>
-          <S.ButtonBottom follow={true}>
+          <S.ButtonBottom onPress={() => navigation.navigate('EditScreen')} follow={true}>
             <S.ButtonBottomText follow={true}>
               Editar Perfil
             </S.ButtonBottomText>

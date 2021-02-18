@@ -15,6 +15,20 @@ import ProfileScreen from '../screens/Profile';
 import SearchScreen from '../screens/Search';
 import UserScreen from '../screens/User';
 import FollowsScreen from '../screens/Follows';
+import EditScreen from '../screens/EditProfile';
+
+const ProfileNavigator = () => (
+  <Stack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}
+  >
+    <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+    <Stack.Screen name="EditScreen" component={EditScreen} />
+    <Stack.Screen name="FollowScreen" component={FollowsScreen} />
+  </Stack.Navigator>
+)
+
 
 const HomeNavigator = () => (
   <Stack.Navigator
@@ -84,7 +98,7 @@ const AppRoutes: React.FC  = () => (
         <Tab.Screen options={{ tabBarLabel: () => null}} name="Home" component={HomeNavigator} />
         <Tab.Screen options={{ tabBarLabel: () => null}} name="Post" component={PostScreen} />
         <Tab.Screen options={{ tabBarLabel: () => null}} name="Search" component={SearchNavigator} />
-        <Tab.Screen options={{ tabBarLabel: () => null}} name="Profile" component={ProfileScreen} />
+        <Tab.Screen options={{ tabBarLabel: () => null}} name="Profile" component={ProfileNavigator} />
       </Tab.Navigator>
     </NavigationContainer>
 );
