@@ -1,5 +1,5 @@
 import React, {useEffect, useCallback, useState} from 'react';
-import {FlatList, RefreshControl, ActivityIndicator} from 'react-native';
+import {FlatList, RefreshControl, ActivityIndicator, Alert} from 'react-native';
 import Header from '../../components/Header';
 import {useSelector} from 'react-redux';
 import {ApplicationState} from '../../store';
@@ -32,21 +32,37 @@ const User: React.FC = () => {
   const [refresh, setRefresh] = useState(false);
   const [page,setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [shuldLoad, setShuldLoad] = useState(true);
   const route = useRoute<
   RouteProp<{ params: { id: string } }, 'params'>
 >();
 
   const handleRefresh = () => {
     setRefresh(true);
-
-
-
+    handleLoadProfile();
     setRefresh(false);
   }
 
-  const handleFollows = () => {
+  const handleFollows = useCallback(async() => {
+    
+    if(status===true){
+      try {
+        await api.post(`/user/unfollow/${route.params.id}`)
+      }
+      catch(error){
+        Alert.alert('Error', error.response.message);
+      }
+    }
+    else{
+      try {
+        await api.post(`/user/follow/${route.params.id}`)
+      }
+      catch(error){
+        Alert.alert('Error', error.response.message);
+      }
+    }
     setStatus(e => !e);
-  }
+  }, [status])
 
   const handleLoadProfile = useCallback(async() => {
     try {
@@ -61,9 +77,11 @@ const User: React.FC = () => {
   }, [route])
 
   const handleLoadPosts = useCallback(async () => {
+    console.log(page);
     setIsLoading(true);
     try{
       const response = await api.get(`/post/user/${route.params.id}?page=${page}`);
+      !response.data.length && setShuldLoad(false)
       setPosts([...posts,...response.data])
       setPage(e => e+=1);
     }
@@ -83,7 +101,7 @@ const User: React.FC = () => {
       <Header />
       <FlatList
         onEndReached={() => {
-          handleLoadPosts();
+          shuldLoad && handleLoadPosts();
         }}
         onEndReachedThreshold={0.01}
         refreshControl={
@@ -114,11 +132,11 @@ const User: React.FC = () => {
                 <S.DataNumber>{user?.post_count}</S.DataNumber>
                 <S.DataName>Posts</S.DataName>
               </S.Data>
-              <S.DataButton onPress={() => navigation.navigate('FollowScreen')}>
+              <S.DataButton onPress={() => navigation.navigate('FollowScreen', {id: user?.id, type: 'getfollowers'})}>
                 <S.DataNumber>{user?.followers_count}</S.DataNumber>
                 <S.DataName>Seguidores</S.DataName>
               </S.DataButton>
-              <S.DataButton onPress={() => navigation.navigate('FollowScreen')}>
+              <S.DataButton onPress={() => navigation.navigate('FollowScreen', {id: user?.id, type: 'getfollowing'})}>
                 <S.DataNumber>{user?.following_count}</S.DataNumber>
                 <S.DataName>Seguindo</S.DataName>
               </S.DataButton>

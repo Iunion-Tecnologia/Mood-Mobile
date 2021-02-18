@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import Header from '../../components/Header'
-import {FlatList, Alert} from 'react-native';
+import {FlatList, Alert, ActivityIndicator} from 'react-native';
 import { Feather } from '@expo/vector-icons'
 import {useForm} from 'react-hook-form';
 import api from '../../services/api';
@@ -28,9 +28,11 @@ const Search: React.FC = () => {
 
   const {register, handleSubmit, setValue} = useForm();
   const [results, setResults] = useState<IResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
   const handleSubmitQuery = useCallback(async(data) => {
+    setIsLoading(true);
     try {
       const response = await api.get(`/user/search?query=${data.query}`);
       setResults(response.data);
@@ -38,6 +40,7 @@ const Search: React.FC = () => {
     catch(error){
       Alert.alert('Error', error.response.message);
     }
+    setIsLoading(false);
   }, [])
 
   useEffect(() => {
@@ -56,6 +59,17 @@ const Search: React.FC = () => {
 
       <FlatList
         data={results}
+        ListFooterComponent={() => {
+          if (!isLoading) return null;
+          return (
+            <ActivityIndicator
+              animating={isLoading}
+              style={{ height: 50 }}
+              size="large"
+              color="#6C0FD9"
+            />
+          );
+        }}
         keyExtractor={(item) => item.id}
         renderItem={({item}) => (
           <S.Item onPress={() => navigation.navigate('UserScreen', {id: item.id})}>

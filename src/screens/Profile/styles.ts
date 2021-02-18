@@ -53,6 +53,15 @@ export const Data = styled.View`
   justify-content: center;
 `;
 
+export const DataButton = styled.TouchableOpacity`
+  height: 70px;
+  flex: 1;
+
+  align-items: center;
+  justify-content: center;
+`;
+
+
 export const DataName = styled.Text`
   font-size: 16px;
   color: #6C0FD9;
@@ -68,24 +77,24 @@ export const TopInfo = styled.View`
   align-items: center;
 `;
 
-interface IButtonBottom {
+interface IStatus {
   follow: boolean;
 }
 
-export const ButtonBottom = styled.TouchableOpacity<IButtonBottom>`
+export const ButtonBottom = styled.TouchableOpacity<IStatus>`
   height: 40px;
   margin-top: 10px;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  background-color: #FFF;
-  border-color:  #6C0FD9;
+  background-color: ${({follow}) => follow ? '#fff' : '#6C0FD9'};
   border-width: 1px;
+  border-color: ${({follow}) => follow ? '#6C0FD9' : '#fff'};
 `;
 
-export const ButtonBottomText = styled.Text`
+export const ButtonBottomText = styled.Text<IStatus>`
   font-weight: bold;
-  color: #6C0FD9;
+  color: ${({follow}) => follow ? '#6C0FD9' : '#fff'};;
 `;
 
 
