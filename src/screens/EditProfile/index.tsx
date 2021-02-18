@@ -16,11 +16,10 @@ const CreatePost: React.FC = () => {
   const handlePost = useCallback(async (data) => {
     setIsLoading(true);
     try{
-      await api.post('/post/create', data);
+      await api.patch('/user/update', data);
       setIsLoading(false);
-      Alert.alert('Sucesso!', 'Seu post foi criado');
       Keyboard.dismiss();
-      navigation.navigate('Home');
+      navigation.goBack();
     }
     catch(error){
       Alert.alert('Ocorreu um erro!', error.response.data.message);
@@ -30,7 +29,7 @@ const CreatePost: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    register('content');
+    register('bio');
   }, [register]);
 
   return(
@@ -54,11 +53,11 @@ const CreatePost: React.FC = () => {
       <S.Title>Bio</S.Title>
 
       <S.Input
-        onChangeText={text => {setValue('content', text)}}
+        onChangeText={text => {setValue('bio', text)}}
         multiline
         textAlignVertical="top"
         maxLength={280}
-        placeholder="O que está pensando?"
+        placeholder=""
       />
       <S.Button disabled={isLoading} onPress={handleSubmit(handlePost)}>
       {
