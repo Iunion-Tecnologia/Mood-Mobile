@@ -21,12 +21,12 @@ const Header: React.FC = () => {
   return(
     <S.Container>
       <S.Button>
-        <Octicons name="gear" size={27} color="#6C0FD9" />
+        <Octicons name="gear" size={27} color="#999" />
       </S.Button>
 
       <S.Logo resizeMode="contain" source={Mood} />
       <S.Button onPress={() => handleLogout()}>
-        <MaterialCommunityIcons name="logout" size={26} color="#E02041" />
+        <MaterialCommunityIcons name="logout" size={26} color="#999" />
       </S.Button>
 
     </S.Container>
