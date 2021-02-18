@@ -21,6 +21,7 @@ const Home: React.FC = () => {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [time, setTime] = useState<Date>(new Date());
   const [isLoading, setIsLoading] = useState(false);
+  const [shuldLoad, setShuldLoad] = useState(true);
 
   const handleRefresh = useCallback(async() => {
     setRefresh(true);
@@ -42,6 +43,7 @@ const Home: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await api.get(`/post/feed?page=${page}&limit=10&date=${time}`); //&date=${String(time)}
+      !response.data.length && setShuldLoad(false)
       setPosts([...posts,...response.data])
       setPage(prev => prev+=1);
       setIsLoading(false);
@@ -69,7 +71,7 @@ const Home: React.FC = () => {
             />
           }
           onEndReached={() => {
-            handleLoadPosts();
+            shuldLoad && handleLoadPosts();
           }}
           ListFooterComponent={() => {
             if (!isLoading) return null;

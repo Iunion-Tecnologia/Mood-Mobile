@@ -44,7 +44,7 @@ const User: React.FC = () => {
   }
 
   const handleFollows = useCallback(async() => {
-    
+
     if(status===true){
       try {
         await api.post(`/user/unfollow/${route.params.id}`)
@@ -71,7 +71,7 @@ const User: React.FC = () => {
       setStatus(response.data.is_following);
     }
     catch(error){
-      console.log(error);
+      Alert.alert('Error', error.response.message);
     }
 
   }, [route])
@@ -86,7 +86,7 @@ const User: React.FC = () => {
       setPage(e => e+=1);
     }
     catch(error){
-      console.log(error);
+      Alert.alert('Error', error.response.message);
     }
     setIsLoading(false);
   }, [page])
