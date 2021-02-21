@@ -1,6 +1,5 @@
 import { Reducer } from 'redux';
 import { AuthState, AuthTypes } from './types';
-import { showMessage } from 'react-native-flash-message';
 
 const INITIAL_STATE: AuthState = {
   token: null,

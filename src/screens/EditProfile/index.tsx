@@ -6,31 +6,97 @@ import Header from '../../components/Header';
 import api from '../../services/api';
 import {useForm} from 'react-hook-form';
 import { Entypo} from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import {useSelector} from 'react-redux';
+import {ApplicationState} from '../../store';
+import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types'
+
+interface IUser {
+  id: string,
+  name: string,
+  nick: string,
+  avatar: string | null;
+  bio: string | null;
+  followers_count: number,
+  following_count: number,
+  post_count: number,
+}
 
 const CreatePost: React.FC = () => {
 
   const navigation = useNavigation();
+  const auth = useSelector((state: ApplicationState) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
   const {register, handleSubmit, setValue} = useForm();
+  const [image, setImage] = useState<ImageInfo>();
+  const [profile, setProfile] = useState<IUser>()
 
+  const handleLoadProfile = useCallback(async() => {
+    try {
+      const response = await api.get(`/user/profile/${auth.user?.id}`);
+      setProfile(response.data.user);
+    }
+    catch(error){
+      console.log(error);
+    }
+
+  }, [auth])
+
+  const openImagePickerAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result);
+    }
+  }
+
+  const handleUploadImage = useCallback(async () =>  {
+  
+    try {
+      let formData = new FormData();
+
+      formData.append('avatar', JSON.stringify({
+        uri: image?.uri,
+        name: `photo.jpg`,
+        type: `image/jpg`,
+      }));
+  
+      await api.patch('/user/avatar', formData, {headers:{
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      }
+    })  
+    }
+    catch(error){
+      console.log(error);
+    }
+  }, [image])
+  
   const handlePost = useCallback(async (data) => {
     setIsLoading(true);
     try{
-      await api.post('/post/create', data);
+      await api.patch('/user/update', data);
+      image && handleUploadImage();
       setIsLoading(false);
-      Alert.alert('Sucesso!', 'Seu post foi criado');
       Keyboard.dismiss();
-      navigation.navigate('Home');
+      navigation.goBack();
     }
     catch(error){
       Alert.alert('Ocorreu um erro!', error.response.data.message);
       setIsLoading(false);
     }
 
-  }, [])
+  }, [image])
 
   useEffect(() => {
-    register('content');
+    register('bio');
+    handleLoadProfile();
   }, [register]);
 
   return(
@@ -42,23 +108,37 @@ const CreatePost: React.FC = () => {
 
       <S.Title>Avatar</S.Title>
 
-      <S.AvatarButton>
+      <S.AvatarButton onPress={openImagePickerAsync}>
 
-        <S.AvatarPlaceholder>
-          <Entypo name="camera" size={24} color="black" />
-        </S.AvatarPlaceholder>
+        {
+          image
+          ?
+          <S.Avatar source={{uri: image.uri}} />
+          :
+          <>
+          {
+            profile?.avatar 
+            ?
+            <S.Avatar source={{uri: `https://lunion-mood.herokuapp.com/files/${profile?.avatar}`}} />
+            :
+            <S.AvatarPlaceholder>
+              <Entypo name="camera" size={24} color="black" />
+            </S.AvatarPlaceholder>
+          }
+          </>
 
+        }
 
       </S.AvatarButton>
 
       <S.Title>Bio</S.Title>
 
       <S.Input
-        onChangeText={text => {setValue('content', text)}}
+        onChangeText={text => {setValue('bio', text)}}
         multiline
         textAlignVertical="top"
         maxLength={280}
-        placeholder="O que está pensando?"
+        placeholder=""
       />
       <S.Button disabled={isLoading} onPress={handleSubmit(handlePost)}>
       {

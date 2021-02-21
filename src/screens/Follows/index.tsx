@@ -37,7 +37,6 @@ const Follows: React.FC = () => {
     setRefresh(true);
     setIsLoading(true);
     try {
-      console.log(page);
       const response = await api.get(`user/${route.params.type}/${route.params.id}?page=${0}&limit=15`);
       setShuldLoad(true)
       setResults(response.data)
