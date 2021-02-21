@@ -25,7 +25,6 @@ const CreatePost: React.FC = () => {
       Alert.alert('Ocorreu um erro!', error.response.data.message);
       setIsLoading(false);
     }
-    
   }, [])
 
   useEffect(() => {
@@ -43,6 +42,7 @@ const CreatePost: React.FC = () => {
         textAlignVertical="top"
         maxLength={280}
         placeholder="O que está pensando?"
+        selectTextOnFocus={true}
       />
       <S.Button disabled={isLoading} onPress={handleSubmit(handlePost)}>
       {

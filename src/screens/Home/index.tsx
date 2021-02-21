@@ -26,6 +26,7 @@ const Home: React.FC = () => {
   const handleRefresh = useCallback(async() => {
     setRefresh(true);
     setTime(new Date())
+    setShuldLoad(true);
     setIsLoading(true);
     try {
       const response = await api.get(`/post/feed?page=${0}&limit=10&date=${new Date()}`);
