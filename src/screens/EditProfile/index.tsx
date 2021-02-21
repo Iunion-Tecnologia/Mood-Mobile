@@ -6,13 +6,52 @@ import Header from '../../components/Header';
 import api from '../../services/api';
 import {useForm} from 'react-hook-form';
 import { Entypo} from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types'
 
 const CreatePost: React.FC = () => {
 
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const {register, handleSubmit, setValue} = useForm();
+  const [image, setImage] = useState<ImageInfo>();
 
+  const openImagePickerAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result);
+    }
+  }
+
+  const handleUploadImage = useCallback(async () =>  {
+  
+    try {
+      let formData = new FormData();
+
+      formData.append('avatar', {
+        uri: image?.uri,
+        name: `photo.jpg`,
+        type: `image/jpg`,
+      });
+  
+      await api.patch('/user/avatar', formData, {headers:{
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      }
+    })  
+    }
+    catch(error){
+      console.log(error);
+    }
+  }, [image])
+  
   const handlePost = useCallback(async (data) => {
     setIsLoading(true);
     try{
@@ -41,11 +80,19 @@ const CreatePost: React.FC = () => {
 
       <S.Title>Avatar</S.Title>
 
-      <S.AvatarButton>
+      <S.AvatarButton onPress={openImagePickerAsync}>
 
-        <S.AvatarPlaceholder>
-          <Entypo name="camera" size={24} color="black" />
-        </S.AvatarPlaceholder>
+        {
+          image
+          ?
+          <S.Avatar source={{uri: image.uri}} />
+          :
+          <S.AvatarPlaceholder>
+            <Entypo name="camera" size={24} color="black" />
+          </S.AvatarPlaceholder>
+        }
+
+
 
 
       </S.AvatarButton>
@@ -59,7 +106,7 @@ const CreatePost: React.FC = () => {
         maxLength={280}
         placeholder=""
       />
-      <S.Button disabled={isLoading} onPress={handleSubmit(handlePost)}>
+      <S.Button disabled={isLoading} onPress={ () => handleUploadImage()}>
       {
             isLoading
             ?
