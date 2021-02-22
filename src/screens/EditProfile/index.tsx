@@ -61,11 +61,11 @@ const CreatePost: React.FC = () => {
     try {
       let formData = new FormData();
 
-      formData.append('avatar', JSON.stringify({
+      formData.append('avatar', {
         uri: image?.uri,
         name: `photo.jpg`,
         type: `image/jpg`,
-      }));
+      });
   
       await api.patch('/user/avatar', formData, {headers:{
         Accept: 'application/json',
