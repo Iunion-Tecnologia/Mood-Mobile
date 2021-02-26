@@ -1,8 +1,9 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import {Ionicons, FontAwesome, Feather, Octicons} from '@expo/vector-icons';
+import {Ionicons, Feather, Octicons} from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -55,7 +56,8 @@ const SearchNavigator = () => (
 )
 
 const AppRoutes: React.FC  = () => (
-
+    <>
+    <StatusBar backgroundColor="#FFF" style="dark" />
     <NavigationContainer>
       <Tab.Navigator
 
@@ -101,6 +103,7 @@ const AppRoutes: React.FC  = () => (
         <Tab.Screen options={{ tabBarLabel: () => null}} name="Profile" component={ProfileNavigator} />
       </Tab.Navigator>
     </NavigationContainer>
+  </>
 );
 
 export default AppRoutes;
