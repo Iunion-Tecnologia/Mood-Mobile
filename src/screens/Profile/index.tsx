@@ -5,6 +5,7 @@ import {useSelector} from 'react-redux';
 import {ApplicationState} from '../../store';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 import api from '../../services/api';
 import * as S from './styles';
 

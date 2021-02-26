@@ -25,21 +25,8 @@ export interface User {
 }
 
 export interface IRequest {
-  email: string;
-  password: string;
-}
-
-export interface IResponse {
   token: string;
-  user: {
-    id: string;
-    avatar: string | null;
-    email: string;
-    name: string;
-    bio: string;
-    following: number;
-    follower: number;
-  };
+  user: User;
 }
 /**
  * State types
