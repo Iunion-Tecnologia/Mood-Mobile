@@ -116,7 +116,7 @@ const User: React.FC = () => {
         ListHeaderComponent={() => (
           <S.InfoContainer>
           <S.TopInfo>
-            <S.ProfileImage source={{uri: `https://lunion-mood.herokuapp.com/files/${user?.avatar}`}} />
+            <S.ProfileImage source={{uri: `https://iunion-mood.herokuapp.com/files/${user?.avatar}`}} />
             <S.DataContainer>
               <S.Data>
                 <S.DataNumber>{user?.post_count}</S.DataNumber>
@@ -149,7 +149,7 @@ const User: React.FC = () => {
           <S.PostContainer>
           <S.LeftSide>
             <S.Touchable>
-              <S.Avatar source={{uri: `https://lunion-mood.herokuapp.com/files/${user?.avatar}`}}></S.Avatar>
+              <S.Avatar source={{uri: `https://iunion-mood.herokuapp.com/files/${user?.avatar}`}}></S.Avatar>
             </S.Touchable>
           </S.LeftSide>
           <S.RightSide>

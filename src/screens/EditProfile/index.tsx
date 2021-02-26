@@ -73,8 +73,8 @@ const CreatePost: React.FC = () => {
       }
     })  
     }
-    catch(error){
-      console.log(error);
+    catch{
+
     }
   }, [image])
   
@@ -119,7 +119,7 @@ const CreatePost: React.FC = () => {
           {
             profile?.avatar 
             ?
-            <S.Avatar source={{uri: `https://lunion-mood.herokuapp.com/files/${profile?.avatar}`}} />
+            <S.Avatar source={{uri: `https://iunion-mood.herokuapp.com/files/${profile?.avatar}`}} />
             :
             <S.AvatarPlaceholder>
               <Entypo name="camera" size={24} color="black" />

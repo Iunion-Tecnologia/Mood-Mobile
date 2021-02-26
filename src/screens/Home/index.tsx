@@ -92,7 +92,7 @@ const Home: React.FC = () => {
             <S.PostContainer>
             <S.LeftSide>
               <S.Touchable onPress={() => navigation.navigate('UserScreen', {id: item.u_id})}>
-                <S.Avatar source={{uri: `https://lunion-mood.herokuapp.com/files/${item.u_avatar}`}}></S.Avatar>
+                <S.Avatar source={{uri: `https://iunion-mood.herokuapp.com/files/${item.u_avatar}`}}></S.Avatar>
               </S.Touchable>
             </S.LeftSide>
             <S.RightSide>
