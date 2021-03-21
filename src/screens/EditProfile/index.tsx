@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
 import api from '../../services/api';
 import {useForm} from 'react-hook-form';
-import { Entypo} from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import {useSelector} from 'react-redux';
 import {ApplicationState} from '../../store';
@@ -49,7 +49,6 @@ const CreatePost: React.FC = () => {
       aspect: [4, 4],
       quality: 1,
     });
-    console.log(result);
 
     if (!result.cancelled) {
       setImage(result);
@@ -81,7 +80,7 @@ const CreatePost: React.FC = () => {
     setIsLoading(true);
     try{
       await api.patch('/user/update', data);
-      handleUploadImage();
+      image && handleUploadImage();
       setIsLoading(false);
       Keyboard.dismiss();
       navigation.goBack();

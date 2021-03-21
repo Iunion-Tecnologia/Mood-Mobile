@@ -3,9 +3,9 @@ import { StatusBar, StyleSheet } from 'react-native';
 import {RectButton} from 'react-native-gesture-handler';
 
 export const Container = styled.View`
-  flex: 1;
   margin-top: ${Number(StatusBar.currentHeight)}px;
   background-color: #fff;
+  flex: 1;
 `;
 
 export const Input = styled.TextInput`
@@ -39,3 +39,17 @@ export const ButtonText = styled.Text`
   font-size: 18px;
 `;
 
+export const ImageButton = styled.TouchableOpacity`
+  height: 390px;
+  margin: 10px 10px;
+  border: 1px dashed rgba(0,0,0,0.2);
+  border-radius: 2px;
+
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Image = styled.Image`
+  height: 100%;
+  width: 100%;
+`;

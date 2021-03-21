@@ -57,7 +57,7 @@ export const Data = styled.Text`
 `;
 
 export const Image = styled.Image.attrs({
-  
+
 })`
   margin-top: 10px;
   width: 100%;

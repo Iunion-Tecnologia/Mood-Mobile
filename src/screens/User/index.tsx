@@ -22,6 +22,7 @@ interface IUser {
 interface IPost {
   id: string;
   content: string;
+  image_url: string;
 }
 
 const User: React.FC = () => {
@@ -177,6 +178,10 @@ const User: React.FC = () => {
             <S.PostData>
               {item.content}
             </S.PostData>
+            {
+              item.image_url &&
+              <S.Image resizeMode="contain" source={{uri: `${item.image_url}`}} />
+            }  
           </S.RightSide>
         </S.PostContainer>
         )}
