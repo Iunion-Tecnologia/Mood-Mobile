@@ -10,8 +10,9 @@ interface IPost {
   p_id: string;
   u_name: string;
   p_content: string;
+  p_image_url: string | null;
   u_nick: string;
-  u_avatar: string;
+  u_avatar_url: string;
 }
 
 const Home: React.FC = () => {
@@ -92,7 +93,7 @@ const Home: React.FC = () => {
             <S.PostContainer>
             <S.LeftSide>
               <S.Touchable onPress={() => navigation.navigate('UserScreen', {id: item.u_id})}>
-                <S.Avatar source={{uri: `https://iunion-mood.herokuapp.com/files/${item.u_avatar}`}}></S.Avatar>
+                <S.Avatar source={{uri: `${item.u_avatar_url}`}}></S.Avatar>
               </S.Touchable>
             </S.LeftSide>
             <S.RightSide>
@@ -105,6 +106,10 @@ const Home: React.FC = () => {
               <S.Data>
                 {item.p_content}
               </S.Data>
+              {
+                item.p_image_url &&
+                <S.Image resizeMode="contain" source={{uri: `${item.p_image_url}`}} />
+              }   
             </S.RightSide>
           </S.PostContainer>
           )}

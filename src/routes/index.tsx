@@ -25,14 +25,12 @@ const Routes: React.FC = () => {
 
       try{
         const response = await api.get(`user/profile/${id}`);
-        console.log(response.data);
         dispatch(login({user: response.data.user, token: token} as IRequest));
       }
       catch(error){
         console.log(error.response.data.message);
         //Alert.alert(error.response.data.message);
       }
-      console.log(token,id);
       setIsLoading(false);   
     }
 

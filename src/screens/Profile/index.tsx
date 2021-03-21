@@ -13,7 +13,7 @@ interface IUser {
   id: string,
   name: string,
   nick: string,
-  avatar: string | null;
+  avatar_url: string | null;
   bio: string | null;
   followers_count: number,
   following_count: number,
@@ -50,7 +50,7 @@ const User: React.FC = () => {
       setPage(1);
     }
     catch(error){
-      console.log(error);
+      // console.log(error);
     }
     setIsLoading(false);
     setRefresh(false);
@@ -63,7 +63,7 @@ const User: React.FC = () => {
       setStatus(response.data.is_following);
     }
     catch(error){
-      console.log(error);
+      // console.log(error);
     }
 
   }, [route])
@@ -77,7 +77,7 @@ const User: React.FC = () => {
       setPage(e => e+=1);
     }
     catch(error){
-      console.log(error);
+      // console.log(error);
     }
     setIsLoading(false);
   }, [page])
@@ -117,7 +117,7 @@ const User: React.FC = () => {
         ListHeaderComponent={() => (
           <S.InfoContainer>
           <S.TopInfo>
-            <S.ProfileImage source={{uri: `https://iunion-mood.herokuapp.com/files/${user?.avatar}`}} />
+            <S.ProfileImage source={{uri: `${user?.avatar_url}`}} />
             <S.DataContainer>
               <S.Data>
                 <S.DataNumber>{user?.post_count}</S.DataNumber>
@@ -150,7 +150,7 @@ const User: React.FC = () => {
           <S.PostContainer>
           <S.LeftSide>
             <S.Touchable>
-              <S.Avatar source={{uri: `https://iunion-mood.herokuapp.com/files/${user?.avatar}`}}></S.Avatar>
+              <S.Avatar source={{uri: `${user?.avatar_url}`}}></S.Avatar>
             </S.Touchable>
           </S.LeftSide>
           <S.RightSide>

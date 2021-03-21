@@ -15,7 +15,7 @@ interface IUser {
   id: string,
   name: string,
   nick: string,
-  avatar: string | null;
+  avatar_url: string | null;
   bio: string | null;
   followers_count: number,
   following_count: number,
@@ -63,18 +63,17 @@ const CreatePost: React.FC = () => {
 
       formData.append('avatar', {
         uri: image?.uri,
-        name: `photo.jpg`,
-        type: `image/jpg`,
+        name: `photo.jpeg`,
+        type: `image/jpeg`,
       });
   
-      await api.patch('/user/avatar', formData, {headers:{
+      const response = await api.patch('/user/avatar', formData, {headers:{
         Accept: 'application/json',
         'Content-Type': 'multipart/form-data',
       }
     })  
     }
-    catch{
-
+    catch(error){
     }
   }, [image])
   
@@ -82,7 +81,7 @@ const CreatePost: React.FC = () => {
     setIsLoading(true);
     try{
       await api.patch('/user/update', data);
-      image && handleUploadImage();
+      handleUploadImage();
       setIsLoading(false);
       Keyboard.dismiss();
       navigation.goBack();
@@ -117,9 +116,9 @@ const CreatePost: React.FC = () => {
           :
           <>
           {
-            profile?.avatar 
+            profile?.avatar_url
             ?
-            <S.Avatar source={{uri: `https://iunion-mood.herokuapp.com/files/${profile?.avatar}`}} />
+            <S.Avatar source={{uri: `${profile?.avatar_url}`}} />
             :
             <S.AvatarPlaceholder>
               <Entypo name="camera" size={24} color="black" />

@@ -13,15 +13,6 @@ interface IResult {
   avatar: string;
 }
 
-const DATA = [
-  {
-    id: '12345',
-    name: 'Jonatha Rihan da Silva',
-    nick: 'RBioZ',
-    avatar: 'https://avatars.githubusercontent.com/u/35699301?v=4'
-  },
-]
-
 const Follows: React.FC = () => {
   const [results, setResults] = useState<IResult[]>([]);
   const navigation = useNavigation();
@@ -52,7 +43,6 @@ const Follows: React.FC = () => {
   const handleLoadUsers = useCallback(async() => {
     setIsLoading(true);
     try {
-      console.log(page);
       const response = await api.get(`user/${route.params.type}/${route.params.id}?page=${page}&limit=15`);
       !response.data.length && setShuldLoad(false)
       setResults([...results,...response.data])
