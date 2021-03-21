@@ -42,11 +42,13 @@ const CreatePost: React.FC = () => {
     try{
       let formData = new FormData();
 
-      image && formData.append('image', {
-        uri: image?.uri,
-        name: `photo.jpeg`,
-        type: `image/jpeg`,
-      });
+      if(image !== undefined){
+        formData.append('image', {
+          uri: image?.uri,
+          name: `photo.jpeg`,
+          type: `image/jpeg`,
+        });
+      }
 
       formData.append('content', data.content);
 
