@@ -3,7 +3,7 @@
 </h1>
 
 <h4 align="center">
-  Marketplace do Eagle Bank Digital !
+  Um novo jeito de socializar !
 </h4>
 
 <p align="center">
