@@ -9,7 +9,7 @@
 <p align="center">
  <img src="https://img.shields.io/static/v1?label=Version&message=1.0.0&color=6C0FD9&labelColor=000000" alt="PRs welcome!" />
 
-  <img alt="License" src="https://img.shields.io/static/v1?label=License&message=copyright©&color=6C0FD9&labelColor=000000">
+  <img alt="License" src="https://img.shields.io/static/v1?label=License&message=MIT&color=6C0FD9&labelColor=000000">
 </p>
 
 <p align="center">
