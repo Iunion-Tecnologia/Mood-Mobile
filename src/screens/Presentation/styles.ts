@@ -10,11 +10,13 @@ export const Container = styled.View`
 `;
 
 export const Title = styled.Text`
+  font-family: Rubik_400Regular;
   font-size: 38px;
   color: #fff;
 `;
 
 export const SubTitle = styled.Text`
+  font-family: Rubik_300Light;
   font-size: 18px;
   color: #fff;
 `;
