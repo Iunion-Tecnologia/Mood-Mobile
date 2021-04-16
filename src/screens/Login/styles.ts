@@ -16,7 +16,6 @@ export const Logo = styled.Image`
 
 export const DataContainer = styled.View`
   margin-top: auto;
-  height: 500px;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
   background-color: #fff;
@@ -46,6 +45,7 @@ export const Input = styled.TextInput.attrs({
   flex: 1;
   padding-left: 20px;
   font-size: 16px;
+  font-family: Rubik_400Regular;
 `;
 
 export const SubmitButton = styled(RectButton)`
@@ -59,6 +59,33 @@ export const SubmitButton = styled(RectButton)`
 
 export const SubmitText = styled.Text`
   color: #fff;
+  font-weight: bold;
 `;
 
+export const ForgotPassText = styled.Text`
+  font-family: Rubik_400Regular;
+  color: #999;
+`;
 
+export const ForgotPassButton = styled.TouchableOpacity`
+  align-self: center;
+  margin: 20px 0;
+`;
+
+export const RememberContainer = styled.View`
+  flex-direction: row;
+  margin: 20px 0;
+`;
+
+export const RememberButton = styled.TouchableOpacity`
+  height: 20px;
+  width: 20px;
+  border-width: 1px;
+  border-color: #999;
+`;
+
+export const RememberText = styled.Text`
+  font-family: Rubik_400Regular;
+  margin-left: 10px;
+  color: #999;
+`;
