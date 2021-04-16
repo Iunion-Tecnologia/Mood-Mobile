@@ -1,6 +1,7 @@
 import React from 'react';
 import SvgUri from "expo-svg-uri";
 import background from '../../assets/background.svg';
+import logo from '../../assets/logo.png';
 
 import * as S from './styles';
 
@@ -13,6 +14,8 @@ const Presentation: React.FC = () => {
         style={{position: 'absolute'}}
         source={background}
       />
+
+      <S.Logo source={logo} />
 
       <S.InfoContainer>
         <S.Title>Bem-vindo</S.Title>

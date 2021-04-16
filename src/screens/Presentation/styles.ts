@@ -50,6 +50,7 @@ export const SignUpButton = styled.TouchableOpacity.attrs({
 export const SignInText = styled.Text`
   font-family: Rubik_500Medium;
   font-weight: bold;
+  color: #6C0FD9;
 `;
 
 export const SignUpText = styled.Text`
@@ -57,3 +58,11 @@ export const SignUpText = styled.Text`
   font-weight: bold;
   color: #fff;
 `;
+
+export const Logo = styled.Image`
+  position: absolute;
+  right: 30px;
+  top: ${30 + Number(StatusBar.currentHeight)}px;
+`;
+
+
