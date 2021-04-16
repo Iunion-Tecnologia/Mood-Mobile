@@ -32,7 +32,7 @@ const Presentation: React.FC = () => {
           <S.SignInText>Entrar</S.SignInText>
         </S.SiginButton>
 
-        <S.SignUpButton>
+        <S.SignUpButton onPress={() => navigation.navigate('Registration')}>
           <S.SignUpText>Registra-se</S.SignUpText>
         </S.SignUpButton>
       </S.InfoContainer>

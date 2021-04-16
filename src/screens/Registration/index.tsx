@@ -1,19 +1,20 @@
-import React, { useRef, useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { ActivityIndicator, ScrollView, Animated } from 'react-native';
 import SvgUri from "expo-svg-uri";
 import background from '../../assets/background.svg';
-import logo from '../../assets/logo.png';
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Text, Animated, ActivityIndicator } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import logo from '../../assets/logo.png';
 
 import * as S from './styles';
 
-const Login: React.FC = () => {
+const Registration: React.FC = () => {
 
-  const containerY = useRef(new Animated.Value(-0.5)).current;
-  const [isLoading, setIsLoading] = useState(false);
-  const [secret, setSecret] = useState(true);
   const navigation = useNavigation();
+  const [secret, setSecret] = useState(true);
+  const [csecret, csetSecret] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const containerY = useRef(new Animated.Value(-0.5)).current;
 
   const handleSubmit = () => {
     setIsLoading(true);
@@ -35,7 +36,6 @@ const Login: React.FC = () => {
         style={{position: 'absolute'}}
         source={background}
       />
-
       <S.Logo source={logo} />
 
       <S.BackButton onPress={() => navigation.goBack()}>
@@ -54,8 +54,12 @@ const Login: React.FC = () => {
           ],
         }}
       >
+        <ScrollView showsVerticalScrollIndicator={false}>
+        <S.Title>Registro</S.Title>
 
-        <S.Title>Log in</S.Title>
+        <S.InputContainer>
+          <S.Input placeholder="Nome" />
+        </S.InputContainer>
 
         <S.InputContainer>
           <S.Input placeholder="E-mail" keyboardType="email-address" />
@@ -68,28 +72,30 @@ const Login: React.FC = () => {
           </S.PasswordEye>
         </S.InputContainer>
 
+        <S.InputContainer>
+          <S.Input placeholder="Confirmação de Senha" secureTextEntry={csecret} />
+          <S.PasswordEye onPress={() => csetSecret(prev => !prev)}>
+            <Ionicons name={csecret ? 'eye-outline' : 'eye-off-outline'} size={26} color="#ccc" />
+          </S.PasswordEye>
+        </S.InputContainer>
+
+        <S.InputContainer>
+          <S.Input placeholder="Nick" />
+        </S.InputContainer>
+
         <S.SubmitButton onPress={handleSubmit}>
           {
             isLoading
             ?
             <ActivityIndicator color="#fff" size="large" />
             :
-            <S.SubmitText>Entrar</S.SubmitText>
+            <S.SubmitText>Registrar</S.SubmitText>
           }
         </S.SubmitButton>
-
-        <S.RememberContainer>
-          <S.RememberButton />
-          <S.RememberText>Lembrar minha senha</S.RememberText>
-        </S.RememberContainer>
-
-        <S.ForgotPassButton>
-          <S.ForgotPassText>Esqueceu a senha? <Text style={{color: '#6C0FD9'}}>Clique aqui.</Text></S.ForgotPassText>
-        </S.ForgotPassButton>
-
+        </ScrollView>
       </S.DataContainer>
     </S.Container>
   )
 }
 
-export default Login;
+export default Registration;
