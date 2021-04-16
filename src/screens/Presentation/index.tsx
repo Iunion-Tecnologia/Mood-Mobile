@@ -1,11 +1,15 @@
 import React from 'react';
 import SvgUri from "expo-svg-uri";
 import background from '../../assets/background.svg';
+import { useNavigation } from '@react-navigation/native';
 import logo from '../../assets/logo.png';
 
 import * as S from './styles';
 
 const Presentation: React.FC = () => {
+
+  const navigation = useNavigation();
+
   return (
     <S.Container>
 
@@ -24,7 +28,7 @@ const Presentation: React.FC = () => {
           Mood é um novo modo de socializar.
         </S.SubTitle>
 
-        <S.SiginButton>
+        <S.SiginButton onPress={() => navigation.navigate('Login')}>
           <S.SignInText>Entrar</S.SignInText>
         </S.SiginButton>
 

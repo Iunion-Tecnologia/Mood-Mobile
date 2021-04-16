@@ -3,6 +3,7 @@ import SvgUri from "expo-svg-uri";
 import background from '../../assets/background.svg';
 import logo from '../../assets/logo.png';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { Text, Animated, ActivityIndicator } from 'react-native';
 
 import * as S from './styles';
@@ -12,6 +13,7 @@ const Login: React.FC = () => {
   const containerY = useRef(new Animated.Value(-0.5)).current;
   const [isLoading, setIsLoading] = useState(false);
   const [secret, setSecret] = useState(true);
+  const navigation = useNavigation();
 
   const handleSubmit = () => {
     setIsLoading(true);
@@ -24,6 +26,7 @@ const Login: React.FC = () => {
   Animated.spring(containerY, {
     toValue: 0,
     useNativeDriver: true,
+    delay: 500
   }).start();
 
   return(
@@ -35,6 +38,10 @@ const Login: React.FC = () => {
       />
 
       <S.Logo source={logo} />
+
+      <S.BackButton onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={34} color="white" />
+      </S.BackButton>
 
       <S.DataContainer
         style = {{

@@ -94,3 +94,9 @@ export const RememberText = styled.Text`
   margin-left: 10px;
   color: #999;
 `;
+
+export const BackButton = styled.TouchableOpacity`
+  position: absolute;
+  left: 30px;
+  top: ${30 + Number(StatusBar.currentHeight)}px;
+`;

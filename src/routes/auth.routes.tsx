@@ -15,7 +15,7 @@ const AuthRoutes: React.FC  = () => (
   <>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="Presentation"
         screenOptions={{headerShown: false}}
       >
         <Stack.Screen name="Presentation" component={Presentation} />
