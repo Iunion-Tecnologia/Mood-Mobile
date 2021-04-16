@@ -57,7 +57,6 @@ const SearchNavigator = () => (
 
 const AppRoutes: React.FC  = () => (
     <>
-    <StatusBar backgroundColor="#FFF" style="dark" />
     <NavigationContainer>
       <Tab.Navigator
 

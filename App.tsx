@@ -23,6 +23,7 @@ export default function App() {
   return (
     <>
       <Provider store={store}>
+        <StatusBar style="light" backgroundColor={'rgba(0,0,0,0.3)'} />
         <Routes />
       </Provider>
     </>
