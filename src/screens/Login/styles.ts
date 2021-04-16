@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
-import { StatusBar } from 'react-native';
+import { StatusBar, Animated } from 'react-native';
 
 export const Container = styled.View`
   flex: 1;
@@ -14,7 +14,7 @@ export const Logo = styled.Image`
   top: ${30 + Number(StatusBar.currentHeight)}px;
 `;
 
-export const DataContainer = styled.View`
+export const DataContainer = styled(Animated.View)`
   margin-top: auto;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
@@ -37,6 +37,7 @@ export const InputContainer = styled.View`
   border-width: 1px;
   border-color: #ccc;
   border-radius: 8px;
+  align-items: center;
 `;
 
 export const Input = styled.TextInput.attrs({
@@ -46,6 +47,10 @@ export const Input = styled.TextInput.attrs({
   padding-left: 20px;
   font-size: 16px;
   font-family: Rubik_400Regular;
+`;
+
+export const PasswordEye = styled.TouchableOpacity`
+  padding-right: 10px;
 `;
 
 export const SubmitButton = styled(RectButton)`

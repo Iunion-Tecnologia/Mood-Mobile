@@ -1,12 +1,31 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import SvgUri from "expo-svg-uri";
 import background from '../../assets/background.svg';
 import logo from '../../assets/logo.png';
-import { Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Text, Animated, ActivityIndicator } from 'react-native';
 
 import * as S from './styles';
 
 const Login: React.FC = () => {
+
+  const containerY = useRef(new Animated.Value(-0.5)).current;
+  const [isLoading, setIsLoading] = useState(false);
+  const [secret, setSecret] = useState(true);
+
+  const handleSubmit = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000)
+
+  }
+
+  Animated.spring(containerY, {
+    toValue: 0,
+    useNativeDriver: true,
+  }).start();
+
   return(
     <S.Container>
       <SvgUri
@@ -17,20 +36,41 @@ const Login: React.FC = () => {
 
       <S.Logo source={logo} />
 
-      <S.DataContainer>
+      <S.DataContainer
+        style = {{
+          transform: [
+            {
+              scale : containerY.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 2],
+              }),
+            },
+          ],
+        }}
+      >
 
         <S.Title>Log in</S.Title>
 
         <S.InputContainer>
-          <S.Input placeholder="E-mail" />
+          <S.Input placeholder="E-mail" keyboardType="email-address" />
         </S.InputContainer>
 
         <S.InputContainer>
-          <S.Input placeholder="Senha" />
+          <S.Input placeholder="Senha" secureTextEntry={secret} />
+          <S.PasswordEye onPress={() => setSecret(prev => !prev)}>
+            <Ionicons name={secret ? 'eye-outline' : 'eye-off-outline'} size={26} color="#ccc" />
+          </S.PasswordEye>
         </S.InputContainer>
 
-        <S.SubmitButton>
-          <S.SubmitText>Entrar</S.SubmitText>
+        <S.SubmitButton onPress={handleSubmit}>
+          {
+            isLoading
+            ?
+            <ActivityIndicator color="#fff" size="large" />
+            :
+            <S.SubmitText>Entrar</S.SubmitText>
+          }
+
         </S.SubmitButton>
 
         <S.RememberContainer>
