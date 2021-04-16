@@ -4,9 +4,14 @@ import { StatusBar } from 'react-native';
 
 export const Container = styled.View`
   flex: 1;
-  padding: 0 20px;
+  padding: 0 30px;
   padding-top: ${Number(StatusBar.currentHeight)}px;
   background-color: #6C0FD9;
+`;
+
+export const InfoContainer = styled.View`
+  margin-top: auto;
+  margin-bottom: 30px;
 `;
 
 export const Title = styled.Text`
@@ -43,10 +48,12 @@ export const SignUpButton = styled.TouchableOpacity.attrs({
 `;
 
 export const SignInText = styled.Text`
+  font-family: Rubik_500Medium;
   font-weight: bold;
 `;
 
 export const SignUpText = styled.Text`
+  font-family: Rubik_500Medium;
   font-weight: bold;
   color: #fff;
 `;
