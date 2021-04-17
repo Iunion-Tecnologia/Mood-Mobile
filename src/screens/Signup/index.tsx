@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 import logo from '../../assets/logo.png';
-
 import * as S from './styles';
 
 const Registration: React.FC = () => {

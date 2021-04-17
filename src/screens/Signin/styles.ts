@@ -1,6 +1,11 @@
+import React from 'react';
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 import { StatusBar, Animated } from 'react-native';
+
+interface IInputContainer {
+  erros?: boolean;
+}
 
 export const Container = styled.View`
   flex: 1;
@@ -30,12 +35,12 @@ export const Title = styled.Text`
   color: #333;
 `;
 
-export const InputContainer = styled.View`
+export const InputContainer = styled.View<IInputContainer>`
   height: 60px;
   margin-top: 20px;
   flex-direction: row;
   border-width: 1px;
-  border-color: #ccc;
+  border-color: ${({erros}) => erros ? '#CCC' : '#F00'};
   border-radius: 8px;
   align-items: center;
 `;
@@ -99,4 +104,9 @@ export const BackButton = styled.TouchableOpacity`
   position: absolute;
   left: 30px;
   top: ${30 + Number(StatusBar.currentHeight)}px;
+`;
+
+export const Error = styled.Text`
+  color: #f00;
+  font-size: 10px;
 `;

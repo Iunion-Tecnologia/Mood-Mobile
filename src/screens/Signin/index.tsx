@@ -9,40 +9,29 @@ import { useNavigation } from '@react-navigation/native';
 import { ApplicationState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text, Animated, ActivityIndicator, Alert } from 'react-native';
+import { yupResolver } from '@hookform/resolvers/yup';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-community/async-storage';
 import {login} from '../../store/ducks/auth/actions';
 import api from '../../services/api';
+import * as yup from "yup";
 import * as S from './styles';
+
+const schema = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup.string().min(8).required(),
+});
 
 const SignIn: React.FC = () => {
 
   const containerY = useRef(new Animated.Value(-0.5)).current;
-  const {register, handleSubmit, setValue, errors} = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [secret, setSecret] = useState(true);
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
-  const handleSubmitForm = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      Toast.show({
-        type: 'success',
-        position: 'top',
-        text1: 'Hello',
-        text2: 'This is some something 👋',
-        visibilityTime: 4000,
-        autoHide: true,
-        topOffset: 30,
-        bottomOffset: 40,
-        onShow: () => {},
-        onHide: () => {},
-        onPress: () => {}
-      });
-      setIsLoading(false);
-    }, 2000)
-  }
+  const {register, handleSubmit, setValue, errors} = useForm({
+    resolver: yupResolver(schema)
+  });
 
   Animated.spring(containerY, {
     toValue: 0,
@@ -62,7 +51,19 @@ const SignIn: React.FC = () => {
     }
     catch(error){
       setIsLoading(false);
-      Alert.alert(error.response.data.message);
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Error',
+        text2: error.response.data.message,
+        visibilityTime: 4000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+        onShow: () => {},
+        onHide: () => {},
+        onPress: () => {}
+      });
     }
   }, [])
 
@@ -99,20 +100,23 @@ const SignIn: React.FC = () => {
       >
 
         <ScrollView showsVerticalScrollIndicator={false}>
-        <S.Title>Log in</S.Title>
+        <S.Title>Login</S.Title>
 
-        <S.InputContainer>
+
+        <S.InputContainer erros={!errors.email?.message}>
           <S.Input onChangeText={text => {setValue('email', text)}} placeholder="E-mail" keyboardType="email-address" />
         </S.InputContainer>
+        {errors.email?.message && <S.Error>{errors?.email?.message}</S.Error>}
 
-        <S.InputContainer>
+        <S.InputContainer erros={!errors.password?.message}>
           <S.Input onChangeText={text => {setValue('password', text)}} placeholder="Senha" secureTextEntry={secret} />
           <S.PasswordEye onPress={() => setSecret(prev => !prev)}>
             <Ionicons name={secret ? 'eye-outline' : 'eye-off-outline'} size={26} color="#ccc" />
           </S.PasswordEye>
         </S.InputContainer>
+        {errors.password?.message && <S.Error>{errors?.password?.message}</S.Error>}
 
-        <S.SubmitButton onPress={handleSubmitForm}>
+        <S.SubmitButton onPress={handleSubmit(handleSignIn)}>
           {
             isLoading
             ?
