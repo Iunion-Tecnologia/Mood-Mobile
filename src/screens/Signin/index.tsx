@@ -4,11 +4,10 @@ import SvgUri from "expo-svg-uri";
 import { useForm } from 'react-hook-form';
 import background from '../../assets/background.svg';
 import logo from '../../assets/logo.png';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { ApplicationState } from '../../store';
-import { useDispatch, useSelector } from 'react-redux';
-import { Text, Animated, ActivityIndicator, Alert } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { Text, Animated, ActivityIndicator } from 'react-native';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -25,6 +24,7 @@ const schema = yup.object().shape({
 const SignIn: React.FC = () => {
 
   const containerY = useRef(new Animated.Value(-0.5)).current;
+  const [remember, setRemeber] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [secret, setSecret] = useState(true);
   const dispatch = useDispatch();
@@ -127,7 +127,11 @@ const SignIn: React.FC = () => {
         </S.SubmitButton>
 
         <S.RememberContainer>
-          <S.RememberButton />
+          <S.RememberButton onPress={() => setRemeber(prev => !prev)}>
+            {
+              remember && <AntDesign name="check" size={18} color="black" />
+            }
+          </S.RememberButton>
           <S.RememberText>Lembrar minha senha</S.RememberText>
         </S.RememberContainer>
 

@@ -92,6 +92,8 @@ export const RememberButton = styled.TouchableOpacity`
   width: 20px;
   border-width: 1px;
   border-color: #999;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const RememberText = styled.Text`

@@ -2,6 +2,10 @@ import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 import { StatusBar, Animated } from 'react-native';
 
+interface IInputContainer {
+  errors?: boolean;
+}
+
 export const Container = styled.View`
   flex: 1;
   padding-top: ${Number(StatusBar.currentHeight)}px;
@@ -37,12 +41,12 @@ export const Title = styled.Text`
   color: #333;
 `;
 
-export const InputContainer = styled.View`
+export const InputContainer = styled.View<IInputContainer>`
   height: 60px;
   margin-top: 20px;
   flex-direction: row;
   border-width: 1px;
-  border-color: #ccc;
+  border-color: ${({errors}) => errors ? '#CCC' : '#F00'};
   border-radius: 8px;
   align-items: center;
 `;
@@ -72,4 +76,9 @@ export const SubmitButton = styled(RectButton)`
 export const SubmitText = styled.Text`
   color: #fff;
   font-weight: bold;
+`;
+
+export const Error = styled.Text`
+  color: #f00;
+  font-size: 10px;
 `;
