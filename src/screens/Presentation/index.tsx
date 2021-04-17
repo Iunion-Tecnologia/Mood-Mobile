@@ -28,11 +28,11 @@ const Presentation: React.FC = () => {
           Mood é um novo modo de socializar.
         </S.SubTitle>
 
-        <S.SiginButton onPress={() => navigation.navigate('Login')}>
+        <S.SiginButton onPress={() => navigation.navigate('SignIn')}>
           <S.SignInText>Entrar</S.SignInText>
         </S.SiginButton>
 
-        <S.SignUpButton onPress={() => navigation.navigate('Registration')}>
+        <S.SignUpButton onPress={() => navigation.navigate('SignUp')}>
           <S.SignUpText>Registra-se</S.SignUpText>
         </S.SignUpButton>
       </S.InfoContainer>

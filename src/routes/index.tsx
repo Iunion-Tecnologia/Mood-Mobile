@@ -16,7 +16,7 @@ const Routes: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    
+
     async function loadUser(){
       const token = await AsyncStorage.getItem('@mood/token');
       const id = await AsyncStorage.getItem('@mood/id');
@@ -28,10 +28,10 @@ const Routes: React.FC = () => {
         dispatch(login({user: response.data.user, token: token} as IRequest));
       }
       catch(error){
-        console.log(error.response.data.message);
+        console.log('>' + error.response.data.message);
         //Alert.alert(error.response.data.message);
       }
-      setIsLoading(false);   
+      setIsLoading(false);
     }
 
     loadUser();

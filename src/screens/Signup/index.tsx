@@ -1,94 +1,115 @@
-import React, {useEffect, useCallback, useState} from 'react';
+import React, { useState, useRef } from 'react';
+import { ActivityIndicator, ScrollView, Animated } from 'react-native';
+import SvgUri from "expo-svg-uri";
+import background from '../../assets/background.svg';
 import { useNavigation } from '@react-navigation/native';
-import {ActivityIndicator, Alert} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
+import logo from '../../assets/logo.png';
+
 import * as S from './styles';
-import Mood from '../../assets/mood.png';
-import {Feather} from '@expo/vector-icons';
-import {MaterialIcons} from '@expo/vector-icons';
-import {useForm} from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import api from '../../services/api';
-import * as yup from "yup";
 
-const schema = yup.object().shape({
-  name: yup.string().required(),
-  email: yup.string().required().email(),
-  password: yup.string().min(8),
-  nick: yup.string().required(),
-});
-
-const SignUp: React.FC = () => {
+const Registration: React.FC = () => {
 
   const navigation = useNavigation();
+  const [secret, setSecret] = useState(true);
+  const [csecret, csetSecret] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const {register, handleSubmit, setValue, errors} = useForm({
-    resolver: yupResolver(schema)
-  });
+  const containerY = useRef(new Animated.Value(-0.5)).current;
 
-  const handleSignUp = useCallback(async (data) => {
+  const handleSubmit = () => {
     setIsLoading(true);
-    try {
-      const response = await api.post('/user/signup', data);
-      Alert.alert('Usuário Cadastrado!', 'Seus dados foram cadastrados, realize seu login.');
+    setTimeout(() => {
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Hello',
+        text2: 'This is some something 👋',
+        visibilityTime: 4000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+        onShow: () => {},
+        onHide: () => {},
+        onPress: () => {}
+      });
       setIsLoading(false);
-      navigation.navigate('SignIn');
-    }
-    catch(error){
-      Alert.alert('Ocorreu um erro!', error.response.data.message);
-      setIsLoading(false);
-    }
-  }, []);
+    }, 2000)
+  }
 
-  useEffect(() => {
-    register('name');
-    register('email');
-    register('nick');
-    register('password');
-  }, [register]);
+  Animated.spring(containerY, {
+    toValue: 0,
+    useNativeDriver: true,
+    delay: 500
+  }).start();
 
-  return (
-    <>
+  return(
     <S.Container>
-      <S.Logo resizeMode="contain" source={Mood} />
+      <SvgUri
+        fillAll
+        style={{position: 'absolute'}}
+        source={background}
+      />
+      <S.Logo source={logo} />
 
-      <S.Title>Crie sua conta</S.Title>
+      <S.BackButton onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={34} color="white" />
+      </S.BackButton>
+
+      <S.DataContainer
+        style = {{
+          transform: [
+            {
+              scale : containerY.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 2],
+              }),
+            },
+          ],
+        }}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
+        <S.Title>Registro</S.Title>
 
         <S.InputContainer>
-          <Feather name="user" size={20} color="#999" />
-          <S.InputText onChangeText={text => {setValue('name', text)}} placeholder="Nome" />
-        </S.InputContainer>
-        <S.InputContainer>
-          <Feather name="mail" size={20} color="#999" />
-          <S.InputText onChangeText={text => {setValue('email', text)}} placeholder="E-mail" />
-        </S.InputContainer>
-        <S.InputContainer>
-          <Feather name="lock" size={20} color="#999" />
-          <S.InputText onChangeText={text => {setValue('password', text)}} placeholder="Senha" />
-        </S.InputContainer>
-        <S.InputContainer>
-          <Feather name="paperclip" size={20} color="#999" />
-          <S.InputText onChangeText={text => {setValue('nick', text)}} placeholder="Nick" />
+          <S.Input placeholder="Nome" />
         </S.InputContainer>
 
-        <S.SubmitContainer disabled={isLoading} onPress={handleSubmit(handleSignUp)}>
+        <S.InputContainer>
+          <S.Input placeholder="E-mail" keyboardType="email-address" />
+        </S.InputContainer>
+
+        <S.InputContainer>
+          <S.Input placeholder="Senha" secureTextEntry={secret} />
+          <S.PasswordEye onPress={() => setSecret(prev => !prev)}>
+            <Ionicons name={secret ? 'eye-outline' : 'eye-off-outline'} size={26} color="#ccc" />
+          </S.PasswordEye>
+        </S.InputContainer>
+
+        <S.InputContainer>
+          <S.Input placeholder="Confirmação de Senha" secureTextEntry={csecret} />
+          <S.PasswordEye onPress={() => csetSecret(prev => !prev)}>
+            <Ionicons name={csecret ? 'eye-outline' : 'eye-off-outline'} size={26} color="#ccc" />
+          </S.PasswordEye>
+        </S.InputContainer>
+
+        <S.InputContainer>
+          <S.Input placeholder="Nick" />
+        </S.InputContainer>
+
+        <S.SubmitButton onPress={handleSubmit}>
           {
             isLoading
             ?
-            <ActivityIndicator size="large" color="#FFF" />
+            <ActivityIndicator color="#fff" size="large" />
             :
-            <S.SubmitText>Cadastrar</S.SubmitText>
+            <S.SubmitText>Registrar</S.SubmitText>
           }
-          
-        </S.SubmitContainer>
+        </S.SubmitButton>
+        </ScrollView>
+      </S.DataContainer>
     </S.Container>
-    <S.Bottom onPress={() => navigation.navigate('SignIn')}>
-      <MaterialIcons name="arrow-back" size={24} color="#6C0FD9" />
-      <S.BottomText>
-        Voltar para logon
-      </S.BottomText>
-    </S.Bottom>
-    </>
   )
 }
 
-export default SignUp;
+export default Registration;

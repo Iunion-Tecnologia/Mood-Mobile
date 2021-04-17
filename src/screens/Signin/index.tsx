@@ -1,33 +1,54 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert} from 'react-native';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
+import { ScrollView } from 'react-native';
+import SvgUri from "expo-svg-uri";
+import { useForm } from 'react-hook-form';
+import background from '../../assets/background.svg';
+import logo from '../../assets/logo.png';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import * as S from './styles';
-import Mood from '../../assets/mood.png';
-import {useForm} from 'react-hook-form';
-import {Feather, Entypo} from '@expo/vector-icons';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
-import {login} from '../../store/ducks/auth/actions';
-import {ApplicationState} from '../../store';
-import api from '../../services/api';
+import { ApplicationState } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { Text, Animated, ActivityIndicator, Alert } from 'react-native';
+import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-community/async-storage';
-
-const schema = yup.object().shape({
-  email: yup.string().email().required(),
-  password: yup.string().min(8).required(),
-});
+import {login} from '../../store/ducks/auth/actions';
+import api from '../../services/api';
+import * as S from './styles';
 
 const SignIn: React.FC = () => {
-  const navigation = useNavigation();
-  const [secure, setSecure] = useState(true);
+
+  const containerY = useRef(new Animated.Value(-0.5)).current;
+  const {register, handleSubmit, setValue, errors} = useForm();
   const [isLoading, setIsLoading] = useState(false);
-  const auth = useSelector((state: ApplicationState) => state.auth);
+  const [secret, setSecret] = useState(true);
   const dispatch = useDispatch();
-  const {register, handleSubmit, setValue, errors} = useForm({
-    resolver: yupResolver(schema)
-  });
-  
+  const navigation = useNavigation();
+
+  const handleSubmitForm = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Hello',
+        text2: 'This is some something 👋',
+        visibilityTime: 4000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+        onShow: () => {},
+        onHide: () => {},
+        onPress: () => {}
+      });
+      setIsLoading(false);
+    }, 2000)
+  }
+
+  Animated.spring(containerY, {
+    toValue: 0,
+    useNativeDriver: true,
+    delay: 500
+  }).start();
 
   const handleSignIn = useCallback(async(data) => {
     setIsLoading(true);
@@ -42,7 +63,7 @@ const SignIn: React.FC = () => {
     catch(error){
       setIsLoading(false);
       Alert.alert(error.response.data.message);
-    }  
+    }
   }, [])
 
   useEffect(() => {
@@ -50,43 +71,68 @@ const SignIn: React.FC = () => {
     register('password');
   }, [register]);
 
-  return (
-    <>
+  return(
     <S.Container>
-      <S.Logo resizeMode="contain" source={Mood} />
-      <S.Title>Faça seu login</S.Title>
+      <SvgUri
+        fillAll
+        style={{position: 'absolute'}}
+        source={background}
+      />
 
-        <S.InputContainer style={{borderColor: errors.email?.message ? '#f00' : '#ddd'}}>
-          <Feather name="mail" size={20} color="#999" />
-          <S.InputText onChangeText={text => {setValue('email', text)}} placeholder="E-mail" />
+      <S.Logo source={logo} />
+
+      <S.BackButton onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={34} color="white" />
+      </S.BackButton>
+
+      <S.DataContainer
+        style = {{
+          transform: [
+            {
+              scale : containerY.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 2],
+              }),
+            },
+          ],
+        }}
+      >
+
+        <ScrollView showsVerticalScrollIndicator={false}>
+        <S.Title>Log in</S.Title>
+
+        <S.InputContainer>
+          <S.Input onChangeText={text => {setValue('email', text)}} placeholder="E-mail" keyboardType="email-address" />
         </S.InputContainer>
-        <S.InputContainer style={{borderColor: errors.password?.message ? '#f00' : '#ddd'}}>
-          <Feather name="lock" size={20} color="#999" />
-          <S.InputText secureTextEntry={secure} onChangeText={text => {setValue('password', text)}} placeholder="Senha" />
-          <S.PassButton onPress={() => setSecure(e => !e)}>
-            <Feather name={secure ? 'eye' : 'eye-off'} size={20} color="#999" />
-          </S.PassButton>
+
+        <S.InputContainer>
+          <S.Input onChangeText={text => {setValue('password', text)}} placeholder="Senha" secureTextEntry={secret} />
+          <S.PasswordEye onPress={() => setSecret(prev => !prev)}>
+            <Ionicons name={secret ? 'eye-outline' : 'eye-off-outline'} size={26} color="#ccc" />
+          </S.PasswordEye>
         </S.InputContainer>
-        <S.SubmitContainer disabled={isLoading} onPress={handleSubmit(handleSignIn)}>
+
+        <S.SubmitButton onPress={handleSubmitForm}>
           {
             isLoading
             ?
-            <ActivityIndicator size="large" color="#FFF" />
+            <ActivityIndicator color="#fff" size="large" />
             :
             <S.SubmitText>Entrar</S.SubmitText>
           }
-          
-        </S.SubmitContainer>
-      
-      <S.ForgotButton>
-        <S.ForgotPass>Esqueci minha senha</S.ForgotPass>
-      </S.ForgotButton>
+        </S.SubmitButton>
+
+        <S.RememberContainer>
+          <S.RememberButton />
+          <S.RememberText>Lembrar minha senha</S.RememberText>
+        </S.RememberContainer>
+
+        <S.ForgotPassButton>
+          <S.ForgotPassText>Esqueceu a senha? <Text style={{color: '#6C0FD9'}}>Clique aqui.</Text></S.ForgotPassText>
+        </S.ForgotPassButton>
+        </ScrollView>
+      </S.DataContainer>
     </S.Container>
-    <S.Bottom onPress={() => navigation.navigate("SignUp")}>
-      <Entypo name="login" size={22} color="#6C0FD9" />
-      <S.BottomText>Criar uma conta</S.BottomText>
-    </S.Bottom>
-    </>
   )
 }
 
