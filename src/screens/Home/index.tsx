@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import * as S from './styles';
 import Header from '../../components/Header';
+import Post from '../../components/Post'
 import {FlatList, RefreshControl, Alert, ActivityIndicator} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
@@ -11,6 +12,7 @@ interface IPost {
   u_name: string;
   p_content: string;
   p_image_url: string | null;
+  p_created_at: string;
   u_nick: string;
   u_avatar_url: string;
 }
@@ -88,30 +90,7 @@ const Home: React.FC = () => {
           onEndReachedThreshold={0.01}
           data={posts}
           keyExtractor={(item) => item.p_id}
-          renderItem={({item}) => (
-            <S.PostContainer>
-            <S.LeftSide>
-              <S.Touchable onPress={() => navigation.navigate('UserScreen', {id: item.u_id})}>
-                <S.Avatar source={{uri: `${item.u_avatar_url}`}}></S.Avatar>
-              </S.Touchable>
-            </S.LeftSide>
-            <S.RightSide>
-              <S.PostHeader>
-                <S.Touchable onPress={() => navigation.navigate('UserScreen', {id: item.u_id})}>
-                  <S.PostUser>{item.u_name}</S.PostUser>
-                </S.Touchable>
-                <S.PostNick>@{item.u_nick}</S.PostNick>
-              </S.PostHeader>
-              <S.Data>
-                {item.p_content}
-              </S.Data>
-              {
-                item.p_image_url &&
-                <S.Image resizeMode="contain" source={{uri: `${item.p_image_url}`}} />
-              }
-            </S.RightSide>
-          </S.PostContainer>
-          )}
+          renderItem={({item}) => <Post data={item} navigate={navigation.navigate} />}
         />
 
     </S.Container>

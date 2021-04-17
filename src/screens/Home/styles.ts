@@ -8,19 +8,6 @@ export const Container = styled.View`
   background-color: #FFF;
 `;
 
-export const PostButton = styled(RectButton)`
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-
-  height: 60px;
-  width: 60px;
-  border-radius: 30px;
-  background-color: #6C0FD9;
-
-  align-items: center;
-  justify-content: center;
-`;
 
 export const PostContainer = styled.View`
   min-height: 62px;
