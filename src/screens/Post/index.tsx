@@ -16,27 +16,6 @@ const CreatePost: React.FC = () => {
   const {register, handleSubmit, setValue, errors} = useForm();
   const [image, setImage] = useState<ImageInfo>();
 
-  const handleUploadImage = useCallback(async () =>  {
-  
-    try {
-      let formData = new FormData();
-
-      formData.append('avatar', {
-        uri: image?.uri,
-        name: `photo.jpeg`,
-        type: `image/jpeg`,
-      });
-  
-      const response = await api.patch('/post/create', formData, {headers:{
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-      }
-    })  
-    }
-    catch(error){
-    }
-  }, [image])
-
   const handlePost = useCallback(async (data) => {
     setIsLoading(true);
     try{
@@ -50,7 +29,7 @@ const CreatePost: React.FC = () => {
         });
       }
 
-      formData.append('content', data.content);
+      formData.append('content', data.content ?? '');
 
       const response = await api.post('/post/create', formData, {headers:{
         Accept: 'application/json',
@@ -70,7 +49,7 @@ const CreatePost: React.FC = () => {
       console.log(error.response.headers);
       setIsLoading(false);
     }
-  }, [])
+  }, [image])
 
   const openImagePickerAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -95,13 +74,13 @@ const CreatePost: React.FC = () => {
     <ScrollView>
       <S.ImageButton onPress={() => openImagePickerAsync()}>
         {
-          image 
+          image
           ?
           <S.Image resizeMode="contain" source={{uri: image.uri}} />
           :
           <Entypo name="camera" size={50} color="rgba(0,0,0,0.2)" />
         }
-        
+
       </S.ImageButton>
 
       <S.Input
