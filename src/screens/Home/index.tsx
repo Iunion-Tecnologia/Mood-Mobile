@@ -62,7 +62,6 @@ const Home: React.FC = () => {
 
   return (
     <S.Container>
-      <Header />
         <FlatList
           refreshControl={
             <RefreshControl
@@ -109,7 +108,7 @@ const Home: React.FC = () => {
               {
                 item.p_image_url &&
                 <S.Image resizeMode="contain" source={{uri: `${item.p_image_url}`}} />
-              }   
+              }
             </S.RightSide>
           </S.PostContainer>
           )}
