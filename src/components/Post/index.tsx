@@ -1,6 +1,7 @@
 import React from 'react';
-
 import * as S from './styles';
+import timeAgo from '../../utils/time';
+import { Octicons } from '@expo/vector-icons';
 
 interface IPost {
   data: {
@@ -18,28 +19,31 @@ interface IPost {
 
 const Post: React.FC<IPost> = ({ data, navigate }) => {
   return (
-    <S.PostContainer>
-      <S.LeftSide>
-        <S.Touchable onPress={() => navigate('UserScreen', {id: data.u_id})}>
-          <S.Avatar source={{uri: `${data.u_avatar_url}`}}></S.Avatar>
-        </S.Touchable>
-      </S.LeftSide>
-      <S.RightSide>
-        <S.PostHeader>
-          <S.Touchable onPress={() => navigate('UserScreen', {id: data.u_id})}>
-            <S.PostUser>{data.u_name}</S.PostUser>
-          </S.Touchable>
-          <S.PostNick>@{data.u_nick}</S.PostNick>
-        </S.PostHeader>
-        <S.Data>
-          {data.p_content}
-        </S.Data>
+    <S.Container>
+      <S.Header>
+        <S.Avatar source={{uri: data.u_avatar_url}} />
+        <S.HeaderData>
+          <S.Name>{data.u_nick.toLowerCase()}</S.Name>
+          <S.Date>{timeAgo(new Date(data.p_created_at))}</S.Date>
+        </S.HeaderData>
+      </S.Header>
+      <S.ContentContainer>
+        {
+          !!data.p_content &&
+          <S.Content>
+            {data.p_content}
+          </S.Content>
+        }
         {
           data.p_image_url &&
           <S.Image resizeMode="contain" source={{uri: `${data.p_image_url}`}} />
         }
-      </S.RightSide>
-    </S.PostContainer>
+      </S.ContentContainer>
+      <S.Bottom>
+        <Octicons name="comment" size={24} color="#6C0FD9" />
+        <S.Comments>2</S.Comments>
+      </S.Bottom>
+    </S.Container>
   )
 }
 

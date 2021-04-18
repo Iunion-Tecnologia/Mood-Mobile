@@ -1,64 +1,73 @@
 import styled from 'styled-components/native';
-import { StatusBar } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
 
-export const PostContainer = styled.View`
+export const Container = styled.View`
   min-height: 62px;
-  padding: 0 10px;
+  padding: 20px 0px;
   border-bottom-width: 1px;
   border-color: #eee;
   background-color: #fff;
-  flex-direction: row;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
 `;
 
-export const PostHeader = styled.View`
-  height: 25px;
+export const Header = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-top: 5px;
-`;
-
-export const PostUser = styled.Text.attrs({
-  numberOfLine: 1,
-})`
-  font-weight: bold;
-  font-size: 16px;
-`;
-
-export const PostNick = styled.Text`
-  margin-left: 5px;
-  font-size: 12px;
-  color: #6C0FD9;
-`;
-
-export const Data = styled.Text`
-
-`;
-
-export const Image = styled.Image.attrs({
-
-})`
-  margin-top: 10px;
   width: 100%;
-  height: 320px;
+  padding: 0 10px;
 `;
 
 export const Avatar = styled.Image`
-  width: 60px;
-  height: 60px;
-  border-radius: 5px;
-  margin-top: 10px;
-  background-color: #eee;
+  height: 50px;
+  width: 50px;
+  border-radius: 40px;
+  background-color: #EEE;
 `;
 
-export const LeftSide = styled.View`
-  width: 60px;
-`;
-
-export const RightSide = styled.View`
+export const HeaderData = styled.View`
+  margin-left: 10px;
   flex: 1;
-  padding-left: 10px;
 `;
 
-export const Touchable = styled.TouchableOpacity``;
+export const Name = styled.Text`
+  font-family: Rubik_500Medium;
+  font-size: 16px;
+`;
+
+export const Date = styled.Text`
+  font-family: Rubik_400Regular;
+  color: #ccc;
+`;
+
+export const ContentContainer = styled.View`
+`;
+
+export const Content = styled.Text`
+  font-family: Rubik_400Regular;
+  font-size: 20px;
+  margin: 0 10px;
+  margin-top: 10px;
+`;
+
+export const Image = styled.Image`
+  margin-top: 10px;
+  width: 100%;
+  height: 412px;
+  background-color: #EEE;
+`;
+
+export const Bottom = styled.View`
+  height: 50px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  padding: 0 10px;
+  background-color: #fff;
+`;
+
+export const Comments = styled.Text`
+  color: #6C0FD9;
+  font-family: Rubik_300Light;
+  margin-left: 10px;
+  margin-right: 0px;
+  font-size: 18px;
+`;
