@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { memo } from 'react';
+import { TouchableOpacity } from 'react-native';
 import * as S from './styles';
 import timeAgo from '../../utils/time';
 import { Octicons } from '@expo/vector-icons';
@@ -13,12 +14,15 @@ interface IPost {
     p_content: string;
     p_image_url: string | null;
     p_created_at: string;
+    p_comment_count: number;
   }
   navigate(name: string, params: Object): void;
+  comment():void;
 }
 
-const Post: React.FC<IPost> = ({ data, navigate }) => {
+const Post: React.FC<IPost> = ({ data, navigate, comment }) => {
   return (
+    <>
     <S.Container>
       <S.Header>
         <S.Avatar source={{uri: data.u_avatar_url}} />
@@ -40,11 +44,14 @@ const Post: React.FC<IPost> = ({ data, navigate }) => {
         }
       </S.ContentContainer>
       <S.Bottom>
-        <Octicons name="comment" size={24} color="#6C0FD9" />
-        <S.Comments>2</S.Comments>
+        <TouchableOpacity onPress={comment} style={{flexDirection: 'row'}}>
+          <Octicons name="comment" size={24} color="#6C0FD9" />
+          <S.Comments>{data.p_comment_count}</S.Comments>
+        </TouchableOpacity>
       </S.Bottom>
     </S.Container>
+  </>
   )
 }
 
-export default Post;
+export default memo(Post);

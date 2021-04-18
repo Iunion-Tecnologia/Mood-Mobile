@@ -4,7 +4,7 @@ import {RectButton} from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   flex: 1;
-  margin-top: ${Number(StatusBar.currentHeight)}px;
+  padding-top: ${Number(StatusBar.currentHeight)}px;
   background-color: #FFF;
 `;
 

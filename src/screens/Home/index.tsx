@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import * as S from './styles';
-import Header from '../../components/Header';
 import Post from '../../components/Post'
-import {FlatList, RefreshControl, Alert, ActivityIndicator} from 'react-native';
+import {FlatList, RefreshControl, Alert, ActivityIndicator, VirtualizedList} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import CommentModal from '../../components/Comment';
 import api from '../../services/api';
 
 interface IPost {
@@ -15,6 +15,7 @@ interface IPost {
   p_created_at: string;
   u_nick: string;
   u_avatar_url: string;
+  p_comment_count: number;
 }
 
 const Home: React.FC = () => {
@@ -25,6 +26,8 @@ const Home: React.FC = () => {
   const [time, setTime] = useState<Date>(new Date());
   const [isLoading, setIsLoading] = useState(false);
   const [shuldLoad, setShuldLoad] = useState(true);
+  const [postId, setPostId] = useState('')
+  const [comment, setComment] = useState(false);
 
   const handleRefresh = useCallback(async() => {
     setRefresh(true);
@@ -58,12 +61,18 @@ const Home: React.FC = () => {
     }
   }, [time, page])
 
+  const handleComment = useCallback((id: string) => {
+    setPostId(id);
+    setComment(true);
+  }, [])
+
   useEffect(() => {
     handleLoadPosts();
   }, [])
 
   return (
     <S.Container>
+        <CommentModal onRequestClose={() => setComment(false)} postId={postId} visible={comment} animationType="slide" />
         <FlatList
           refreshControl={
             <RefreshControl
@@ -90,7 +99,7 @@ const Home: React.FC = () => {
           onEndReachedThreshold={0.01}
           data={posts}
           keyExtractor={(item) => item.p_id}
-          renderItem={({item}) => <Post data={item} navigate={navigation.navigate} />}
+          renderItem={({item}) => <Post data={item} navigate={navigation.navigate} comment={() => handleComment(item.p_id)} />}
         />
 
     </S.Container>
