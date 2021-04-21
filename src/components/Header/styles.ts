@@ -13,13 +13,12 @@ export const Container = styled.View`
   justify-content: space-between;
   align-items: center;
 
-  padding: 20px;
+  padding: 0 10px;
 `;
 
 export const Logo = styled.Image`
   height: 40px;
   width: 90px;
-  margin-left: 10px;
 
   padding-right: 3px;
   margin-right: 20px;

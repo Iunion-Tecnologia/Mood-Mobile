@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import api from '../../services/api';
 import * as S from './styles';
 import timeAgo from '../../utils/time';
-import { Item } from '../../screens/Search/styles';
 
 interface IComment extends ModalProps {
   postId: string;
@@ -74,7 +73,7 @@ const Comment: React.FC<IComment> = ({ postId, ...rest }) => {
   useEffect(() => {
     register('content');
     handleLoadComments();
-  }, [postId]);
+  }, [postId, register]);
 
   return (
     <Modal transparent {...rest}>
