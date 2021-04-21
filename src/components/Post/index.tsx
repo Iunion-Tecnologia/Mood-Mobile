@@ -42,9 +42,7 @@ const Post: React.FC<IPost> = ({ data, navigate, comment }) => {
         </S.ContentContainer>
         <S.Bottom>
           <TouchableOpacity disabled style={{ flexDirection: 'row' }}>
-            <S.Comments style={{ color: '#CCC' }}>
-              {data.p_comment_count}
-            </S.Comments>
+            <S.Comments style={{ color: '#CCC' }}>0</S.Comments>
             <AntDesign name="hearto" size={24} color="#CCC" />
           </TouchableOpacity>
           <TouchableOpacity onPress={comment} style={{ flexDirection: 'row' }}>
