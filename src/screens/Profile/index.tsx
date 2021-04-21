@@ -1,92 +1,97 @@
-import React, {useEffect, useCallback, useState} from 'react';
-import {FlatList, RefreshControl, ActivityIndicator, Alert} from 'react-native';
+import React, { useEffect, useCallback, useState } from 'react';
+import {
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 import Header from '../../components/Header';
-import {useSelector} from 'react-redux';
-import {ApplicationState} from '../../store';
+import { useSelector } from 'react-redux';
+import { ApplicationState } from '../../store';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
+import Post from '../../components/Post';
 import api from '../../services/api';
 import * as S from './styles';
 
 interface IUser {
-  id: string,
-  name: string,
-  nick: string,
+  id: string;
+  name: string;
+  nick: string;
   avatar_url: string | null;
   bio: string | null;
-  followers_count: number,
-  following_count: number,
-  post_count: number,
+  followers_count: number;
+  following_count: number;
+  post_count: number;
 }
 
 interface IPost {
-  id: string;
+  comment_count: number;
   content: string;
-  image_url: string;
+  created_at: string;
+  id: string;
+  image_url: string | null;
+  updated_at: string;
+  user_id: string;
 }
 
 const User: React.FC = () => {
   const navigation = useNavigation();
   const auth = useSelector((state: ApplicationState) => state.auth);
   const [user, setUser] = useState<IUser>();
-  const [status, setStatus] = useState<boolean>(false)
+  const [status, setStatus] = useState<boolean>(false);
   const [posts, setPosts] = useState<IPost[]>([]);
   const [refresh, setRefresh] = useState(false);
-  const [page,setPage] = useState(0);
+  const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [shuldLoad, setShuldLoad] = useState(true);
-  const route = useRoute<
-  RouteProp<{ params: { id: string } }, 'params'>
->();
+  const route = useRoute<RouteProp<{ params: { id: string } }, 'params'>>();
 
-  const handleRefresh = async() => {
+  const handleRefresh = async () => {
     setRefresh(true);
     handleLoadProfile();
     setIsLoading(true);
-    try{
+    try {
       const response = await api.get(`/post/user/${auth.user?.id}?page=${0}`);
       setShuldLoad(true);
-      setPosts(response.data)
+      setPosts(response.data);
       setPage(1);
-    }
-    catch(error){
+    } catch (error) {
       // console.log(error);
     }
     setIsLoading(false);
     setRefresh(false);
-  }
+  };
 
-  const handleLoadProfile = useCallback(async() => {
+  const handleLoadProfile = useCallback(async () => {
     try {
       const response = await api.get(`/user/profile/${auth.user?.id}`);
       setUser(response.data.user);
       setStatus(response.data.is_following);
-    }
-    catch(error){
+    } catch (error) {
       // console.log(error);
     }
-
-  }, [route])
+  }, [route]);
 
   const handleLoadPosts = useCallback(async () => {
     setIsLoading(true);
-    try{
-      const response = await api.get(`/post/user/${auth.user?.id}?page=${page}`);
-      !response.data.length && setShuldLoad(false)
-      setPosts([...posts,...response.data])
-      setPage(e => e+=1);
-    }
-    catch(error){
+    try {
+      const response = await api.get(
+        `/post/user/${auth.user?.id}?page=${page}`,
+      );
+      !response.data.length && setShuldLoad(false);
+      setPosts([...posts, ...response.data]);
+      setPage(e => (e += 1));
+    } catch (error) {
       // console.log(error);
     }
     setIsLoading(false);
-  }, [page])
+  }, [page]);
 
   useEffect(() => {
     handleLoadProfile();
     handleLoadPosts();
-  }, [])
+  }, []);
 
   return (
     <S.Container>
@@ -117,63 +122,73 @@ const User: React.FC = () => {
         }}
         ListHeaderComponent={() => (
           <S.InfoContainer>
-          <S.TopInfo>
-            <S.ProfileImage source={{uri: `${user?.avatar_url}`}} />
-            <S.DataContainer>
-              <S.Data>
-                <S.DataNumber>{user?.post_count}</S.DataNumber>
-                <S.DataName>Posts</S.DataName>
-              </S.Data>
-              <S.DataButton onPress={() => navigation.navigate('FollowScreen', {id: user?.id, type: 'getfollowers'})}>
-                <S.DataNumber>{user?.followers_count}</S.DataNumber>
-                <S.DataName>Seguidores</S.DataName>
-              </S.DataButton>
-              <S.DataButton onPress={() => navigation.navigate('FollowScreen', {id: user?.id, type: 'getfollowing'})}>
-                <S.DataNumber>{user?.following_count}</S.DataNumber>
-                <S.DataName>Seguindo</S.DataName>
-              </S.DataButton>
-            </S.DataContainer>
-          </S.TopInfo>
+            <S.TopInfo>
+              <S.ProfileImage source={{ uri: `${user?.avatar_url}` }} />
+              <S.DataContainer>
+                <S.Data>
+                  <S.DataNumber>{user?.post_count}</S.DataNumber>
+                  <S.DataName>Posts</S.DataName>
+                </S.Data>
+                <S.DataButton
+                  onPress={() =>
+                    navigation.navigate('FollowScreen', {
+                      id: user?.id,
+                      type: 'getfollowers',
+                    })
+                  }
+                >
+                  <S.DataNumber>{user?.followers_count}</S.DataNumber>
+                  <S.DataName>Seguidores</S.DataName>
+                </S.DataButton>
+                <S.DataButton
+                  onPress={() =>
+                    navigation.navigate('FollowScreen', {
+                      id: user?.id,
+                      type: 'getfollowing',
+                    })
+                  }
+                >
+                  <S.DataNumber>{user?.following_count}</S.DataNumber>
+                  <S.DataName>Seguindo</S.DataName>
+                </S.DataButton>
+              </S.DataContainer>
+            </S.TopInfo>
 
-          <S.ProfileName>{user?.name}</S.ProfileName>
-          <S.ProfileNick>@{user?.nick}</S.ProfileNick>
+            <S.ProfileName>{user?.name}</S.ProfileName>
+            <S.ProfileNick>@{user?.nick}</S.ProfileNick>
 
-          <S.ProfileDescription>{user?.bio}</S.ProfileDescription>
-          <S.ButtonBottom onPress={() => navigation.navigate('EditScreen')} follow={true}>
-            <S.ButtonBottomText follow={true}>
-              Editar Perfil
-            </S.ButtonBottomText>
-          </S.ButtonBottom>
-        </S.InfoContainer>
+            <S.ProfileDescription>{user?.bio}</S.ProfileDescription>
+            <S.ButtonBottom
+              onPress={() => navigation.navigate('EditScreen')}
+              follow={true}
+            >
+              <S.ButtonBottomText follow={true}>
+                Editar Perfil
+              </S.ButtonBottomText>
+            </S.ButtonBottom>
+          </S.InfoContainer>
         )}
         data={posts}
-        renderItem={({item}) => (
-          <S.PostContainer>
-          <S.LeftSide>
-            <S.Touchable>
-              <S.Avatar source={{uri: `${user?.avatar_url}`}}></S.Avatar>
-            </S.Touchable>
-          </S.LeftSide>
-          <S.RightSide>
-            <S.PostHeader>
-              <S.Touchable>
-                <S.PostUser>{user?.name}</S.PostUser>
-              </S.Touchable>
-              <S.PostNick>@{user?.nick}</S.PostNick>
-            </S.PostHeader>
-            <S.PostData>
-              {item.content}
-            </S.PostData>
-            {
-              item.image_url &&
-              <S.Image resizeMode="contain" source={{uri: `${item.image_url}`}} />
-            }  
-          </S.RightSide>
-        </S.PostContainer>
+        renderItem={({ item }) => (
+          <Post
+            data={{
+              p_content: item.content,
+              p_comment_count: item.comment_count,
+              p_created_at: item.created_at,
+              p_id: item.id,
+              p_image_url: item.image_url,
+              u_avatar_url: String(user?.avatar_url),
+              u_id: String(user?.id),
+              u_name: String(user?.name),
+              u_nick: String(user?.nick),
+            }}
+            navigate={navigation.navigate}
+            comment={() => {}}
+          />
         )}
       />
     </S.Container>
-  )
-}
+  );
+};
 
 export default User;
