@@ -10,6 +10,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import Post from '../../components/Post';
 import api from '../../services/api';
+import { useComment } from '../../hooks/comment';
 import * as S from './styles';
 
 interface IUser {
@@ -41,6 +42,7 @@ const User: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [shuldLoad, setShuldLoad] = useState(true);
   const route = useRoute<RouteProp<{ params: { id: string } }, 'params'>>();
+  const { openModal } = useComment();
 
   const handleRefresh = () => {
     setRefresh(true);
@@ -182,7 +184,7 @@ const User: React.FC = () => {
               u_nick: String(user?.nick),
             }}
             navigate={navigation.navigate}
-            comment={() => {}}
+            comment={() => openModal(item.id)}
           />
         )}
       />

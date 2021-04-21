@@ -6,8 +6,10 @@ import AuthRoutes from './auth.routes';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useDispatch } from 'react-redux';
 import api from '../services/api';
-import { login } from '../store/ducks/auth/actions';
+import { login, logout } from '../store/ducks/auth/actions';
 import { IRequest } from '../store/ducks/auth/types';
+import AppLoading from 'expo-app-loading';
+import Toast from 'react-native-toast-message';
 
 const Routes: React.FC = () => {
   const auth = useSelector((state: ApplicationState) => state.auth);
@@ -25,8 +27,20 @@ const Routes: React.FC = () => {
         const response = await api.get(`user/profile/${id}`);
         dispatch(login({ user: response.data.user, token: token } as IRequest));
       } catch (error) {
-        console.log('>' + error.response.data.message);
-        //Alert.alert(error.response.data.message);
+        dispatch(logout());
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error - Sigin',
+          text2: error.response.data.message,
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+          onShow: () => {},
+          onHide: () => {},
+          onPress: () => {},
+        });
       }
       setIsLoading(false);
     }
@@ -34,7 +48,11 @@ const Routes: React.FC = () => {
     loadUser();
   }, []);
 
-  return auth.token ? <AppRoutes /> : <AuthRoutes />;
+  return auth.token ? (
+    <AppRoutes />
+  ) : (
+    <>{isLoading ? <AppLoading /> : <AuthRoutes />}</>
+  );
 };
 
 export default Routes;

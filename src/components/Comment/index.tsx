@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Modal, ModalProps, FlatList, PanResponder } from 'react-native';
+import { Modal, ModalProps, FlatList } from 'react-native';
+import { useComment } from '../../hooks/comment';
 import Toast from 'react-native-toast-message';
 import { ApplicationState } from '../../store';
 import { useForm } from 'react-hook-form';
@@ -8,6 +9,7 @@ import { useSelector } from 'react-redux';
 import api from '../../services/api';
 import * as S from './styles';
 import timeAgo from '../../utils/time';
+import { Keyboard } from 'react-native';
 
 interface IComment extends ModalProps {
   postId: string;
@@ -23,10 +25,11 @@ interface IUserComment {
   user_avatar_url: string | null;
 }
 
-const Comment: React.FC<IComment> = ({ postId, ...rest }) => {
+const Comment: React.FC<IComment> = () => {
+  const { postId, isOpen } = useComment();
   const { register, handleSubmit, setValue } = useForm();
-  const auth = useSelector((state: ApplicationState) => state.auth);
   const [comments, setComments] = useState<IUserComment[]>([]);
+  const auth = useSelector((state: ApplicationState) => state.auth);
 
   const handleLoadComments = useCallback(async () => {
     try {
@@ -51,6 +54,7 @@ const Comment: React.FC<IComment> = ({ postId, ...rest }) => {
         };
 
         setComments(prev => [userComment, ...prev]);
+        Keyboard.dismiss();
       } catch (error) {
         Toast.show({
           type: 'error',
@@ -76,7 +80,7 @@ const Comment: React.FC<IComment> = ({ postId, ...rest }) => {
   }, [postId, register]);
 
   return (
-    <Modal transparent {...rest}>
+    <Modal transparent visible={isOpen}>
       <S.Background>
         <S.Container>
           <S.Header>

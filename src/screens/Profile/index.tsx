@@ -1,10 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import {
-  FlatList,
-  RefreshControl,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
+import { FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 import Header from '../../components/Header';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../store';
@@ -12,6 +7,7 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import Post from '../../components/Post';
 import api from '../../services/api';
+import { useComment } from '../../hooks/comment';
 import * as S from './styles';
 
 interface IUser {
@@ -45,6 +41,7 @@ const User: React.FC = () => {
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [shuldLoad, setShuldLoad] = useState(true);
+  const { openModal } = useComment();
   const route = useRoute<RouteProp<{ params: { id: string } }, 'params'>>();
 
   const handleRefresh = async () => {
@@ -183,7 +180,7 @@ const User: React.FC = () => {
               u_nick: String(user?.nick),
             }}
             navigate={navigation.navigate}
-            comment={() => {}}
+            comment={() => openModal(item.id)}
           />
         )}
       />

@@ -3,6 +3,7 @@ import AppLoading from 'expo-app-loading';
 import React, { useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
+import { CommentProvider } from './src/hooks/comment';
 import store from './src/store';
 import * as Updates from 'expo-updates';
 import Routes from './src/routes';
@@ -11,28 +12,27 @@ import {
   Rubik_400Regular,
   Rubik_300Light,
   Rubik_500Medium,
-  Rubik_700Bold
+  Rubik_700Bold,
 } from '@expo-google-fonts/rubik';
 
 export default function App() {
-
   useEffect(() => {
-    async function updateApp(){
-      const { isAvailable } = await Updates.checkForUpdateAsync()
+    async function updateApp() {
+      const { isAvailable } = await Updates.checkForUpdateAsync();
 
-      if(isAvailable){
+      if (isAvailable) {
         await Updates.fetchUpdateAsync();
         await Updates.reloadAsync();
       }
     }
     updateApp();
-  }, [])
+  }, []);
 
   let [fontsLoaded] = useFonts({
     Rubik_400Regular,
     Rubik_300Light,
     Rubik_500Medium,
-    Rubik_700Bold
+    Rubik_700Bold,
   });
 
   if (!fontsLoaded) {
@@ -42,9 +42,11 @@ export default function App() {
   return (
     <>
       <Provider store={store}>
-        <StatusBar style="light" backgroundColor={'rgba(0,0,0,0.3)'} />
-        <Routes />
+        <CommentProvider>
+          <StatusBar style="light" backgroundColor={'rgba(0,0,0,0.3)'} />
+          <Routes />
+        </CommentProvider>
       </Provider>
     </>
-  )
+  );
 }
