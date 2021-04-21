@@ -20,7 +20,7 @@ export const Avatar = styled.Image`
   height: 50px;
   width: 50px;
   border-radius: 40px;
-  background-color: #EEE;
+  background-color: #eee;
 `;
 
 export const HeaderData = styled.View`
@@ -38,8 +38,7 @@ export const Date = styled.Text`
   color: #ccc;
 `;
 
-export const ContentContainer = styled.View`
-`;
+export const ContentContainer = styled.View``;
 
 export const Content = styled.Text`
   font-family: Rubik_400Regular;
@@ -52,22 +51,22 @@ export const Image = styled.Image`
   margin-top: 10px;
   width: 100%;
   height: 412px;
-  background-color: #EEE;
+  background-color: #eee;
 `;
 
 export const Bottom = styled.View`
   height: 50px;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-end;
   flex-direction: row;
   padding: 0 10px;
   background-color: #fff;
 `;
 
 export const Comments = styled.Text`
-  color: #6C0FD9;
+  color: #6c0fd9;
   font-family: Rubik_300Light;
   margin-left: 10px;
-  margin-right: 0px;
+  margin-right: 5px;
   font-size: 18px;
 `;

@@ -38,3 +38,19 @@ export const Button = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
 `;
+
+export const CommentContainer = styled.View`
+  min-height: 100px;
+  background-color: #f0f;
+  margin-bottom: 5px;
+`;
+
+export const CommentHeader = styled.View``;
+
+export const CommentAvatar = styled.Image``;
+
+export const CommentHeaderContainer = styled.Text``;
+
+export const CommentNick = styled.Text``;
+
+export const CommentHour = styled.Text``;
