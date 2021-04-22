@@ -1,100 +1,101 @@
-import React, {useEffect, useCallback, useState} from 'react';
-import {FlatList, RefreshControl, ActivityIndicator, Alert} from 'react-native';
+import React, { useEffect, useCallback, useState } from 'react';
+import {
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 import Header from '../../components/Header';
-import {useSelector} from 'react-redux';
-import {ApplicationState} from '../../store';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+import Post from '../../components/Post';
 import api from '../../services/api';
+import { useComment } from '../../hooks/comment';
 import * as S from './styles';
 
 interface IUser {
-  id: string,
-  name: string,
-  nick: string,
-  avatar: string | null;
+  id: string;
+  name: string;
+  nick: string;
+  avatar_url: string | null;
   bio: string | null;
-  followers_count: number,
-  following_count: number,
-  post_count: number,
+  followers_count: number;
+  following_count: number;
+  post_count: number;
 }
 
 interface IPost {
   id: string;
   content: string;
+  image_url: string;
+  comment_count: number;
+  created_at: string;
 }
 
 const User: React.FC = () => {
   const navigation = useNavigation();
   const [user, setUser] = useState<IUser>();
-  const [status, setStatus] = useState<boolean>(false)
+  const [status, setStatus] = useState<boolean>(false);
   const [posts, setPosts] = useState<IPost[]>([]);
   const [refresh, setRefresh] = useState(false);
-  const [page,setPage] = useState(0);
+  const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [shuldLoad, setShuldLoad] = useState(true);
-  const route = useRoute<
-  RouteProp<{ params: { id: string } }, 'params'>
->();
+  const route = useRoute<RouteProp<{ params: { id: string } }, 'params'>>();
+  const { openModal } = useComment();
 
   const handleRefresh = () => {
     setRefresh(true);
     handleLoadProfile();
     setRefresh(false);
-  }
+  };
 
-  const handleFollows = useCallback(async() => {
-
-    if(status===true){
+  const handleFollows = useCallback(async () => {
+    if (status === true) {
       try {
-        await api.post(`/user/unfollow/${route.params.id}`)
-      }
-      catch(error){
+        await api.post(`/user/unfollow/${route.params.id}`);
+      } catch (error) {
         Alert.alert('Error', error.response.message);
       }
-    }
-    else{
+    } else {
       try {
-        await api.post(`/user/follow/${route.params.id}`)
-      }
-      catch(error){
+        await api.post(`/user/follow/${route.params.id}`);
+      } catch (error) {
         Alert.alert('Error', error.response.message);
       }
     }
     setStatus(e => !e);
-  }, [status])
+  }, [status]);
 
-  const handleLoadProfile = useCallback(async() => {
+  const handleLoadProfile = useCallback(async () => {
     try {
       const response = await api.get(`/user/profile/${route.params.id}`);
       setUser(response.data.user);
       setStatus(response.data.is_following);
-    }
-    catch(error){
+    } catch (error) {
       Alert.alert('Error', error.response.message);
     }
-
-  }, [route])
+  }, [route]);
 
   const handleLoadPosts = useCallback(async () => {
-    console.log(page);
     setIsLoading(true);
-    try{
-      const response = await api.get(`/post/user/${route.params.id}?page=${page}`);
-      !response.data.length && setShuldLoad(false)
-      setPosts([...posts,...response.data])
-      setPage(e => e+=1);
-    }
-    catch(error){
+    try {
+      const response = await api.get(
+        `/post/user/${route.params.id}?page=${page}`,
+      );
+      !response.data.length && setShuldLoad(false);
+      setPosts([...posts, ...response.data]);
+      setPage(e => (e += 1));
+    } catch (error) {
       Alert.alert('Error', error.response.message);
     }
     setIsLoading(false);
-  }, [page])
+  }, [page]);
 
   useEffect(() => {
     handleLoadProfile();
     handleLoadPosts();
-  }, [])
+  }, []);
 
   return (
     <S.Container>
@@ -125,6 +126,7 @@ const User: React.FC = () => {
         }}
         ListHeaderComponent={() => (
           <S.InfoContainer>
+<<<<<<< HEAD
           <S.TopInfo>
             <S.ProfileImage source={{uri: `https://iunion-mood.herokuapp.com/files/${user?.avatar}`}} />
             <S.DataContainer>
@@ -142,25 +144,53 @@ const User: React.FC = () => {
               </S.DataButton>
             </S.DataContainer>
           </S.TopInfo>
+=======
+            <S.TopInfo>
+              <S.ProfileImage source={{ uri: `${user?.avatar_url}` }} />
+              <S.DataContainer>
+                <S.Data>
+                  <S.DataNumber>{user?.post_count}</S.DataNumber>
+                  <S.DataName>Posts</S.DataName>
+                </S.Data>
+                <S.DataButton
+                  onPress={() =>
+                    navigation.navigate('FollowScreen', {
+                      id: user?.id,
+                      type: 'getfollowers',
+                    })
+                  }
+                >
+                  <S.DataNumber>{user?.followers_count}</S.DataNumber>
+                  <S.DataName>Seguidores</S.DataName>
+                </S.DataButton>
+                <S.DataButton
+                  onPress={() =>
+                    navigation.navigate('FollowScreen', {
+                      id: user?.id,
+                      type: 'getfollowing',
+                    })
+                  }
+                >
+                  <S.DataNumber>{user?.following_count}</S.DataNumber>
+                  <S.DataName>Seguindo</S.DataName>
+                </S.DataButton>
+              </S.DataContainer>
+            </S.TopInfo>
+>>>>>>> release/v1.3.1
 
-          <S.ProfileName>{user?.name}</S.ProfileName>
-          <S.ProfileNick>@{user?.nick}</S.ProfileNick>
+            <S.ProfileName>{user?.name}</S.ProfileName>
+            <S.ProfileNick>@{user?.nick}</S.ProfileNick>
 
-          <S.ProfileDescription>{user?.bio}</S.ProfileDescription>
-          <S.ButtonBottom onPress={handleFollows} follow={status}>
-            <S.ButtonBottomText follow={status}>
-              {
-                status
-                ?
-                'Parar de seguir'
-                :
-                'Seguir'
-              }
-            </S.ButtonBottomText>
-          </S.ButtonBottom>
-        </S.InfoContainer>
+            <S.ProfileDescription>{user?.bio}</S.ProfileDescription>
+            <S.ButtonBottom onPress={handleFollows} follow={status}>
+              <S.ButtonBottomText follow={status}>
+                {status ? 'Parar de seguir' : 'Seguir'}
+              </S.ButtonBottomText>
+            </S.ButtonBottom>
+          </S.InfoContainer>
         )}
         data={posts}
+<<<<<<< HEAD
         renderItem={({item}) => (
           <S.PostContainer>
           <S.LeftSide>
@@ -180,10 +210,28 @@ const User: React.FC = () => {
             </S.PostData>
           </S.RightSide>
         </S.PostContainer>
+=======
+        renderItem={({ item }) => (
+          <Post
+            data={{
+              p_content: item.content,
+              p_comment_count: item.comment_count,
+              p_created_at: item.created_at,
+              p_id: item.id,
+              p_image_url: item.image_url,
+              u_avatar_url: String(user?.avatar_url),
+              u_id: String(user?.id),
+              u_name: String(user?.name),
+              u_nick: String(user?.nick),
+            }}
+            navigate={navigation.navigate}
+            comment={() => openModal(item.id)}
+          />
+>>>>>>> release/v1.3.1
         )}
       />
     </S.Container>
-  )
-}
+  );
+};
 
 export default User;

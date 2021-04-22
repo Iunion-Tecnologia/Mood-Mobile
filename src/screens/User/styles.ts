@@ -150,3 +150,11 @@ export const RightSide = styled.View`
 `;
 
 export const Touchable = styled.TouchableOpacity``;
+
+export const Image = styled.Image.attrs({
+
+})`
+  margin-top: 10px;
+  width: 100%;
+  height: 320px;
+`;

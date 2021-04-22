@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import Header from '../../components/Header';
 import api from '../../services/api';
 import {useForm} from 'react-hook-form';
-import { Entypo} from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import {useSelector} from 'react-redux';
 import {ApplicationState} from '../../store';
@@ -15,7 +15,7 @@ interface IUser {
   id: string,
   name: string,
   nick: string,
-  avatar: string | null;
+  avatar_url: string | null;
   bio: string | null;
   followers_count: number,
   following_count: number,
@@ -49,7 +49,6 @@ const CreatePost: React.FC = () => {
       aspect: [4, 4],
       quality: 1,
     });
-    console.log(result);
 
     if (!result.cancelled) {
       setImage(result);
@@ -63,18 +62,27 @@ const CreatePost: React.FC = () => {
 
       formData.append('avatar', {
         uri: image?.uri,
-        name: `photo.jpg`,
-        type: `image/jpg`,
+        name: `photo.jpeg`,
+        type: `image/jpeg`,
       });
+<<<<<<< HEAD
 
       await api.patch('/user/avatar', formData, {headers:{
+=======
+  
+      const response = await api.patch('/user/avatar', formData, {headers:{
+>>>>>>> release/v1.3.1
         Accept: 'application/json',
         'Content-Type': 'multipart/form-data',
       }
     })
     }
+<<<<<<< HEAD
     catch{
 
+=======
+    catch(error){
+>>>>>>> release/v1.3.1
     }
   }, [image])
 
@@ -117,9 +125,15 @@ const CreatePost: React.FC = () => {
           :
           <>
           {
+<<<<<<< HEAD
             profile?.avatar
             ?
             <S.Avatar source={{uri: `https://iunion-mood.herokuapp.com/files/${profile?.avatar}`}} />
+=======
+            profile?.avatar_url
+            ?
+            <S.Avatar source={{uri: `${profile?.avatar_url}`}} />
+>>>>>>> release/v1.3.1
             :
             <S.AvatarPlaceholder>
               <Entypo name="camera" size={24} color="black" />

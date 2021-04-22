@@ -1,5 +1,5 @@
 import { action } from 'typesafe-actions';
-import { AuthTypes, IRequest, IResponse } from './types';
+import { AuthTypes, IRequest } from './types';
 
 export const login = (
   data: IRequest,

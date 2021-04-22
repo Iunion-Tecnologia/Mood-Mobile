@@ -1,80 +1,84 @@
 import styled from 'styled-components/native';
-import { StatusBar } from 'react-native';
-import {RectButton} from 'react-native-gesture-handler';
+import { RectButton } from 'react-native-gesture-handler';
+import { StatusBar, Animated } from 'react-native';
+
+interface IInputContainer {
+  errors?: boolean;
+}
 
 export const Container = styled.View`
   flex: 1;
-  margin-top: ${Number(StatusBar.currentHeight)}px;
-  background-color: #FFF;
-
-  justify-content: center;
+  padding-top: ${Number(StatusBar.currentHeight)}px;
+  background-color: #6C0FD9;
 `;
 
 export const Logo = styled.Image`
-  width: 200px;
-  margin: 0 auto;
-  margin-bottom: 50px;
+  position: absolute;
+  right: 30px;
+  top: ${30 + Number(StatusBar.currentHeight)}px;
+`;
+
+export const BackButton = styled.TouchableOpacity`
+  position: absolute;
+  left: 30px;
+  top: ${30 + Number(StatusBar.currentHeight)}px;
+`;
+
+export const DataContainer = styled(Animated.View)`
+  margin-top: auto;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  background-color: #fff;
+
+  padding: 0 30px;
+  padding-top: 50px;
+  padding-bottom: 20px;
 `;
 
 export const Title = styled.Text`
-  color: #6C0FD9;
-  font-size: 20px;
-  margin: 0 auto;
+  font-size: 22px;
   font-weight: bold;
-  margin-bottom: 25px;
+  color: #333;
 `;
 
-export const Bottom = styled.TouchableOpacity`
+export const InputContainer = styled.View<IInputContainer>`
   height: 60px;
-  border-top-width: 1px;
-  border-top-color: #ddd;
-  z-index: 3;
-  background-color: #fff;
-
-  align-items: center;
-  justify-content: center;
+  margin-top: 20px;
   flex-direction: row;
+  border-width: 1px;
+  border-color: ${({errors}) => errors ? '#CCC' : '#F00'};
+  border-radius: 8px;
+  align-items: center;
 `;
 
-export const BottomText = styled.Text`
-  color: #6C0FD9;
+export const Input = styled.TextInput.attrs({
+  placeholderTextColor: '#ccc',
+})`
+  flex: 1;
+  padding-left: 20px;
   font-size: 16px;
-  margin-left: 5px;
-  font-weight: bold;
+  font-family: Rubik_400Regular;
 `;
 
-export const SubmitContainer = styled.TouchableOpacity`
-  height: 50px;
-  background-color: #6C0FD9;
+export const PasswordEye = styled.TouchableOpacity`
+  padding-right: 10px;
+`;
 
+export const SubmitButton = styled(RectButton)`
+  background-color: #6C0FD9;
+  height: 60px;
   align-items: center;
   justify-content: center;
-  margin: 30px;
-  border-radius: 5px;
+  border-radius: 8px;
+  margin-top: 30px;
 `;
 
-export const SubmitText = styled.TextInput`
+export const SubmitText = styled.Text`
   color: #fff;
   font-weight: bold;
-  font-size: 14px;
 `;
 
-export const InputContainer = styled.View`
-  height: 50px;
-  flex-direction: row;
-  align-items: center;
-
-  border-width: 1px;
-  border-color: #ddd;
-  margin: 0 30px;
-  margin-top: 5px;
-  padding: 0 10px;
-  border-radius: 5px;
-`;
-
-export const InputText = styled.TextInput`
-  height: 50px;
-  flex: 1;
-  font-size: 14px;
-  margin-left: 8px;
+export const Error = styled.Text`
+  color: #f00;
+  font-size: 10px;
 `;

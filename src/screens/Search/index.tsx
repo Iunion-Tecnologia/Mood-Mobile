@@ -12,17 +12,8 @@ interface IResult {
   id: string;
   name: string;
   nick: string;
-  avatar: string;
+  avatar_url: string;
 }
-
-const DATA = [
-  {
-    id: '12345',
-    name: 'Jonatha Rihan da Silva',
-    nick: 'RBioZ',
-    avatar: 'https://avatars.githubusercontent.com/u/35699301?v=4'
-  },
-]
 
 const Search: React.FC = () => {
 
@@ -74,7 +65,11 @@ const Search: React.FC = () => {
         renderItem={({item}) => (
           <S.Item onPress={() => navigation.navigate('UserScreen', {id: item.id})}>
             <S.ItemLeft>
+<<<<<<< HEAD
               <S.ItemAvatar source={{uri: `https://iunion-mood.herokuapp.com/files/${item.avatar}`}} />
+=======
+              <S.ItemAvatar source={{uri: `${item.avatar_url}`}} />
+>>>>>>> release/v1.3.1
             </S.ItemLeft>
             <S.ItemRight>
             <S.ItemNick>{item.nick}</S.ItemNick> 

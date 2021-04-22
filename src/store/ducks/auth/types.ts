@@ -14,7 +14,7 @@ export enum AuthTypes {
 
 export interface User {
   id: string;
-  avatar: string | null;
+  avatar_url: string | null;
   email: string;
   name: string;
   bio: string;

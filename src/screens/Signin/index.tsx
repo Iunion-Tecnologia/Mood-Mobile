@@ -1,17 +1,20 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert} from 'react-native';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
+import { ScrollView } from 'react-native';
+import SvgUri from 'expo-svg-uri';
+import { useForm } from 'react-hook-form';
+import background from '../../assets/background.svg';
+import logo from '../../assets/logo.png';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import * as S from './styles';
-import Mood from '../../assets/mood.png';
-import {useForm} from 'react-hook-form';
-import {Feather, Entypo} from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
+import { Text, Animated, ActivityIndicator } from 'react-native';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
-import {login} from '../../store/ducks/auth/actions';
-import {ApplicationState} from '../../store';
-import api from '../../services/api';
+import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-community/async-storage';
+import { login } from '../../store/ducks/auth/actions';
+import api from '../../services/api';
+import * as yup from 'yup';
+import * as S from './styles';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -19,31 +22,54 @@ const schema = yup.object().shape({
 });
 
 const SignIn: React.FC = () => {
-  const navigation = useNavigation();
-  const [secure, setSecure] = useState(true);
+  const containerY = useRef(new Animated.Value(-0.5)).current;
+  const [remember, setRemeber] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const auth = useSelector((state: ApplicationState) => state.auth);
+  const [secret, setSecret] = useState(true);
   const dispatch = useDispatch();
-  const {register, handleSubmit, setValue, errors} = useForm({
-    resolver: yupResolver(schema)
+  const navigation = useNavigation();
+  const { register, handleSubmit, setValue, errors } = useForm({
+    resolver: yupResolver(schema),
   });
-  
 
-  const handleSignIn = useCallback(async(data) => {
+  Animated.spring(containerY, {
+    toValue: 0,
+    useNativeDriver: true,
+    delay: 500,
+  }).start();
+
+  const handleSignIn = useCallback(async data => {
     setIsLoading(true);
-    try{
+    try {
       const response = await api.post('/user/signin', data);
       setIsLoading(false);
+<<<<<<< HEAD
       api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+=======
+      api.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${response.data.token}`;
+>>>>>>> release/v1.3.1
       await AsyncStorage.setItem('@mood/token', response.data.token);
       await AsyncStorage.setItem('@mood/id', response.data.user.id);
       dispatch(login(response.data));
-    }
-    catch(error){
+    } catch (error) {
       setIsLoading(false);
-      Alert.alert(error.response.data.message);
-    }  
-  }, [])
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Error - Sigin',
+        text2: error.response.data.message,
+        visibilityTime: 4000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+        onShow: () => {},
+        onHide: () => {},
+        onPress: () => {},
+      });
+    }
+  }, []);
 
   useEffect(() => {
     register('email');
@@ -51,43 +77,86 @@ const SignIn: React.FC = () => {
   }, [register]);
 
   return (
-    <>
     <S.Container>
-      <S.Logo resizeMode="contain" source={Mood} />
-      <S.Title>Faça seu login</S.Title>
+      <SvgUri fillAll style={{ position: 'absolute' }} source={background} />
 
-        <S.InputContainer style={{borderColor: errors.email?.message ? '#f00' : '#ddd'}}>
-          <Feather name="mail" size={20} color="#999" />
-          <S.InputText onChangeText={text => {setValue('email', text)}} placeholder="E-mail" />
-        </S.InputContainer>
-        <S.InputContainer style={{borderColor: errors.password?.message ? '#f00' : '#ddd'}}>
-          <Feather name="lock" size={20} color="#999" />
-          <S.InputText secureTextEntry={secure} onChangeText={text => {setValue('password', text)}} placeholder="Senha" />
-          <S.PassButton onPress={() => setSecure(e => !e)}>
-            <Feather name={secure ? 'eye' : 'eye-off'} size={20} color="#999" />
-          </S.PassButton>
-        </S.InputContainer>
-        <S.SubmitContainer disabled={isLoading} onPress={handleSubmit(handleSignIn)}>
-          {
-            isLoading
-            ?
-            <ActivityIndicator size="large" color="#FFF" />
-            :
-            <S.SubmitText>Entrar</S.SubmitText>
-          }
-          
-        </S.SubmitContainer>
-      
-      <S.ForgotButton>
-        <S.ForgotPass>Esqueci minha senha</S.ForgotPass>
-      </S.ForgotButton>
+      <S.Logo source={logo} />
+
+      <S.BackButton onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={34} color="white" />
+      </S.BackButton>
+
+      <S.DataContainer
+        style={{
+          transform: [
+            {
+              scale: containerY.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 2],
+              }),
+            },
+          ],
+        }}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <S.Title>Login</S.Title>
+
+          <S.InputContainer erros={!errors.email?.message}>
+            <S.Input
+              onChangeText={text => {
+                setValue('email', text);
+              }}
+              placeholder="E-mail"
+              keyboardType="email-address"
+            />
+          </S.InputContainer>
+          {errors.email?.message && <S.Error>{errors?.email?.message}</S.Error>}
+
+          <S.InputContainer erros={!errors.password?.message}>
+            <S.Input
+              onChangeText={text => {
+                setValue('password', text);
+              }}
+              placeholder="Senha"
+              secureTextEntry={secret}
+            />
+            <S.PasswordEye onPress={() => setSecret(prev => !prev)}>
+              <Ionicons
+                name={secret ? 'eye-outline' : 'eye-off-outline'}
+                size={26}
+                color="#ccc"
+              />
+            </S.PasswordEye>
+          </S.InputContainer>
+          {errors.password?.message && (
+            <S.Error>{errors?.password?.message}</S.Error>
+          )}
+
+          <S.SubmitButton onPress={handleSubmit(handleSignIn)}>
+            {isLoading ? (
+              <ActivityIndicator color="#fff" size="large" />
+            ) : (
+              <S.SubmitText>Entrar</S.SubmitText>
+            )}
+          </S.SubmitButton>
+
+          <S.RememberContainer>
+            <S.RememberButton onPress={() => setRemeber(prev => !prev)}>
+              {remember && <AntDesign name="check" size={18} color="black" />}
+            </S.RememberButton>
+            <S.RememberText>Lembrar minha senha</S.RememberText>
+          </S.RememberContainer>
+
+          <S.ForgotPassButton>
+            <S.ForgotPassText>
+              Esqueceu a senha?{' '}
+              <Text style={{ color: '#6C0FD9' }}>Clique aqui.</Text>
+            </S.ForgotPassText>
+          </S.ForgotPassButton>
+        </ScrollView>
+      </S.DataContainer>
     </S.Container>
-    <S.Bottom onPress={() => navigation.navigate("SignUp")}>
-      <Entypo name="login" size={22} color="#6C0FD9" />
-      <S.BottomText>Criar uma conta</S.BottomText>
-    </S.Bottom>
-    </>
-  )
-}
+  );
+};
 
 export default SignIn;
