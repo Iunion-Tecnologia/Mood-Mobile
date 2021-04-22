@@ -24,10 +24,17 @@ const Routes: React.FC = () => {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       try {
-        const response = await api.get(`user/profile/${id}`);
-        dispatch(login({ user: response.data.user, token: token } as IRequest));
+        if (token) {
+          const response = await api.get(`user/profile/${id}`);
+          dispatch(
+            login({ user: response.data.user, token: token } as IRequest),
+          );
+        }
       } catch (error) {
         dispatch(logout());
+        delete api.defaults.headers.common['Authorization'];
+        await AsyncStorage.removeItem('@mood/token');
+        await AsyncStorage.removeItem('@mood/id');
         Toast.show({
           type: 'error',
           position: 'top',
