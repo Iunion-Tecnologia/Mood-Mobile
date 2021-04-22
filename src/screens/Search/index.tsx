@@ -65,7 +65,11 @@ const Search: React.FC = () => {
         renderItem={({item}) => (
           <S.Item onPress={() => navigation.navigate('UserScreen', {id: item.id})}>
             <S.ItemLeft>
+<<<<<<< HEAD
+              <S.ItemAvatar source={{uri: `https://iunion-mood.herokuapp.com/files/${item.avatar}`}} />
+=======
               <S.ItemAvatar source={{uri: `${item.avatar_url}`}} />
+>>>>>>> release/v1.3.1
             </S.ItemLeft>
             <S.ItemRight>
             <S.ItemNick>{item.nick}</S.ItemNick> 

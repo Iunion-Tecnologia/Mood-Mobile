@@ -42,10 +42,14 @@ export default function App() {
   return (
     <>
       <Provider store={store}>
+<<<<<<< HEAD
+        <Routes />
+=======
         <CommentProvider>
           <StatusBar style="light" backgroundColor={'rgba(0,0,0,0.3)'} />
           <Routes />
         </CommentProvider>
+>>>>>>> release/v1.3.1
       </Provider>
     </>
   );

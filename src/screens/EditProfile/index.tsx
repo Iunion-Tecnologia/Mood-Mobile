@@ -56,7 +56,7 @@ const CreatePost: React.FC = () => {
   }
 
   const handleUploadImage = useCallback(async () =>  {
-  
+
     try {
       let formData = new FormData();
 
@@ -65,17 +65,27 @@ const CreatePost: React.FC = () => {
         name: `photo.jpeg`,
         type: `image/jpeg`,
       });
+<<<<<<< HEAD
+
+      await api.patch('/user/avatar', formData, {headers:{
+=======
   
       const response = await api.patch('/user/avatar', formData, {headers:{
+>>>>>>> release/v1.3.1
         Accept: 'application/json',
         'Content-Type': 'multipart/form-data',
       }
-    })  
+    })
     }
+<<<<<<< HEAD
+    catch{
+
+=======
     catch(error){
+>>>>>>> release/v1.3.1
     }
   }, [image])
-  
+
   const handlePost = useCallback(async (data) => {
     setIsLoading(true);
     try{
@@ -115,9 +125,15 @@ const CreatePost: React.FC = () => {
           :
           <>
           {
+<<<<<<< HEAD
+            profile?.avatar
+            ?
+            <S.Avatar source={{uri: `https://iunion-mood.herokuapp.com/files/${profile?.avatar}`}} />
+=======
             profile?.avatar_url
             ?
             <S.Avatar source={{uri: `${profile?.avatar_url}`}} />
+>>>>>>> release/v1.3.1
             :
             <S.AvatarPlaceholder>
               <Entypo name="camera" size={24} color="black" />
@@ -132,6 +148,7 @@ const CreatePost: React.FC = () => {
       <S.Title>Bio</S.Title>
 
       <S.Input
+        defaultValue={profile?.bio || ''}
         onChangeText={text => {setValue('bio', text)}}
         multiline
         textAlignVertical="top"

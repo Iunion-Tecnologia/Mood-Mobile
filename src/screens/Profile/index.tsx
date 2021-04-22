@@ -5,7 +5,11 @@ import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../store';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+<<<<<<< HEAD
+import AsyncStorage from '@react-native-community/async-storage';
+=======
 import Post from '../../components/Post';
+>>>>>>> release/v1.3.1
 import api from '../../services/api';
 import { useComment } from '../../hooks/comment';
 import * as S from './styles';
@@ -119,6 +123,25 @@ const User: React.FC = () => {
         }}
         ListHeaderComponent={() => (
           <S.InfoContainer>
+<<<<<<< HEAD
+          <S.TopInfo>
+            <S.ProfileImage source={{uri: `https://iunion-mood.herokuapp.com/files/${user?.avatar}`}} />
+            <S.DataContainer>
+              <S.Data>
+                <S.DataNumber>{user?.post_count}</S.DataNumber>
+                <S.DataName>Posts</S.DataName>
+              </S.Data>
+              <S.DataButton onPress={() => navigation.navigate('FollowScreen', {id: user?.id, type: 'getfollowers'})}>
+                <S.DataNumber>{user?.followers_count}</S.DataNumber>
+                <S.DataName>Seguidores</S.DataName>
+              </S.DataButton>
+              <S.DataButton onPress={() => navigation.navigate('FollowScreen', {id: user?.id, type: 'getfollowing'})}>
+                <S.DataNumber>{user?.following_count}</S.DataNumber>
+                <S.DataName>Seguindo</S.DataName>
+              </S.DataButton>
+            </S.DataContainer>
+          </S.TopInfo>
+=======
             <S.TopInfo>
               <S.ProfileImage source={{ uri: `${user?.avatar_url}` }} />
               <S.DataContainer>
@@ -150,6 +173,7 @@ const User: React.FC = () => {
                 </S.DataButton>
               </S.DataContainer>
             </S.TopInfo>
+>>>>>>> release/v1.3.1
 
             <S.ProfileName>{user?.name}</S.ProfileName>
             <S.ProfileNick>@{user?.nick}</S.ProfileNick>
@@ -166,6 +190,27 @@ const User: React.FC = () => {
           </S.InfoContainer>
         )}
         data={posts}
+<<<<<<< HEAD
+        renderItem={({item}) => (
+          <S.PostContainer>
+          <S.LeftSide>
+            <S.Touchable>
+              <S.Avatar source={{uri: `https://iunion-mood.herokuapp.com/files/${user?.avatar}`}}></S.Avatar>
+            </S.Touchable>
+          </S.LeftSide>
+          <S.RightSide>
+            <S.PostHeader>
+              <S.Touchable>
+                <S.PostUser>{user?.name}</S.PostUser>
+              </S.Touchable>
+              <S.PostNick>@{user?.nick}</S.PostNick>
+            </S.PostHeader>
+            <S.PostData>
+              {item.content}
+            </S.PostData>
+          </S.RightSide>
+        </S.PostContainer>
+=======
         renderItem={({ item }) => (
           <Post
             data={{
@@ -182,6 +227,7 @@ const User: React.FC = () => {
             navigate={navigation.navigate}
             comment={() => openModal(item.id)}
           />
+>>>>>>> release/v1.3.1
         )}
       />
     </S.Container>
