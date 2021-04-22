@@ -8,9 +8,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Header from '../../components/Header';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import api from '../../services/api';
 import { useComment } from '../../hooks/comment';
+import Toast from 'react-native-toast-message';
 
 interface IPost {
   u_id: string;
@@ -33,6 +34,9 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [shuldLoad, setShuldLoad] = useState(true);
   const { openModal } = useComment();
+  const route = useRoute<
+    RouteProp<{ params: { shuldLoad?: boolean } }, 'params'>
+  >();
 
   const handleRefresh = useCallback(async () => {
     setRefresh(true);
@@ -46,10 +50,19 @@ const Home: React.FC = () => {
       setPosts(response.data);
       setPage(1);
     } catch (error) {
-      Alert.alert(
-        'Error',
-        'Ocorreu um erro ao tentar carregar os ultimos posts!',
-      );
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Error',
+        text2: 'Ocorreu um erro ao tentar carregar os ultimos posts!',
+        visibilityTime: 4000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+        onShow: () => {},
+        onHide: () => {},
+        onPress: () => {},
+      });
     }
     setIsLoading(false);
     setRefresh(false);
@@ -65,11 +78,38 @@ const Home: React.FC = () => {
       setPosts([...posts, ...response.data]);
       setPage(prev => (prev += 1));
       setIsLoading(false);
+
+      if (!response.data.length && page === 0) {
+        console.log(!response.data.length);
+        console.log(page);
+        Toast.show({
+          type: 'info',
+          position: 'top',
+          text1: 'Info',
+          text2: 'Pesquise e siga os usuários para que seu feed tenha posts!',
+          visibilityTime: 8000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+          onShow: () => {},
+          onHide: () => {},
+          onPress: () => {},
+        });
+      }
     } catch (error) {
-      Alert.alert(
-        'Error',
-        'Ocorreu um erro ao tentar carregar os ultimos posts!',
-      );
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Error',
+        text2: 'Ocorreu um erro ao tentar carregar os ultimos posts!',
+        visibilityTime: 4000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+        onShow: () => {},
+        onHide: () => {},
+        onPress: () => {},
+      });
       setIsLoading(false);
     }
   }, [time, page]);

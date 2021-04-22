@@ -48,11 +48,7 @@ const Routes: React.FC = () => {
     loadUser();
   }, []);
 
-  return auth.token ? (
-    <AppRoutes />
-  ) : (
-    <>{isLoading ? <AppLoading /> : <AuthRoutes />}</>
-  );
+  return auth.token ? <AppRoutes /> : <AuthRoutes />;
 };
 
 export default Routes;

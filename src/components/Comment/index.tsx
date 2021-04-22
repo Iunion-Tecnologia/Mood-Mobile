@@ -26,7 +26,7 @@ interface IUserComment {
 }
 
 const Comment: React.FC<IComment> = () => {
-  const { postId, isOpen } = useComment();
+  const { postId, isOpen, closeModal } = useComment();
   const { register, handleSubmit, setValue } = useForm();
   const [comments, setComments] = useState<IUserComment[]>([]);
   const auth = useSelector((state: ApplicationState) => state.auth);
@@ -80,7 +80,7 @@ const Comment: React.FC<IComment> = () => {
   }, [postId, register]);
 
   return (
-    <Modal transparent visible={isOpen}>
+    <Modal onRequestClose={closeModal} transparent visible={isOpen}>
       <S.Background>
         <S.Container>
           <S.Header>

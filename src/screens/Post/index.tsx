@@ -8,6 +8,7 @@ import { Entypo } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useForm } from 'react-hook-form';
 import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
+import Toast from 'react-native-toast-message';
 
 const CreatePost: React.FC = () => {
   const navigation = useNavigation();
@@ -39,9 +40,21 @@ const CreatePost: React.FC = () => {
         });
 
         setIsLoading(false);
-        Alert.alert('Sucesso!', 'Seu post foi criado');
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Sucesso',
+          text2: 'Seu post foi criado com sucesso!',
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+          onShow: () => {},
+          onHide: () => {},
+          onPress: () => {},
+        });
         Keyboard.dismiss();
-        navigation.navigate('Home');
+        navigation.navigate('Home', { shuldLoad: true });
       } catch (error) {
         Alert.alert('Ocorreu um erro!', error.response.data.message);
         console.log(error.response.data);

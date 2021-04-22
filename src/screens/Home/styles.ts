@@ -1,13 +1,12 @@
 import styled from 'styled-components/native';
 import { StatusBar } from 'react-native';
-import {RectButton} from 'react-native-gesture-handler';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   flex: 1;
   padding-top: ${Number(StatusBar.currentHeight)}px;
-  background-color: #FFF;
+  background-color: #fff;
 `;
-
 
 export const PostContainer = styled.View`
   min-height: 62px;
@@ -36,16 +35,12 @@ export const PostUser = styled.Text.attrs({
 export const PostNick = styled.Text`
   margin-left: 5px;
   font-size: 12px;
-  color: #6C0FD9;
+  color: #6c0fd9;
 `;
 
-export const Data = styled.Text`
+export const Data = styled.Text``;
 
-`;
-
-export const Image = styled.Image.attrs({
-
-})`
+export const Image = styled.Image.attrs({})`
   margin-top: 10px;
   width: 100%;
   height: 320px;
@@ -69,3 +64,5 @@ export const RightSide = styled.View`
 `;
 
 export const Touchable = styled.TouchableOpacity``;
+
+export const Warning = styled.Text``;

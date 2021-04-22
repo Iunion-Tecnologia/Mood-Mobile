@@ -42,8 +42,12 @@ const Registration: React.FC = () => {
 
   const handleSignUp = useCallback(async data => {
     setIsLoading(true);
+
     try {
-      const response = await api.post('/user/signup', data);
+      const response = await api.post('/user/signup', {
+        nick: String(data.nick).toLowerCase(),
+        ...data,
+      });
       setIsLoading(false);
       navigation.navigate('SignIn');
       Toast.show({
