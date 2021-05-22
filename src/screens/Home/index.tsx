@@ -34,9 +34,8 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [shuldLoad, setShuldLoad] = useState(true);
   const { openModal } = useComment();
-  const route = useRoute<
-    RouteProp<{ params: { shuldLoad?: boolean } }, 'params'>
-  >();
+  const route =
+    useRoute<RouteProp<{ params: { shuldLoad?: boolean } }, 'params'>>();
 
   const handleRefresh = useCallback(async () => {
     setRefresh(true);
@@ -142,48 +141,6 @@ const Home: React.FC = () => {
               size="large"
               color="#6C0FD9"
             />
-<<<<<<< HEAD
-          }
-          onEndReached={() => {
-            shuldLoad && handleLoadPosts();
-          }}
-          ListFooterComponent={() => {
-            if (!isLoading) return null;
-            return (
-              <ActivityIndicator
-                animating={isLoading}
-                style={{ height: 50 }}
-                size="large"
-                color="#6C0FD9"
-              />
-            );
-          }}
-          onEndReachedThreshold={0.01}
-          data={posts}
-          keyExtractor={(item) => item.p_id}
-          renderItem={({item}) => (
-            <S.PostContainer>
-            <S.LeftSide>
-              <S.Touchable onPress={() => navigation.navigate('UserScreen', {id: item.u_id})}>
-                <S.Avatar source={{uri: `https://iunion-mood.herokuapp.com/files/${item.u_avatar}`}}></S.Avatar>
-              </S.Touchable>
-            </S.LeftSide>
-            <S.RightSide>
-              <S.PostHeader>
-                <S.Touchable onPress={() => navigation.navigate('UserScreen', {id: item.u_id})}>
-                  <S.PostUser>{item.u_name}</S.PostUser>
-                </S.Touchable>
-                <S.PostNick>@{item.u_nick}</S.PostNick>
-              </S.PostHeader>
-              <S.Data>
-                {item.p_content}
-              </S.Data>
-            </S.RightSide>
-          </S.PostContainer>
-          )}
-        />
-
-=======
           );
         }}
         onEndReachedThreshold={0.01}
@@ -197,7 +154,6 @@ const Home: React.FC = () => {
           />
         )}
       />
->>>>>>> release/v1.3.1
     </S.Container>
   );
 };

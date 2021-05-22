@@ -43,15 +43,16 @@ const SignIn: React.FC = () => {
     try {
       const response = await api.post('/user/signin', data);
       setIsLoading(false);
-<<<<<<< HEAD
-      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-=======
       api.defaults.headers.common[
         'Authorization'
       ] = `Bearer ${response.data.token}`;
->>>>>>> release/v1.3.1
-      await AsyncStorage.setItem('@mood/token', response.data.token);
-      await AsyncStorage.setItem('@mood/id', response.data.user.id);
+      remember &&
+        (await AsyncStorage.setItem('@mood/token', response.data.token));
+      remember &&
+        (await AsyncStorage.setItem(
+          '@mood/user',
+          JSON.stringify(response.data.user),
+        ));
       dispatch(login(response.data));
     } catch (error) {
       setIsLoading(false);

@@ -25,7 +25,7 @@ export default function App() {
         await Updates.reloadAsync();
       }
     }
-    updateApp();
+    if (!__DEV__) updateApp();
   }, []);
 
   let [fontsLoaded] = useFonts({
@@ -42,14 +42,10 @@ export default function App() {
   return (
     <>
       <Provider store={store}>
-<<<<<<< HEAD
-        <Routes />
-=======
         <CommentProvider>
           <StatusBar style="light" backgroundColor={'rgba(0,0,0,0.3)'} />
           <Routes />
         </CommentProvider>
->>>>>>> release/v1.3.1
       </Provider>
     </>
   );
