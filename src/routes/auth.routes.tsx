@@ -6,6 +6,7 @@ const Stack = createStackNavigator();
 
 // Screens
 
+import Intro from '../screens/Intro';
 import Presentation from '../screens/Presentation';
 import SignIn from '../screens/Signin';
 import SignUp from '../screens/Signup';
@@ -14,9 +15,10 @@ const AuthRoutes: React.FC = () => (
   <>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Presentation"
+        initialRouteName="Intro"
         screenOptions={{ headerShown: false }}
       >
+        <Stack.Screen name="Intro" component={Intro} />
         <Stack.Screen name="Presentation" component={Presentation} />
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="SignUp" component={SignUp} />
