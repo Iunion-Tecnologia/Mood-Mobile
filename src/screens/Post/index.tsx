@@ -23,11 +23,16 @@ const CreatePost: React.FC = () => {
         let formData = new FormData();
 
         if (image !== undefined) {
-          formData.append('image', {
-            uri: image?.uri,
-            name: `photo.jpeg`,
-            type: `image/jpeg`,
-          });
+          formData.append(
+            'image',
+            JSON.parse(
+              JSON.stringify({
+                uri: image.uri,
+                type: 'image/jpeg',
+                name: 'image.jpeg',
+              }),
+            ),
+          );
         }
 
         formData.append('content', data.content ?? '');

@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Ionicons, Feather, Octicons } from '@expo/vector-icons';
+import { Ionicons, Feather, Octicons, FontAwesome } from '@expo/vector-icons';
 import { useComment } from '../hooks/comment';
 import CommentModal from '../components/Comment';
 
@@ -19,6 +19,19 @@ import SearchScreen from '../screens/Search';
 import UserScreen from '../screens/User';
 import FollowsScreen from '../screens/Follows';
 import EditScreen from '../screens/EditProfile';
+import NewsScreen from '../screens/News';
+import WebViewScreen from '../screens/WebView';
+
+const NewsNavigator = () => (
+  <Stack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}
+  >
+    <Stack.Screen name="NewsScreen" component={NewsScreen} />
+    <Stack.Screen name="WebViewScreen" component={WebViewScreen} />
+  </Stack.Navigator>
+);
 
 const ProfileNavigator = () => (
   <Stack.Navigator
@@ -82,6 +95,11 @@ const AppRoutes: React.FC = () => {
                 case 'Search':
                   return <Feather name="search" size={size} color={color} />;
                   break;
+                case 'News':
+                  return (
+                    <FontAwesome name="newspaper-o" size={size} color={color} />
+                  );
+                  break;
                 default:
                   return (
                     <Ionicons
@@ -108,6 +126,11 @@ const AppRoutes: React.FC = () => {
             options={{ tabBarLabel: () => null }}
             name="Home"
             component={HomeNavigator}
+          />
+          <Tab.Screen
+            options={{ tabBarLabel: () => null }}
+            name="News"
+            component={NewsNavigator}
           />
           <Tab.Screen
             options={{ tabBarLabel: () => null }}
