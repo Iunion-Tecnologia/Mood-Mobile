@@ -80,7 +80,12 @@ const Comment: React.FC<IComment> = () => {
   }, [postId, register]);
 
   return (
-    <Modal onRequestClose={closeModal} transparent visible={isOpen}>
+    <Modal
+      animationType="slide"
+      onRequestClose={closeModal}
+      transparent
+      visible={isOpen}
+    >
       <S.Background>
         <S.Container>
           <S.Header>

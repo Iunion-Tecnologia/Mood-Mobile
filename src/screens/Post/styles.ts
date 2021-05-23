@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { StatusBar, StyleSheet } from 'react-native';
-import {RectButton} from 'react-native-gesture-handler';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   margin-top: ${Number(StatusBar.currentHeight)}px;
@@ -10,7 +10,7 @@ export const Container = styled.View`
 
 export const Input = styled.TextInput`
   height: 200px;
-  background-color: #FFF;
+  background-color: #fff;
   margin: 0 10px;
   font-size: 18px;
   padding: 0 8px;
@@ -22,9 +22,11 @@ export const Input = styled.TextInput`
   border-color: #ccc;
 `;
 
-export const Button = styled.TouchableOpacity`
+export const Button = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.7,
+})`
   height: 50px;
-  background-color: #6C0FD9;
+  background-color: #6c0fd9;
   margin: 0 10px;
 
   align-items: center;
@@ -42,7 +44,7 @@ export const ButtonText = styled.Text`
 export const ImageButton = styled.TouchableOpacity`
   height: 390px;
   margin: 10px 10px;
-  border: 1px dashed rgba(0,0,0,0.2);
+  border: 1px dashed rgba(0, 0, 0, 0.2);
   border-radius: 2px;
 
   align-items: center;

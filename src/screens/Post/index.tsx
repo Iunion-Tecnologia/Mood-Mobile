@@ -6,15 +6,34 @@ import Header from '../../components/Header';
 import api from '../../services/api';
 import { Entypo } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { useForm } from 'react-hook-form';
+import { useForm, useController } from 'react-hook-form';
 import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 import Toast from 'react-native-toast-message';
+
+const Input = ({ control }: { control: any }) => {
+  const { field } = useController({
+    control,
+    defaultValue: '',
+    name: 'content',
+  });
+  return (
+    <S.Input
+      value={field.value}
+      onChangeText={field.onChange}
+      multiline
+      textAlignVertical="top"
+      maxLength={280}
+      placeholder="O que está pensando?"
+      selectTextOnFocus={true}
+    />
+  );
+};
 
 const CreatePost: React.FC = () => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit, setValue, errors } = useForm();
-  const [image, setImage] = useState<ImageInfo>();
+  const { register, handleSubmit, control, reset } = useForm();
+  const [image, setImage] = useState<ImageInfo | null>();
 
   const handlePost = useCallback(
     async data => {
@@ -27,7 +46,7 @@ const CreatePost: React.FC = () => {
             'image',
             JSON.parse(
               JSON.stringify({
-                uri: image.uri,
+                uri: image?.uri,
                 type: 'image/jpeg',
                 name: 'image.jpeg',
               }),
@@ -59,12 +78,23 @@ const CreatePost: React.FC = () => {
           onPress: () => {},
         });
         Keyboard.dismiss();
-        navigation.navigate('Home', { shuldLoad: true });
+        navigation.navigate('Home');
+        reset({ content: '' });
+        setImage(null);
       } catch (error) {
-        Alert.alert('Ocorreu um erro!', error.response.data.message);
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error',
+          text2: 'Ocorreu um erro ao criar o seu post! tente novamente.',
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+          onShow: () => {},
+          onHide: () => {},
+          onPress: () => {},
+        });
         setIsLoading(false);
       }
     },
@@ -100,16 +130,8 @@ const CreatePost: React.FC = () => {
           )}
         </S.ImageButton>
 
-        <S.Input
-          onChangeText={text => {
-            setValue('content', text);
-          }}
-          multiline
-          textAlignVertical="top"
-          maxLength={280}
-          placeholder="O que está pensando?"
-          selectTextOnFocus={true}
-        />
+        <Input control={control} />
+
         <S.Button disabled={isLoading} onPress={handleSubmit(handlePost)}>
           {isLoading ? (
             <ActivityIndicator size="large" color="#FFF" />

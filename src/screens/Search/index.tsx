@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Header from '../../components/Header';
-import { FlatList, Alert, ActivityIndicator } from 'react-native';
+import { FlatList, Alert, ActivityIndicator, Keyboard } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { useForm } from 'react-hook-form';
+import { useForm, useController } from 'react-hook-form';
 import api from '../../services/api';
 import { useNavigation } from '@react-navigation/native';
 
@@ -15,8 +15,19 @@ interface IResult {
   avatar_url: string;
 }
 
+const Input = ({ control }: { control: any }) => {
+  const { field } = useController({ control, defaultValue: '', name: 'query' });
+  return (
+    <S.SearchInput
+      value={field.value}
+      onChangeText={field.onChange}
+      placeholder="Pesquisar"
+    />
+  );
+};
+
 const Search: React.FC = () => {
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, control, reset } = useForm();
   const [results, setResults] = useState<IResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
@@ -30,6 +41,8 @@ const Search: React.FC = () => {
       Alert.alert('Error', error.response.message);
     }
     setIsLoading(false);
+    reset({ query: '' });
+    Keyboard.dismiss();
   }, []);
 
   useEffect(() => {
@@ -40,12 +53,7 @@ const Search: React.FC = () => {
     <S.Container>
       <Header />
       <S.SearchBar>
-        <S.SearchInput
-          onChangeText={text => {
-            setValue('query', text);
-          }}
-          placeholder="Pesquisar"
-        />
+        <Input control={control} />
         <S.Button onPress={handleSubmit(handleSubmitQuery)}>
           <Feather name="search" color="#6C0FD9" size={30} />
         </S.Button>
