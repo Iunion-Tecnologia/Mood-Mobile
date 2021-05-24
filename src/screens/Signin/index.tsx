@@ -81,7 +81,11 @@ const SignIn: React.FC = () => {
 
   return (
     <S.Container>
-      <SvgUri fillAll style={{ position: 'absolute' }} source={background} />
+      <SvgUri
+        fillAll
+        style={{ position: 'absolute', opacity: 0.5 }}
+        source={background}
+      />
 
       <S.Logo source={logo} />
 
