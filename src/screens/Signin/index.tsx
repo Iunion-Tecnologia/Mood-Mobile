@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, Alert } from 'react-native';
 import SvgUri from 'expo-svg-uri';
 import { useForm } from 'react-hook-form';
 import background from '../../assets/background.svg';
@@ -15,6 +15,7 @@ import { login } from '../../store/ducks/auth/actions';
 import api from '../../services/api';
 import * as yup from 'yup';
 import * as S from './styles';
+import * as Facebook from 'expo-facebook';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -37,6 +38,29 @@ const SignIn: React.FC = () => {
     useNativeDriver: true,
     delay: 500,
   }).start();
+
+  const logIn = async () => {
+    try {
+      await Facebook.initializeAsync({
+        appId: '3002306580091956',
+      });
+      const { type, token, expirationDate, permissions, declinedPermissions } =
+        await Facebook.logInWithReadPermissionsAsync({
+          permissions: ['public_profile'],
+        });
+      if (type === 'success') {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}`,
+        );
+        Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  };
 
   const handleSignIn = useCallback(async data => {
     setIsLoading(true);

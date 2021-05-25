@@ -1,13 +1,27 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl, ScrollView } from 'react-native';
 import Header from '../../components/Header';
 import api from '../../services/api';
 import * as S from './styles';
 import New from '../../components/News';
+import axios from 'axios';
+import { Currency } from './types';
 
 const News: React.FC = () => {
   const [news, setNews] = useState([]);
+  const [currency, setCurrency] = useState<Object>();
   const [refresh, setRefresh] = useState(false);
+
+  const handleLoadCurrency = async () => {
+    try {
+      const response = await axios.get(
+        'https://economia.awesomeapi.com.br/all',
+      );
+      setCurrency(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleLoadNews = useCallback(async () => {
     setRefresh(true);
@@ -24,12 +38,29 @@ const News: React.FC = () => {
 
   useEffect(() => {
     handleLoadNews();
+    handleLoadCurrency();
   }, []);
 
   return (
     <S.Container>
       <Header />
       <FlatList
+        ListHeaderComponent={() => (
+          <S.CoinsContainer horizontal showsHorizontalScrollIndicator={false}>
+            {currency &&
+              Object.values(currency).map((item: Currency) => (
+                <S.Coin>
+                  <S.CoinKey>
+                    {item.code}/{item.codein}
+                  </S.CoinKey>
+                  <S.CoinValue>
+                    R${' '}
+                    {Number(item.ask).toFixed(2).toString().replace('.', ',')}
+                  </S.CoinValue>
+                </S.Coin>
+              ))}
+          </S.CoinsContainer>
+        )}
         refreshControl={
           <RefreshControl
             colors={['#6C0FD9']}

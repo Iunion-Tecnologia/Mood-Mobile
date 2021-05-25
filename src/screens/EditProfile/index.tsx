@@ -41,7 +41,7 @@ const CreatePost: React.FC = () => {
 
   const openImagePickerAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 4],
       quality: 1,
@@ -56,11 +56,16 @@ const CreatePost: React.FC = () => {
     try {
       let formData = new FormData();
 
-      formData.append('avatar', {
-        uri: image?.uri,
-        name: `photo.jpeg`,
-        type: `image/jpeg`,
-      });
+      formData.append(
+        'avatar',
+        JSON.parse(
+          JSON.stringify({
+            uri: image?.uri,
+            type: 'image/jpeg',
+            name: 'image.jpeg',
+          }),
+        ),
+      );
 
       const response = await api.patch('/user/avatar', formData, {
         headers: {
