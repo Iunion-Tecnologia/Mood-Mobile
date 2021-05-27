@@ -48,14 +48,19 @@ const News: React.FC = () => {
         ListHeaderComponent={() => (
           <S.CoinsContainer horizontal showsHorizontalScrollIndicator={false}>
             {currency &&
-              Object.values(currency).map((item: Currency) => (
-                <S.Coin>
+              Object.values(currency).map((item: Currency, index) => (
+                <S.Coin key={String(index)}>
                   <S.CoinKey>
                     {item.code}/{item.codein}
                   </S.CoinKey>
                   <S.CoinValue>
-                    R${' '}
-                    {Number(item.ask).toFixed(2).toString().replace('.', ',')}
+                    {Intl.NumberFormat('pt-BR', {
+                      minimumFractionDigits: 2,
+                      style: 'currency',
+                      currency: 'BRL',
+                    })
+                      .format(Number(item.ask))
+                      .replace(/^(\D+)/, '$1 ')}
                   </S.CoinValue>
                 </S.Coin>
               ))}

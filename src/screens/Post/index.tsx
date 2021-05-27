@@ -41,7 +41,7 @@ const CreatePost: React.FC = () => {
       try {
         let formData = new FormData();
 
-        if (image !== undefined) {
+        if (image) {
           formData.append(
             'image',
             JSON.parse(
@@ -82,6 +82,9 @@ const CreatePost: React.FC = () => {
         reset({ content: '' });
         setImage(null);
       } catch (error) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
         Toast.show({
           type: 'error',
           position: 'top',

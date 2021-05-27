@@ -14,6 +14,8 @@ import {
   Rubik_500Medium,
   Rubik_700Bold,
 } from '@expo-google-fonts/rubik';
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
 
 export default function App() {
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function App() {
     <>
       <Provider store={store}>
         <CommentProvider>
-          <StatusBar style="light" backgroundColor={'rgba(0,0,0,0.3)'} />
+          <StatusBar style="light" backgroundColor={'rgba(0,0,0,0.2)'} />
           <Routes />
         </CommentProvider>
       </Provider>

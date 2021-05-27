@@ -37,6 +37,11 @@ const Home: React.FC = () => {
   const route =
     useRoute<RouteProp<{ params: { shuldLoad?: boolean } }, 'params'>>();
 
+  navigation.addListener('state', () => {
+    handleLoadPosts();
+    console.log('[NAVIGATION STATE CHANGED]');
+  });
+
   const handleRefresh = useCallback(async () => {
     setRefresh(true);
     setTime(new Date());

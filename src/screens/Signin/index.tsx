@@ -62,41 +62,44 @@ const SignIn: React.FC = () => {
     }
   };
 
-  const handleSignIn = useCallback(async data => {
-    setIsLoading(true);
-    try {
-      const response = await api.post('/user/signin', data);
-      setIsLoading(false);
-      api.defaults.headers.common[
-        'Authorization'
-      ] = `Bearer ${response.data.token}`;
+  const handleSignIn = useCallback(
+    async data => {
+      setIsLoading(true);
+      try {
+        const response = await api.post('/user/signin', data);
+        setIsLoading(false);
+        api.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${response.data.token}`;
 
-      if (remember === true) {
-        await AsyncStorage.setItem('@mood/token', response.data.token);
-        await AsyncStorage.setItem(
-          '@mood/user',
-          JSON.stringify(response.data.user),
-        );
+        if (remember === true) {
+          await AsyncStorage.setItem('@mood/token', response.data.token);
+          await AsyncStorage.setItem(
+            '@mood/user',
+            JSON.stringify(response.data.user),
+          );
+        }
+
+        dispatch(login(response.data));
+      } catch (error) {
+        setIsLoading(false);
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error - Sigin',
+          text2: error.response.data.message,
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+          onShow: () => {},
+          onHide: () => {},
+          onPress: () => {},
+        });
       }
-
-      dispatch(login(response.data));
-    } catch (error) {
-      setIsLoading(false);
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Error - Sigin',
-        text2: error.response.data.message,
-        visibilityTime: 4000,
-        autoHide: true,
-        topOffset: 30,
-        bottomOffset: 40,
-        onShow: () => {},
-        onHide: () => {},
-        onPress: () => {},
-      });
-    }
-  }, []);
+    },
+    [remember],
+  );
 
   useEffect(() => {
     register('email');

@@ -21,7 +21,6 @@ const Routes: React.FC = () => {
       const token = await AsyncStorage.getItem('@mood/token');
       const user = await AsyncStorage.getItem('@mood/user');
       if (token && user) {
-        console.log(token, user);
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         dispatch(login({ token: token, user: JSON.parse(user) }));
       }

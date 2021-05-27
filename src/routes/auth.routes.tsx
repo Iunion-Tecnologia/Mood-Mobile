@@ -15,7 +15,7 @@ const AuthRoutes: React.FC = () => (
   <>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Intro"
+        initialRouteName="Presentation"
         screenOptions={{
           headerShown: false,
           cardStyle: { backgroundColor: '#6C0FD9' },

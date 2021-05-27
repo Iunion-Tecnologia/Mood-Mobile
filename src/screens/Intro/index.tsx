@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import SvgUri from 'expo-svg-uri';
 import * as S from './styles';
@@ -9,6 +9,7 @@ import background from '../../assets/background.svg';
 import newsImage from '../../assets/Intro/news.png';
 import chatImage from '../../assets/Intro/chat.png';
 import gitImage from '../../assets/Intro/git.png';
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface ISlide {
   key: number;
@@ -44,6 +45,13 @@ const slides: ISlide[] = [
 
 const Intro: React.FC = () => {
   const { navigate } = useNavigation();
+
+  useEffect(() => {
+    const disablePresentation = async () => {
+      await AsyncStorage.setItem('@mood/intro', 'false');
+    };
+    disablePresentation();
+  }, []);
 
   return (
     <AppIntroSlider
