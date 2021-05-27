@@ -5,6 +5,7 @@ import { RectButton } from 'react-native-gesture-handler';
 export const Container = styled.View`
   flex: 1;
   padding-top: ${Number(StatusBar.currentHeight)}px;
+  background-color: #fff;
 `;
 
 export const PostContainer = styled.View`

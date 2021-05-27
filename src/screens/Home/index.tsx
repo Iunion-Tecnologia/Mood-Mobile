@@ -1,14 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import * as S from './styles';
 import Post from '../../components/Post';
-import {
-  FlatList,
-  RefreshControl,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import { FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 import Header from '../../components/Header';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 import { useComment } from '../../hooks/comment';
 import Toast from 'react-native-toast-message';
@@ -34,13 +29,6 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [shuldLoad, setShuldLoad] = useState(true);
   const { openModal } = useComment();
-  const route =
-    useRoute<RouteProp<{ params: { shuldLoad?: boolean } }, 'params'>>();
-
-  navigation.addListener('state', () => {
-    handleLoadPosts();
-    console.log('[NAVIGATION STATE CHANGED]');
-  });
 
   const handleRefresh = useCallback(async () => {
     setRefresh(true);

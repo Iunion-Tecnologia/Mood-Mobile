@@ -56,7 +56,7 @@ const CreatePost: React.FC = () => {
 
         formData.append('content', data.content ?? '');
 
-        const response = await api.post('/post/create', formData, {
+        await api.post('/post/create', formData, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'multipart/form-data',
@@ -78,7 +78,7 @@ const CreatePost: React.FC = () => {
           onPress: () => {},
         });
         Keyboard.dismiss();
-        navigation.navigate('Home');
+        navigation.navigate('Home', { shuldReload: 'sim' });
         reset({ content: '' });
         setImage(null);
       } catch (error) {
