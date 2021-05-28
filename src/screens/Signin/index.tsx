@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, Alert } from 'react-native';
 import SvgUri from 'expo-svg-uri';
 import { useForm } from 'react-hook-form';
 import background from '../../assets/background.svg';
@@ -15,6 +15,7 @@ import { login } from '../../store/ducks/auth/actions';
 import api from '../../services/api';
 import * as yup from 'yup';
 import * as S from './styles';
+import * as Facebook from 'expo-facebook';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -38,38 +39,67 @@ const SignIn: React.FC = () => {
     delay: 500,
   }).start();
 
-  const handleSignIn = useCallback(async data => {
-    setIsLoading(true);
+  const logIn = async () => {
     try {
-      const response = await api.post('/user/signin', data);
-      setIsLoading(false);
-<<<<<<< HEAD
-      api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-=======
-      api.defaults.headers.common[
-        'Authorization'
-      ] = `Bearer ${response.data.token}`;
->>>>>>> release/v1.3.1
-      await AsyncStorage.setItem('@mood/token', response.data.token);
-      await AsyncStorage.setItem('@mood/id', response.data.user.id);
-      dispatch(login(response.data));
-    } catch (error) {
-      setIsLoading(false);
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Error - Sigin',
-        text2: error.response.data.message,
-        visibilityTime: 4000,
-        autoHide: true,
-        topOffset: 30,
-        bottomOffset: 40,
-        onShow: () => {},
-        onHide: () => {},
-        onPress: () => {},
+      await Facebook.initializeAsync({
+        appId: '3002306580091956',
       });
+      const { type, token, expirationDate, permissions, declinedPermissions } =
+        await Facebook.logInWithReadPermissionsAsync({
+          permissions: ['public_profile'],
+        });
+      if (type === 'success') {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}`,
+        );
+        Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
     }
-  }, []);
+  };
+
+  const handleSignIn = useCallback(
+    async data => {
+      setIsLoading(true);
+      try {
+        const response = await api.post('/user/signin', data);
+        setIsLoading(false);
+        api.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${response.data.token}`;
+
+        if (remember === true) {
+          await AsyncStorage.setItem('@mood/token', response.data.token);
+          await AsyncStorage.setItem(
+            '@mood/user',
+            JSON.stringify(response.data.user),
+          );
+        }
+
+        dispatch(login(response.data));
+      } catch (error) {
+        setIsLoading(false);
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error - Sigin',
+          text2: error.response.data.message,
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+          onShow: () => {},
+          onHide: () => {},
+          onPress: () => {},
+        });
+      }
+    },
+    [remember],
+  );
 
   useEffect(() => {
     register('email');
@@ -78,7 +108,11 @@ const SignIn: React.FC = () => {
 
   return (
     <S.Container>
-      <SvgUri fillAll style={{ position: 'absolute' }} source={background} />
+      <SvgUri
+        fillAll
+        style={{ position: 'absolute', opacity: 0.5 }}
+        source={background}
+      />
 
       <S.Logo source={logo} />
 

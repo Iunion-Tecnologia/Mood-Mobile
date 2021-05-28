@@ -2,7 +2,7 @@
   "expo": {
     "name": "Mood",
     "slug": "Mood",
-    "version": "1.3.1",
+    "version": "1.7.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,11 +17,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.rbioz.mood",
-      "buildNumber": "1.2.1"
+      "buildNumber": "1.7.0"
     },
     "android": {
       "package": "com.rbioz.mood",
-      "versionCode": 5,
+      "versionCode": 7,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#6C0FD9"

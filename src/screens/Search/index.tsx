@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import Header from '../../components/Header'
-import {FlatList, Alert, ActivityIndicator} from 'react-native';
-import { Feather } from '@expo/vector-icons'
-import {useForm} from 'react-hook-form';
+import React, { useCallback, useEffect, useState } from 'react';
+import Header from '../../components/Header';
+import { FlatList, Alert, ActivityIndicator, Keyboard } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { useForm, useController } from 'react-hook-form';
 import api from '../../services/api';
 import { useNavigation } from '@react-navigation/native';
 
@@ -15,34 +15,47 @@ interface IResult {
   avatar_url: string;
 }
 
-const Search: React.FC = () => {
+const Input = ({ control }: { control: any }) => {
+  const { field } = useController({ control, defaultValue: '', name: 'query' });
+  return (
+    <S.SearchInput
+      value={field.value}
+      onChangeText={field.onChange}
+      placeholder="Pesquisar"
+    />
+  );
+};
 
-  const {register, handleSubmit, setValue} = useForm();
+const Search: React.FC = () => {
+  const { register, handleSubmit, control, reset } = useForm();
   const [results, setResults] = useState<IResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
-  const handleSubmitQuery = useCallback(async(data) => {
+  const handleSubmitQuery = useCallback(async data => {
     setIsLoading(true);
     try {
-      const response = await api.get(`/user/search?query=${data.query}`);
+      const response = await api.get(
+        `/user/search?query=${String(data.query).toLowerCase()}`,
+      );
       setResults(response.data);
-    }
-    catch(error){
+    } catch (error) {
       Alert.alert('Error', error.response.message);
     }
     setIsLoading(false);
-  }, [])
+    reset({ query: '' });
+    Keyboard.dismiss();
+  }, []);
 
   useEffect(() => {
-    register("query")
+    register('query');
   }, [register]);
 
-  return(
+  return (
     <S.Container>
       <Header />
       <S.SearchBar>
-        <S.SearchInput onChangeText={text => {setValue('query', text)}} placeholder="Pesquisar" />
+        <Input control={control} />
         <S.Button onPress={handleSubmit(handleSubmitQuery)}>
           <Feather name="search" color="#6C0FD9" size={30} />
         </S.Button>
@@ -61,27 +74,23 @@ const Search: React.FC = () => {
             />
           );
         }}
-        keyExtractor={(item) => item.id}
-        renderItem={({item}) => (
-          <S.Item onPress={() => navigation.navigate('UserScreen', {id: item.id})}>
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <S.Item
+            onPress={() => navigation.navigate('UserScreen', { id: item.id })}
+          >
             <S.ItemLeft>
-<<<<<<< HEAD
-              <S.ItemAvatar source={{uri: `https://iunion-mood.herokuapp.com/files/${item.avatar}`}} />
-=======
-              <S.ItemAvatar source={{uri: `${item.avatar_url}`}} />
->>>>>>> release/v1.3.1
+              <S.ItemAvatar source={{ uri: `${item.avatar_url}` }} />
             </S.ItemLeft>
             <S.ItemRight>
-            <S.ItemNick>{item.nick}</S.ItemNick> 
-            <S.ItemName>{item.name}</S.ItemName>
+              <S.ItemNick>{item.nick}</S.ItemNick>
+              <S.ItemName>{item.name}</S.ItemName>
             </S.ItemRight>
           </S.Item>
-        )
-      }
+        )}
       />
-
     </S.Container>
-  )
-}
+  );
+};
 
 export default Search;

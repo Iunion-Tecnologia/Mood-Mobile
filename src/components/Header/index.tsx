@@ -17,11 +17,7 @@ const Header: React.FC = () => {
     delete api.defaults.headers.common['Authorization'];
     await AsyncStorage.removeItem('@mood/token');
     await AsyncStorage.removeItem('@mood/id');
-<<<<<<< HEAD
-  }
-=======
   };
->>>>>>> release/v1.3.1
 
   return (
     <S.Container>

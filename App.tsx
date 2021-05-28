@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import { CommentProvider } from './src/hooks/comment';
+import { ReloadProvider } from './src/hooks/reload';
 import store from './src/store';
 import * as Updates from 'expo-updates';
 import Routes from './src/routes';
@@ -14,6 +15,8 @@ import {
   Rubik_500Medium,
   Rubik_700Bold,
 } from '@expo-google-fonts/rubik';
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
 
 export default function App() {
   useEffect(() => {
@@ -25,7 +28,7 @@ export default function App() {
         await Updates.reloadAsync();
       }
     }
-    updateApp();
+    if (!__DEV__) updateApp();
   }, []);
 
   let [fontsLoaded] = useFonts({
@@ -42,14 +45,10 @@ export default function App() {
   return (
     <>
       <Provider store={store}>
-<<<<<<< HEAD
-        <Routes />
-=======
         <CommentProvider>
-          <StatusBar style="light" backgroundColor={'rgba(0,0,0,0.3)'} />
+          <StatusBar style="light" backgroundColor={'rgba(0,0,0,0.2)'} />
           <Routes />
         </CommentProvider>
->>>>>>> release/v1.3.1
       </Provider>
     </>
   );
