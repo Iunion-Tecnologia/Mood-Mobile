@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 import { useComment } from '../../hooks/comment';
 import Toast from 'react-native-toast-message';
+import { useReload } from '../../hooks/reload';
 
 interface IPost {
   u_id: string;
@@ -29,6 +30,7 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [shuldLoad, setShuldLoad] = useState(true);
   const { openModal } = useComment();
+  const { menuNotReload, menu } = useReload();
 
   const handleRefresh = useCallback(async () => {
     setRefresh(true);

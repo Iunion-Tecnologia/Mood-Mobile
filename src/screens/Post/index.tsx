@@ -9,6 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useForm, useController } from 'react-hook-form';
 import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 import Toast from 'react-native-toast-message';
+import { useReload } from '../../hooks/reload';
 
 const Input = ({ control }: { control: any }) => {
   const { field } = useController({
@@ -16,6 +17,7 @@ const Input = ({ control }: { control: any }) => {
     defaultValue: '',
     name: 'content',
   });
+
   return (
     <S.Input
       value={field.value}
@@ -34,6 +36,7 @@ const CreatePost: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit, control, reset } = useForm();
   const [image, setImage] = useState<ImageInfo | null>();
+  const { menuReload } = useReload();
 
   const handlePost = useCallback(
     async data => {

@@ -20,12 +20,14 @@ export const Image = styled.Image`
 
 export const Title = styled.Text`
   font-family: Rubik_500Medium;
-  font-size: 16px;
-  margin: 10px 0;
+  font-size: 18px;
+  margin: 10px 10px;
 `;
 
 export const Description = styled.Text`
   font-family: Rubik_400Regular;
+  margin: 10px;
+  line-height: 20px;
 `;
 
 export const Bottom = styled.View`

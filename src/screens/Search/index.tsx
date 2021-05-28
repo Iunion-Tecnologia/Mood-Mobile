@@ -35,7 +35,9 @@ const Search: React.FC = () => {
   const handleSubmitQuery = useCallback(async data => {
     setIsLoading(true);
     try {
-      const response = await api.get(`/user/search?query=${data.query}`);
+      const response = await api.get(
+        `/user/search?query=${String(data.query).toLowerCase()}`,
+      );
       setResults(response.data);
     } catch (error) {
       Alert.alert('Error', error.response.message);

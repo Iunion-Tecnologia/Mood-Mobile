@@ -3,7 +3,7 @@ import { Modal, ModalProps, FlatList } from 'react-native';
 import { useComment } from '../../hooks/comment';
 import Toast from 'react-native-toast-message';
 import { ApplicationState } from '../../store';
-import { useForm } from 'react-hook-form';
+import { useForm, useController } from 'react-hook-form';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import api from '../../services/api';
@@ -25,9 +25,25 @@ interface IUserComment {
   user_avatar_url: string | null;
 }
 
+const Input = ({ control }: { control: any }): JSX.Element => {
+  const { field } = useController({
+    control,
+    defaultValue: '',
+    name: 'content',
+  });
+
+  return (
+    <S.Input
+      value={field.value}
+      onChangeText={field.onChange}
+      placeholder="Insira seu comentário..."
+    />
+  );
+};
+
 const Comment: React.FC<IComment> = () => {
   const { postId, isOpen, closeModal } = useComment();
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, control, reset } = useForm();
   const [comments, setComments] = useState<IUserComment[]>([]);
   const auth = useSelector((state: ApplicationState) => state.auth);
 
@@ -40,6 +56,10 @@ const Comment: React.FC<IComment> = () => {
 
   const handleComment = useCallback(
     async data => {
+      reset({
+        content: '',
+      });
+      Keyboard.dismiss();
       try {
         const response = await api.post(`/post/comment/${postId}`, data);
 
@@ -53,8 +73,7 @@ const Comment: React.FC<IComment> = () => {
           user_nick: String(auth.user?.nick),
         };
 
-        setComments(prev => [userComment, ...prev]);
-        Keyboard.dismiss();
+        setComments(prev => [...prev, userComment]);
       } catch (error) {
         Toast.show({
           type: 'error',
@@ -115,12 +134,7 @@ const Comment: React.FC<IComment> = () => {
 
           <S.BottomContainer>
             <S.InputContainer>
-              <S.Input
-                placeholder="Insira um comentário..."
-                onChangeText={text => {
-                  setValue('content', text);
-                }}
-              />
+              <Input control={control} />
               <S.Button onPress={handleSubmit(handleComment)}>
                 <Ionicons name="send-sharp" size={30} color="#6C0FD9" />
               </S.Button>
