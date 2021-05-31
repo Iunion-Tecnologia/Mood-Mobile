@@ -21,7 +21,7 @@
     },
     "android": {
       "package": "com.rbioz.mood",
-      "versionCode": 7,
+      "versionCode": 11,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#6C0FD9"
